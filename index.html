@@ -361,6 +361,26 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 
 .thD .bcard table{width:auto;border-collapse:collapse}
 .thD .bcard td{border:0;vertical-align:middle}
+
+/* P · portrait background (inherits Broadcast parts) */
+.thP .bgp{left:0}
+.thP .bgp img.full{object-position:70% 22%}
+.thP .bgp img.por{position:absolute;left:auto;right:0;top:0;width:900px;height:900px;object-position:center top}
+.thP .bgp .dim{background:linear-gradient(90deg,#06102be8 0%,#06102bd0 34%,#06102b70 58%,#06102b00 78%),linear-gradient(0deg,#06102bb0 0%,#06102b00 40%)}
+.thP .strips{position:absolute;right:0;top:0;bottom:0;width:64%;display:grid;grid-template-columns:repeat(4,1fr)}
+.thP .strips img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.thP .brand2{position:absolute;left:70px;top:46px;display:flex;align-items:center;gap:18px;font-family:"Barlow Condensed","Chakra Petch";font-weight:600;font-size:30px;letter-spacing:1px;color:#ffffffd8}
+.thP .lw2{width:112px;height:112px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 8px 22px #0006}
+.thP .lw2 img{width:80px}
+.thP .aw{left:70px;top:190px;max-width:none}
+.thP .bcard{left:70px;right:auto;bottom:100px}
+.thP .bcard tr.rh td{height:30px;font-size:18px}
+.thP .bcard tr.rp td{height:40px;font-size:25px}
+.thP .bcard tr.rs td{height:52px}
+.thP .bcard .side{width:150px}
+.thP .side b{font-size:40px}.thP .side .gold b{font-size:52px}
+.thP .foot{left:70px;right:auto;bottom:34px}
+
 .prcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px}
 .prcard .ctl{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
 .prcard .ctl input[type=text]{flex:1;min-width:160px}
@@ -946,7 +966,7 @@ function slidePrize(s){const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const p
   return `<div class="prize">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:""}<div><b>🎁 ${esc(p.item||"")}</b><small>${p.value?esc(p.value):""}${p.by?` · มอบโดย ${esc(p.by)}`:""}</small></div></div>`;}
 
 // ---------- PR themes ----------
-const THEMES=[["d","แบบ Broadcast สกอร์การ์ด"],["o","แบบเดิม"]];
+const THEMES=[["d","แบบ Broadcast สกอร์การ์ด"],["p","แบบภาพผู้ชนะเต็มจอ"],["o","แบบเดิม"]];
 function slideModel(s){
   const pr=S.pr[s.id]||{},c=S.config;
   const m={title:pr.title||s.def,up:pr.img||"",kind:s.kind,rank:s.rank,hole:s.h,name:"รอประกาศผล",sub:"",org:null,photo:null,grid:[],mem:null,nums:[],pending:true,
@@ -993,6 +1013,26 @@ function bcTeam(x){
     <div class="side"><div>TEAM NET<b style="color:#F2B705;font-size:64px">${x.total}</b></div><div style="font-size:18px;color:#cfcfd4">${x.counted.length} สกอร์ดีที่สุด</div></div></div>`;
 }
 function symNet(n){return `<b style="color:#fff">${n}</b>`;}
+
+function portraitHTML(s){
+  const m=slideModel(s),c=S.config;
+  let bg;
+  if(m.up)bg=`<img class="full" src="${m.up}" alt="" style="object-position:${m.kind==="t"?"center 40%":"70% 22%"}">`;
+  else if(m.kind==="t"&&m.grid.length)bg=`<div class="strips">${m.grid.map(u=>`<img src="${u}" alt="">`).join("")}</div>`;
+  else if(m.photo)bg=`<img class="full por" src="${m.photo}" alt="">`;
+  else bg=`<img class="full" src="img/course_bg.jpg" alt="">`;
+  let card="";
+  if(s.kind==="p"&&s.r)card=bcScorecard(s.r);
+  if(s.kind==="t"&&s.x)card=bcTeam(s.x);
+  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${esc(s.w.yds)}</b></div></div></div>`;
+  const foot=m.prize?`<div class="foot">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}รับ ${esc(m.prize.item||"")}${m.prize.by?` · มอบโดย ${esc(m.prize.by)}`:""}</div>`:"";
+  return `<div class="sl th thD thP"><div class="bgp">${bg}<div class="dim"></div></div>
+    <div class="brand2"><span class="lw2"><img src="img/logo_p1d1.png" alt=""></span><span>At ${esc(c.course||"")}</span></div>
+    <div class="lgp">${LOGOSTRIP}</div>
+    <div class="aw"><span class="k">${esc(m.cat)}</span><div class="t" style="font-size:${fitFont(m.title,720,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(m.name,760,112,60)}px">${esc(m.name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
+    ${card}${foot}</div>`;
+}
+
 function broadcastHTML(s){
   const m=slideModel(s),c=S.config;
   let bg="",card="",flag=m.cat;
@@ -1004,10 +1044,10 @@ function broadcastHTML(s){
   if(s.kind==="t"&&s.x)card=bcTeam(s.x);
   if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${esc(s.w.yds)}</b></div></div></div>`;
   const name=m.name;
-  const foot=m.prize?`<div class="foot">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}รับ ${esc(m.prize.item||"")}${m.prize.by?` · มอบโดย ${esc(m.prize.by)}`:""}</div>`:`<div class="foot">${esc(c.course||"")} · P1D1 Golf Day 2026</div>`;
+  const foot=m.prize?`<div class="foot">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}รับ ${esc(m.prize.item||"")}${m.prize.by?` · มอบโดย ${esc(m.prize.by)}`:""}</div>`:"";
   return `<div class="sl th thD"><div class="bgp">${bg}</div>
     <div class="band"><div class="lw"><img src="img/logo_p1d1.png" alt=""></div><div class="gl"></div>
-      <div class="vt"><div class="e">P1D1 GOLF DAY 2026</div></div></div>
+      <div class="vt"><div class="e">AT ${esc((c.course||"").toUpperCase())}</div></div></div>
     <div class="lgp">${LOGOSTRIP}</div>
     <div class="aw"><span class="k">${esc(flag)}</span><div class="t" style="font-size:${fitFont(m.title,640,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(name,660,104,56)}px">${esc(name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
     ${card}${foot}</div>`;
@@ -1040,7 +1080,7 @@ function slideThemeHTML(s,th){
 }
 
 function slideHTML(s){
-  const th=S.config.prTheme==="o"?"o":"d";if(th!=="o")return broadcastHTML(s);
+  const th=["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d";if(th==="p")return portraitHTML(s);if(th!=="o")return broadcastHTML(s);
   const pr=S.pr[s.id]||{}, title=pr.title||s.def, up=pr.img;
   let photo="",name="รอประกาศผล",org="",stats="",medal="";
   medal=(s.kind==="n"||s.kind==="l")?`<div class="medal mn">หลุม<br>${s.h}</div>`:`<div class="medal m${s.rank+1}">${s.rank+1}</div>`;
@@ -1068,7 +1108,7 @@ function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=
 window.addEventListener("resize",()=>{fitSlides();if(presIdx!=null)drawPresenter();});
 function renderPR(){
   const L=slideList();
-  $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(S.config.prTheme==="o"?"o":"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
+  $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
   $("prList").innerHTML=L.map(s=>{const pr=S.pr[s.id]||{};return `<div class="prcard"><div class="slwrap">${slideHTML(s)}</div>
    <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def)}">
    <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
