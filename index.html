@@ -310,6 +310,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .sl.thD{background:#0b1a12;color:#fff;font-family:"Barlow Condensed","Chakra Petch",sans-serif}
 .thD .bgp{position:absolute;left:250px;top:0;right:0;bottom:0;overflow:hidden}
 .thD .bgp img.full{width:100%;height:100%;object-fit:cover;display:block}
+.thD .bgp .dim.up{background:linear-gradient(90deg,#06102bd8 0%,#06102b90 28%,#06102b00 55%),linear-gradient(0deg,#06102b80 0%,#06102b00 30%)!important}
 .thD .bgp .dim{position:absolute;inset:0;background:linear-gradient(90deg,#00000060,#00000010 40%,#00000040)}
 .thD .bgp .pc{position:absolute;right:150px;top:120px;width:360px;height:360px;border-radius:50%;overflow:hidden;border:8px solid #fff;box-shadow:0 30px 70px #000a}
 .thD .bgp .pc img{width:100%;height:100%;object-fit:cover}
@@ -1082,7 +1083,7 @@ function portraitHTML(s){
 function broadcastHTML(s){
   const m=slideModel(s),c=S.config;
   let bg="",card="",flag=m.cat;
-  if(m.up)bg=`<img class="full" src="${m.up}" alt=""><div class="dim"></div>`;
+  if(m.up)bg=`<img class="full" src="${m.up}" alt="" style="object-position:center 25%"><div class="dim up"></div>`;
   else{bg=`<img class="full" src="img/course_bg.jpg" alt=""><div class="dim"></div>`;
     if(m.kind==="t"&&m.grid.length)bg+=`<div class="g4">${m.grid.map(u=>`<img src="${u}" alt="">`).join("")}</div>`;
     else if(m.photo)bg+=`<div class="pc"><img src="${m.photo}" alt=""></div>`;}
