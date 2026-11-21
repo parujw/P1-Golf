@@ -99,6 +99,8 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .holes button.on small{color:#ffffffb0}
 .prizebox{display:flex;gap:12px;align-items:center;background:#fffaf0;border:1px solid #f1e0a6;border-radius:12px;padding:8px 12px;margin-bottom:12px}
 .prizebox img{width:56px;height:56px;object-fit:cover;border-radius:10px;background:#fff;flex:none}
+.hy{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--navy);background:#fffaf0;border-bottom:1px solid var(--line);cursor:pointer}
+.hy input{width:18px;height:18px}
 .ntpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
 .ntp{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
 .ntp .top{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f6f8fc}
@@ -802,6 +804,7 @@ function compCards(kind){
   return `<datalist id="pNames">${names}</datalist>${prizeBox(isLD?"ld":"ntp")}<div class="ntpgrid">${holes.map(h=>{const k=isLD?"ld"+h:String(h), w=isLD?ldWinner(h):ntpWinner(h);
     const list=(S.ntp[k]||[]).map((e,i)=>({...e,i})).sort((a,b)=>(hasYds(b)-hasYds(a))||(isLD?(+b.yds)-(+a.yds):(+a.yds)-(+b.yds)));const manual=(S.ntp[k]||[]).some(x=>x.win);const multi=(S.ntp[k]||[]).length>1&&!w;
     return `<div class="ntp"><div class="top"><div class="t">${isLD?"LONGEST DRIVE":"NEAREST TO PIN"}<br><span class="meta">Par ${c.pars[h-1]} · <span style="color:#2a4fd6">●</span>${YARDS.B[h-1]} <span style="color:#999">○</span>${YARDS.W[h-1]} หลา</span></div><div class="hn"><span class="meta" style="font-size:10px;letter-spacing:2px;display:block;text-align:right">HOLE</span>${h}</div></div>
+    ${S.canWrite?`<label class="hy"><input type="checkbox" data-hy="${k}" ${ydsHidden(k)?"checked":""}> ไม่แสดงระยะใน PR / สคริปต์</label>`:(ydsHidden(k)?`<div class="hy meta">ไม่แสดงระยะใน PR</div>`:"")}
     <div class="win">${w?`<div class="who">${av(pByName(w.name))}<div><div>🏆 <span class="w">${esc(cleanName(w.name))}</span></div><div>${lg(pByName(w.name))}<span class="y">${ydsTxt(w)}</span>${manual?` <span class="meta">· เลือกโดยทีมงาน</span>`:""}${dupBadge(w.name)}</div></div></div>`:`<span class="meta">${multi?"⚠️ ไม่มีระยะให้เทียบ — แตะ 🏆 เพื่อเลือกผู้ชนะ":"ยังไม่มีผู้บันทึก"}</span>`}</div>
     <ul>${list.map(e=>`<li${w&&e.name===w.name&&e.yds===w.yds?' style="font-weight:700"':""}><span>${esc(e.name)}</span><span>${hasYds(e)?`<b>${esc(e.yds)}</b> หลา`:`<span class="meta">ไม่ระบุระยะ</span>`} ${S.canWrite?`<button class="x" data-dw="${k}" data-i="${e.i}" title="เลือกเป็นผู้ชนะ" style="opacity:${e.win?1:.35}">🏆</button><button class="x" data-dn="${k}" data-i="${e.i}">×</button>`:""}</span></li>`).join("")}</ul>
     ${S.canWrite?`<div class="add"><select data-nn="${k}" style="flex:1;min-width:0"><option value="">เลือกผู้เล่น…</option>${S.roster.teams.map(t=>{const mm=S.roster.players.filter(p=>String(p.team)===String(t.id));return mm.length?`<optgroup label="${esc(t.name)}">${mm.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("")}</optgroup>`:"";}).join("")}</select><input type="number" inputmode="decimal" step="0.1" placeholder="หลา (ถ้ามี)" style="width:104px" data-ny="${k}"><button class="btn sm" data-na="${k}">+</button></div>`:""}</div>`;}).join("")}</div>
@@ -812,6 +815,9 @@ function prize(k){const p=((S.config.prizes||{})[k])||{};return p.item||p.value|
 function prizeBox(k){const p=prize(k);if(!p)return "";return `<div class="prizebox">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:"<span style='font-size:28px'>🎁</span>"}<div><div class="nm">🎁 ${esc(p.item||"")}</div><div class="meta">${p.value?esc(p.value):""}${p.by?` · มอบโดย ${esc(p.by)}`:""}</div></div></div>`;}
 const hasYds=x=>x&&x.yds!==""&&x.yds!=null&&!isNaN(+x.yds);
 function compWinner(k,asc){const e=S.ntp[k]||[];const m=e.find(x=>x.win);if(m)return m;const v=e.filter(hasYds);if(v.length)return v.reduce((a,b)=>asc?(+b.yds<+a.yds?b:a):(+b.yds>+a.yds?b:a));return e.length===1?e[0]:null;}
+function ydsHidden(k){return !!((S.config.hideYds||{})[k]);}
+function ydsOnK(k,w){return hasYds(w)&&!ydsHidden(k);}
+function ydsOn(s){return ydsOnK(s.kind==="l"?"ld"+s.h:String(s.h),s.w);}
 const ydsTxt=w=>hasYds(w)?`${esc(w.yds)} หลา`:"ไม่ระบุระยะ";
 function ldWinner(h){return compWinner("ld"+h,false);}
 function ntpWinner(h){return compWinner(String(h),true);}
@@ -1005,7 +1011,7 @@ function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.cl
 // ---------- events ----------
 $("nav").onclick=e=>{const b=e.target.closest("button");if(b)show(b.dataset.v);};
 $("resTabs").onclick=e=>{const b=e.target.closest("[data-r]");if(b){resTab=b.dataset.r;renderResults();}};
-$("resBody").addEventListener("change",e=>{if(e.target.id==="bdSel"){bdPid=e.target.value;renderResults();}});
+$("resBody").addEventListener("change",e=>{if(e.target.dataset&&e.target.dataset.hy){const k=e.target.dataset.hy;S.config={...S.config,hideYds:{...(S.config.hideYds||{}),[k]:e.target.checked}};saveConfig();toast(e.target.checked?"ซ่อนระยะใน PR แล้ว":"แสดงระยะใน PR แล้ว");return;}if(e.target.id==="bdSel"){bdPid=e.target.value;renderResults();}});
 $("resBody").addEventListener("click",e=>{
   const bdr=e.target.closest("[data-bd]"); if(bdr){bdPid=bdr.dataset.bd;resTab="R";renderResults();setTimeout(()=>{const x=$("bdSel");x&&x.scrollIntoView({behavior:"smooth",block:"start"});},50);return;}
   const a=e.target.closest("[data-na]"); if(a){const h=a.dataset.na;const n=document.querySelector(`[data-nn="${h}"]`),y=document.querySelector(`[data-ny="${h}"]`);
@@ -1133,7 +1139,7 @@ function slideModel(s){
   if(s.kind==="t"&&s.x){Object.assign(m,{pending:false,name:"ก๊วน "+grpLabel(s.x.t),grid:s.x.mem.slice(0,4).map(r=>photoSrc(r.p)).filter(Boolean)});
     m.mem=[...s.x.mem].sort(cmp).map(r=>({n:cleanName(r.p.name),v:r.done?r.net:"–",d:r.done?`${r.gross} − ${r.hc}`:"",c:s.x.counted.includes(r)}));m.total=s.x.total;m.cnt=s.x.counted.length;}
   if((s.kind==="n"||s.kind==="l")&&s.w){const p=s.p;Object.assign(m,{pending:false,name:cleanName(s.w.name),sub:p&&p.title||"",org:p&&orgOf(p),photo:p&&photoSrc(p)});
-    m.nums=s.kind==="n"?[{v:hasYds(s.w)?s.w.yds:"—",l:"หลา ห่างธง",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}]:[{v:hasYds(s.w)?s.w.yds:"—",l:"หลา ระยะไดรฟ์",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}];}
+    m.nums=s.kind==="n"?[{v:ydsOn(s)?s.w.yds:"—",l:"หลา ห่างธง",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}]:[{v:ydsOn(s)?s.w.yds:"—",l:"หลา ระยะไดรฟ์",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}];}
   const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const pz=prize(k);
   m.prize=pz&&!((s.kind==="t")&&s.rank>0)?{...pz,img:PRIZEIMG[k]}:null;
   m.big=s.kind==="n"||s.kind==="l"?String(s.h):String((s.rank||0)+1);
@@ -1216,7 +1222,7 @@ function portraitHTML(s){
   let card="";
   if(s.kind==="p"&&s.r)card=bcScorecard(s.r);
   if(s.kind==="t"&&s.x)card=bcTeam(s.x);
-  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${!hasYds(s.w)?(s.kind==="n"?"ใกล้ธงที่สุด":"ไกลที่สุด"):s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${(hasYds(s.w)?esc(s.w.yds):"🏆")}</b></div></div></div>`;
+  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${!ydsOn(s)?(s.kind==="n"?"ใกล้ธงที่สุด":"ไกลที่สุด"):s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${(ydsOn(s)?esc(s.w.yds):"🏆")}</b></div></div></div>`;
   const foot="";
   return `<div class="sl th thD thP"><div class="bgp">${bg}<div class="dim"></div></div>
     <div class="brand2"><span class="lw2"><img src="img/logo_p1d1.png" alt=""></span><span class="bt"><b>P1D1 Golf Day 2026</b><small>At ${esc(c.course||"")}</small></span></div>
@@ -1234,7 +1240,7 @@ function broadcastHTML(s){
     else if(m.photo)bg+=`<div class="pc"><img src="${m.photo}" alt=""></div>`;}
   if(s.kind==="p"&&s.r)card=bcScorecard(s.r);
   if(s.kind==="t"&&s.x)card=bcTeam(s.x);
-  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${!hasYds(s.w)?(s.kind==="n"?"ใกล้ธงที่สุด":"ไกลที่สุด"):s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${(hasYds(s.w)?esc(s.w.yds):"🏆")}</b></div></div></div>`;
+  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${!ydsOn(s)?(s.kind==="n"?"ใกล้ธงที่สุด":"ไกลที่สุด"):s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${(ydsOn(s)?esc(s.w.yds):"🏆")}</b></div></div></div>`;
   const name=m.name;
   const foot="";
   return `<div class="sl th thD"><div class="bgp">${bg}</div>
@@ -1288,7 +1294,7 @@ function slideHTML(s){
   if((s.kind==="n"||s.kind==="l")&&s.w){const p=s.p;name=cleanName(s.w.name);const o=p&&orgOf(p);
     if(o)org=`<div class="org"><img src="img/logo_${o}.png" alt="${o}"></div>`;
     photo=up?`<div class="photo">${img(up)}</div>`:(p&&photoSrc(p)?`<div class="photo circ">${img(photoSrc(p))}</div>`:"");
-    stats=`<div class="stats"><div class="hl"><b>${(hasYds(s.w)?esc(s.w.yds):"🏆")}</b><span>${!hasYds(s.w)?"ผู้ชนะ":s.kind==="l"?"หลา ระยะไดรฟ์":"หลา จากหลุม"}</span></div><div><b>${S.config.pars[s.h-1]}</b><span>พาร์</span></div></div>`;}
+    stats=`<div class="stats"><div class="hl"><b>${(ydsOn(s)?esc(s.w.yds):"🏆")}</b><span>${!ydsOn(s)?"ผู้ชนะ":s.kind==="l"?"หลา ระยะไดรฟ์":"หลา จากหลุม"}</span></div><div><b>${S.config.pars[s.h-1]}</b><span>พาร์</span></div></div>`;}
   if(!photo)photo=`<div class="photo none">📷</div>`;
   return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
    <div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div></div></div>
@@ -1616,7 +1622,7 @@ function mcScript(){
     p(`เริ่มกันที่รางวัลที่วัดกันด้วยพละกำลังล้วน ๆ <b>Longest Drive</b>${pz("ld").item?` ของรางวัลคือ ${esc(pz("ld").item)}${pz("ld").value?` มูลค่า ${esc(pz("ld").value)}`:""}`:""}${pz("ld").by?` ได้รับการสนับสนุนจาก ${esc(pz("ld").by)}`:""}`);
     d.ld.forEach(x=>{const pl=x.w&&pByName(x.w.name);cue(`ขึ้นสไลด์ผู้ชนะ Longest Drive หลุม ${x.h}`);
       p(`หลุม ${x.h} พาร์ ${c.pars[x.h-1]} ระยะจากทีขาว ${YARDS.W[x.h-1]} หลา ลูกต้องหยุดบนแฟร์เวย์เท่านั้น`);
-      p(x.w?(hasYds(x.w)?`ลูกพุ่งกลางแฟร์เวย์ ไดรฟ์ที่ไกลที่สุดของวันนี้ ออกไปถึง <span class="hl">${esc(x.w.yds)} หลา</span>! <span class="pause">(เว้นจังหวะ)</span> เจ้าของลูกนั้นคือ ${who(pl||{name:x.w.name})}`:`ไดรฟ์ที่ไกลที่สุดของหลุมนี้ <span class="pause">(เว้นจังหวะ)</span> เป็นของ ${who(pl||{name:x.w.name})}`):`<b>[ยังไม่มีผลบันทึก]</b>`);
+      p(x.w?(ydsOnK("ld"+x.h,x.w)?`ลูกพุ่งกลางแฟร์เวย์ ไดรฟ์ที่ไกลที่สุดของวันนี้ ออกไปถึง <span class="hl">${esc(x.w.yds)} หลา</span>! <span class="pause">(เว้นจังหวะ)</span> เจ้าของลูกนั้นคือ ${who(pl||{name:x.w.name})}`:`ไดรฟ์ที่ไกลที่สุดของหลุมนี้ <span class="pause">(เว้นจังหวะ)</span> เป็นของ ${who(pl||{name:x.w.name})}`):`<b>[ยังไม่มีผลบันทึก]</b>`);
       if(pl)p(`ในรอบนี้ ${card(pl)}`);
       if(x.w)p(`ขอเชิญ${pl?esc(cleanName(pl.name)):""}ขึ้นรับรางวัล${pz("ld").by?`จาก ${esc(pz("ld").by)} `:""}${K} ขอเสียงปรบมือ${K}`);});}
   // 4. Nearest to pin
@@ -1625,7 +1631,7 @@ function mcScript(){
     const lead=["หลุมแรกของรางวัลนี้","ไปต่อที่","และหลุมสุดท้ายของ Nearest to Pin"];
     d.ntp.forEach((x,i)=>{const pl=x.w&&pByName(x.w.name);cue(`ขึ้นสไลด์ผู้ชนะ Nearest to Pin หลุม ${x.h}`);
       p(`${i===0?lead[0]:i===d.ntp.length-1?lead[2]:lead[1]} หลุม ${x.h} พาร์ ${c.pars[x.h-1]} ระยะ ${YARDS.W[x.h-1]} หลา`);
-      p(x.w?(hasYds(x.w)?`ทีช็อตเดียววางนิ่งข้างธง ห่างเพียง <span class="hl">${esc(x.w.yds)} หลา</span> ได้แก่ ${who(pl||{name:x.w.name})}`:`ทีช็อตที่ใกล้ธงที่สุดของหลุมนี้ ได้แก่ ${who(pl||{name:x.w.name})}`):`<b>[ยังไม่มีผลบันทึก]</b>`);
+      p(x.w?(ydsOnK(String(x.h),x.w)?`ทีช็อตเดียววางนิ่งข้างธง ห่างเพียง <span class="hl">${esc(x.w.yds)} หลา</span> ได้แก่ ${who(pl||{name:x.w.name})}`:`ทีช็อตที่ใกล้ธงที่สุดของหลุมนี้ ได้แก่ ${who(pl||{name:x.w.name})}`):`<b>[ยังไม่มีผลบันทึก]</b>`);
       if(pl)p(`ผลงานทั้งวัน ${card(pl)}`);
       if(x.w)p(`ขอเชิญขึ้นรับรางวัล${K}`);});}
   // 5. individual (optional)
