@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>P1D1 Golf Day 2026 – ผลการแข่งขัน</title>
 <script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,6 +28,20 @@ header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;pa
 nav{display:flex;gap:4px;margin-top:14px;overflow-x:auto}
 nav button{background:transparent;border:0;color:#ffffffb0;padding:10px 14px;border-radius:10px 10px 0 0;font-weight:600;white-space:nowrap;cursor:pointer}
 nav button.on{background:var(--bg);color:var(--navy)}
+nav button i{font-style:normal;margin-right:6px}
+@media (max-width:700px){
+  header{padding-bottom:14px}
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+      background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 16px #0001;padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
+  nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:10px;color:var(--mute);font-size:11px}
+  nav button i{font-size:20px;margin:0;line-height:1.1}
+  nav button.on{background:#eef1f8;color:var(--navy)}
+  main{padding-bottom:96px}
+  .logos{gap:8px;padding:6px 10px;flex-wrap:nowrap}
+  .logos img{height:15px}
+  .logos img[alt=PTTEP],.logos img[alt=TOP]{height:22px}
+  .toast{bottom:84px}
+}
 main{max-width:980px;margin:0 auto;padding:16px 12px 60px}
 .banner{font-size:13px;padding:8px 12px;border-radius:10px;margin-bottom:12px;background:#fff6dd;color:#7a5b00;border:1px solid #f1e0a6}
 .banner.err{background:#fdecee;color:#8a1022;border-color:#f3c2ca}
@@ -192,11 +206,11 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
   </div>
   <div class="logos"><img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.png" alt="PTTEP"><img src="img/logo_GC.png" alt="GC"><img src="img/logo_TOP.png" alt="TOP"><img src="img/logo_IRPC.png" alt="IRPC"><img src="img/logo_OR.png" alt="OR"></div>
   <nav id="nav">
-    <button data-v="results" class="on">🏆 ประกาศผล</button>
-    <button data-v="score">✍️ กรอกสกอร์</button>
-    <button data-v="pair">📋 Pairing</button>
-    <button data-v="pr">🖼️ สไลด์ PR</button>
-    <button data-v="setup">⚙️ ผู้เล่น / ตั้งค่า</button>
+    <button data-v="results" class="on"><i>🏆</i><span>ประกาศผล</span></button>
+    <button data-v="score"><i>✍️</i><span>กรอกสกอร์</span></button>
+    <button data-v="pair"><i>📋</i><span>Pairing</span></button>
+    <button data-v="pr"><i>🖼️</i><span>สไลด์ PR</span></button>
+    <button data-v="setup"><i>⚙️</i><span>ตั้งค่า</span></button>
   </nav>
 </div></header>
 
