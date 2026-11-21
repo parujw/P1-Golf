@@ -6,7 +6,7 @@
 <title>P1D1 Golf Day 2026 – ผลการแข่งขัน</title>
 <script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&family=Trirong:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#1b2a6b; --navy2:#26398f; --red:#c8102e; --maroon:#8e3b46;
@@ -192,6 +192,8 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .sl .logos2 img[alt=PTTEP],.sl .logos2 img[alt=TOP]{height:56px}
 .pg{width:1600px;height:900px;position:relative;overflow:hidden;font-family:"Prompt",sans-serif;color:#0b1440;
   background:radial-gradient(900px 500px at 70% 20%,#e9f3d8 0%,#a9c97a 35%,#4f7f34 70%,#23461c 100%)}
+.pg .pgbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pg .pgsh{position:absolute;inset:0;background:linear-gradient(180deg,#0c241470 0%,#0c241455 45%,#0c2414a8 100%)}
 .pg .hdr{position:absolute;left:0;top:0;right:0;height:110px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
 .pg .hdr .t{background:#ffffffe6;border-radius:0 0 40px 0;position:absolute;left:0;top:0;height:110px;width:860px;display:flex;align-items:center;padding-left:40px;gap:18px}
 .pg .hdr .t .p1{font-size:58px;font-weight:800;font-style:italic;color:#c8102e}
@@ -210,6 +212,99 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .pg .m .ph{display:grid;place-items:center;font-size:34px;font-weight:700;color:#1b2a6b}
 .pg .m .tx{font-size:16px;word-break:keep-all;font-weight:700;color:#fff;text-shadow:0 1px 3px #000a;line-height:1.25}
 .pg .m .tx small{display:block;font-size:13px;font-weight:600;opacity:.95}
+
+/* ===== PR themes ===== */
+.sl.th .stripe,.sl.th .stripe2{display:none}
+.th .lgbar{position:absolute;display:flex;align-items:center;justify-content:center;gap:40px}
+.th .lgbar img{height:34px}.th .lgbar img[alt=PTTEP],.th .lgbar img[alt=TOP]{height:46px}
+.th .ph{position:absolute;overflow:hidden}
+.th .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.th .ph.empty{display:grid;place-items:center;font-size:20px}
+.th .grid4{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:6px}
+.th .grid4 img{width:100%;height:100%;object-fit:cover}
+/* A · Prestige */
+.sl.thA{background:linear-gradient(160deg,#0E2557 0%,#0A1A3F 55%,#071331 100%);color:#F3EEE2;font-family:"IBM Plex Sans Thai",sans-serif}
+.thA .frame{position:absolute;inset:30px 30px 118px 30px;border:1.5px solid #C8A96A80;border-radius:6px}
+.thA .shd{position:absolute;left:96px;top:72px;display:flex;align-items:center;gap:18px;font-family:"Trirong",serif;font-size:24px;color:#F3EEE2c0}
+.thA .shd .lw{background:#fff;border-radius:12px;padding:6px 9px;display:flex}.thA .shd .lw img{height:46px}
+.thA .tx{position:absolute;left:96px;top:190px;width:780px}
+.thA .kc{font-size:24px;color:#C8A96A;letter-spacing:.5px}
+.thA .ttl{font-family:"Trirong",serif;font-weight:600;color:#E3CB92;line-height:1.25;margin-top:8px;white-space:nowrap}
+.thA .rule{width:120px;height:2px;background:#C8A96A;margin:26px 0 22px}
+.thA .nm{font-family:"Trirong",serif;font-weight:700;line-height:1.12;color:#FFFFFF;white-space:nowrap}
+.thA .sb{display:flex;align-items:center;gap:14px;font-size:24px;color:#F3EEE2b0;margin-top:12px}
+.thA .sb img{height:36px;background:#fff;border-radius:8px;padding:4px 8px}
+.thA .nums{display:flex;gap:44px;margin-top:34px}
+.thA .nums div{font-size:20px;color:#F3EEE2a0}
+.thA .nums b{display:block;font-family:"Trirong",serif;font-weight:600;font-size:66px;line-height:1.05;color:#F3EEE2}
+.thA .nums .k b{color:#E3CB92}
+.thA .mem{margin-top:22px;border-top:1px solid #C8A96A60;width:700px}
+.thA .mem div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #C8A96A30;font-size:24px;color:#F3EEE2a8}
+.thA .mem div.c{color:#FFFFFF}.thA .mem div b{font-family:"Trirong",serif;font-weight:600}
+.thA .mem div.tot{border-bottom:0;color:#E3CB92;font-size:26px}
+.thA .ph{right:110px;top:110px;width:520px;height:620px;border-radius:260px 260px 10px 10px;box-shadow:0 0 0 2px #C8A96A,0 0 0 14px #0A1A3F,0 0 0 15.5px #C8A96A80}
+.thA .ph.wide{right:80px;top:140px;width:640px;height:560px;border-radius:10px}
+.thA .ph.empty{background:#ffffff0d;color:#C8A96A}
+.thA .pz{position:absolute;left:96px;bottom:150px;display:flex;align-items:center;gap:18px;font-size:22px;color:#F3EEE2c8}
+.thA .pz img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1.5px solid #C8A96A}
+.thA .pz b{display:block;font-weight:500;color:#E3CB92;font-size:24px}
+.thA .lgbar{left:0;right:0;bottom:0;height:88px;background:#F7F4EC}
+/* B · Corporate */
+.sl.thB{background:#FFFFFF;color:#0B1F3A;font-family:"IBM Plex Sans Thai",sans-serif}
+.thB .bar{position:absolute;left:0;right:0;top:0;height:12px;background:linear-gradient(90deg,#E21E26 0 18%,#0057A8 18% 100%)}
+.thB .ph{left:0;top:12px;width:700px;height:800px;clip-path:polygon(0 0,100% 0,82% 100%,0 100%)}
+.thB .ph.empty{background:#EEF3FA;color:#8AA0BF}
+.thB .grid4{gap:4px;background:#fff}
+.thB .tx{position:absolute;left:760px;right:80px;top:110px}
+.thB .shd{position:absolute;right:80px;top:44px;display:flex;align-items:center;gap:14px;font-size:20px;color:#5B6475}
+.thB .shd img{height:52px}
+.thB .kc{font-size:24px;font-weight:500;color:#5B6475}
+.thB .ttl{font-weight:700;color:#0057A8;margin-top:6px;white-space:nowrap;line-height:1.3}
+.thB .nm{font-weight:700;line-height:1.1;margin-top:26px;color:#0B1F3A;white-space:nowrap}
+.thB .sb{display:flex;align-items:center;gap:14px;font-size:24px;color:#5B6475;margin-top:14px}
+.thB .sb img{height:38px}
+.thB .nums{display:flex;margin-top:40px;border-top:2px solid #0B1F3A}
+.thB .nums div{padding:14px 40px 0 0;margin-right:40px;border-right:1px solid #D5DCE6;font-size:20px;color:#5B6475}
+.thB .nums div:last-child{border-right:0}
+.thB .nums b{display:block;font-size:64px;font-weight:700;line-height:1.1;color:#0B1F3A}
+.thB .nums .k b{color:#0057A8}
+.thB .mem{margin-top:20px;width:100%}
+.thB .mem div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #E3E8F0;font-size:23px;color:#8A93A5}
+.thB .mem div.c{color:#0B1F3A}.thB .mem div.tot{color:#0057A8;font-weight:700;font-size:26px;border-bottom:0}
+.thB .pz{position:absolute;left:760px;right:80px;bottom:110px;display:flex;align-items:center;gap:18px;background:#F2F6FB;border-left:6px solid #E21E26;padding:12px 20px;font-size:21px;color:#5B6475}
+.thB .pz img{width:60px;height:60px;object-fit:cover;border-radius:6px}
+.thB .pz b{display:block;font-size:24px;color:#0B1F3A;font-weight:600}
+.thB .lgbar{left:640px;right:0;bottom:0;height:86px;justify-content:flex-end;padding-right:70px;gap:34px}
+/* C · Night Fairway */
+.sl.thC{background:radial-gradient(1100px 800px at 80% 40%,#14533C 0%,#0B3426 45%,#061E16 100%);color:#fff;font-family:"Bai Jamjuree",sans-serif}
+.thC .big{position:absolute;right:-30px;top:-120px;font-size:900px;font-weight:700;line-height:1;color:#ffffff0b;letter-spacing:-40px}
+.thC .shd{position:absolute;left:90px;top:62px;display:flex;align-items:center;gap:16px;font-size:22px;color:#ffffffb0}
+.thC .shd .lw{background:#fff;border-radius:50%;width:74px;height:74px;display:grid;place-items:center}.thC .shd .lw img{height:50px}
+.thC .tx{position:absolute;left:90px;top:200px;width:820px}
+.thC .kc{display:inline-block;font-size:22px;font-weight:600;color:#06231A;background:#9FE3BE;border-radius:999px;padding:6px 20px}
+.thC .ttl{font-weight:600;color:#E2B94B;margin-top:20px;white-space:nowrap;line-height:1.3}
+.thC .nm{font-weight:700;line-height:1.08;margin-top:8px;white-space:nowrap}
+.thC .sb{display:flex;align-items:center;gap:14px;font-size:24px;color:#ffffffb8;margin-top:14px}
+.thC .sb img{height:38px;background:#fff;border-radius:999px;padding:4px 12px}
+.thC .nums{display:flex;gap:14px;margin-top:36px}
+.thC .nums div{background:#ffffff12;border:1px solid #ffffff26;border-radius:16px;padding:12px 26px;font-size:19px;color:#ffffffb0;min-width:140px}
+.thC .nums b{display:block;font-size:58px;font-weight:700;line-height:1.1;color:#fff}
+.thC .nums .k{background:#E2B94B;border-color:#E2B94B;color:#06231A}.thC .nums .k b{color:#06231A}
+.thC .mem{margin-top:22px;width:720px;display:grid;gap:6px}
+.thC .mem div{display:flex;justify-content:space-between;padding:8px 18px;border-radius:10px;background:#ffffff0d;font-size:23px;color:#ffffff90}
+.thC .mem div.c{background:#ffffff1c;color:#fff}.thC .mem div.tot{background:#E2B94B;color:#06231A;font-weight:700}
+.thC .ph{right:120px;top:170px;width:520px;height:520px;border-radius:50%;box-shadow:0 0 0 10px #ffffff,0 30px 80px #000a}
+.thC .ph.wide{right:70px;top:170px;width:680px;height:500px;border-radius:26px}
+.thC .ph.empty{background:#ffffff10;color:#9FE3BE}
+.thC .pz{position:absolute;left:90px;bottom:118px;display:flex;align-items:center;gap:16px;font-size:21px;color:#ffffffc0}
+.thC .pz img{width:58px;height:58px;border-radius:14px;object-fit:cover;background:#fff}
+.thC .pz b{display:block;color:#9FE3BE;font-size:23px;font-weight:600}
+.thC .lgbar{left:50%;transform:translateX(-50%);bottom:22px;height:66px;background:#fff;border-radius:999px;padding:0 44px;gap:34px}
+.thC .lgbar img{height:30px}.thC .lgbar img[alt=PTTEP],.thC .lgbar img[alt=TOP]{height:40px}
+
+.th .shd{max-width:none;margin:0}
+.th .pz.inl{position:static;margin-top:16px}
+.thA .mem div,.thB .mem div{font-size:22px;padding:7px 0}
 .prcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px}
 .prcard .ctl{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
 .prcard .ctl input[type=text]{flex:1;min-width:160px}
@@ -290,6 +385,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
       <div class="meta" style="margin-bottom:10px">สร้างจากรายชื่อ / ก๊วน / เวลา ในแท็บตั้งค่า · แก้รูปและตำแหน่งผู้บริหารได้ที่ ⚙️ ผู้เล่น / ตั้งค่า</div>
       <div class="slwrap" id="pairSlide"></div>
       <div class="row" style="margin-top:10px"><button class="btn" id="pairPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="pairDl">⬇️ ดาวน์โหลด PNG</button><button class="btn sec" id="pairPptx">📊 PowerPoint</button><button class="btn sec" id="pairXls">📗 Excel Pairing</button></div>
+      <div class="row" style="margin-top:8px" id="pairBgCtl"></div>
     </div>
     <div id="pairList"></div>
   </section>
@@ -299,6 +395,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
     <div class="card">
       <h2>🖼️ สไลด์ประกาศรางวัล</h2>
       <div class="meta" style="margin-bottom:10px">สไลด์ 16:9 สร้างจากผลจริงอัตโนมัติ · ทีมงานกด 📷 อัปโหลดรูปตอนรับรางวัลได้ (ถ้าไม่อัปโหลด จะใช้รูปโปรไฟล์) · แก้ชื่อรางวัลได้ในช่องข้อความ</div>
+      <div class="sub" id="prThemes" style="margin-bottom:10px"></div>
       <div class="row"><button class="btn" id="prPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="prPlayRev">▶ นำเสนอ (ลุ้นจากอันดับ 3 → 1)</button><button class="btn sec" id="prPptx">📊 ดาวน์โหลด PowerPoint</button></div>
       <div class="meta" style="margin-top:8px">PowerPoint: สไลด์ Pairing + รางวัลทั้งหมด เรียงตามลำดับประกาศ (อันดับ 3 → 1) · ใส่รูปรับรางวัลก่อนกดดาวน์โหลด</div>
     </div>
@@ -382,7 +479,7 @@ const DEFAULT_CONFIG = {
   flightA:"Flight A", flightB:"Flight B",
   pars:[4,5,4,3,4,4,5,3,4, 4,3,5,3,5,4,3,5,4], course:"Rajpruek Club",
   ntpHoles:[4,11,16], ldHoles:[7,14,17], hcCap:null, teamCount:8, teamBest:3,
-  indOn:true, indPlaces:3, teamPlaces:1, cv:2,
+  indOn:true, indPlaces:3, teamPlaces:1, cv:2, prTheme:"a",
   prizes:{
     ind:{item:"",value:"",by:""},
     team:{item:"กระเป๋ากอล์ฟ Titleist (ทีมละ 4 คน คนละ 1 ใบ)",value:"18,432 บาท (4,608 × 4)",by:"ปธบ./กผญ."},
@@ -791,7 +888,64 @@ const ORGNAME={PTT:"PTT",PTTEP:"PTTEP",GC:"GC",TOP:"Thaioil",IRPC:"IRPC",OR:"OR"
 function fitFont(t,width,max,min){const n=String(t||"").replace(/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/g,"").length||1;return Math.max(min,Math.min(max,Math.floor(width/(n*0.56))));}
 function slidePrize(s){const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const p=prize(k);if(!p||(s.kind==="p"||s.kind==="t")&&s.rank>0&&k!=="ind")return "";
   return `<div class="prize">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:""}<div><b>🎁 ${esc(p.item||"")}</b><small>${p.value?esc(p.value):""}${p.by?` · มอบโดย ${esc(p.by)}`:""}</small></div></div>`;}
+
+// ---------- PR themes ----------
+const THEMES=[["a","แบบ 1 · Prestige กรมท่า-ทอง"],["b","แบบ 2 · Corporate ขาว-ฟ้า"],["c","แบบ 3 · Night Fairway"],["o","แบบเดิม"]];
+function slideModel(s){
+  const pr=S.pr[s.id]||{},c=S.config;
+  const m={title:pr.title||s.def,up:pr.img||"",kind:s.kind,rank:s.rank,hole:s.h,name:"รอประกาศผล",sub:"",org:null,photo:null,grid:[],mem:null,nums:[],pending:true,
+    cat:{p:"ประเภทเดี่ยว · "+((s.cat||"").split("· ")[1]||""),t:"ประเภททีม",l:"ไดรฟ์ไกลที่สุด",n:"ใกล้ธงที่สุด"}[s.kind]};
+  if(s.kind==="p"&&s.r){const p=s.r.p;Object.assign(m,{pending:false,name:cleanName(p.name),sub:p.title||"",org:orgOf(p),photo:photoSrc(p)});
+    m.nums=[{v:s.r.net,l:"สกอร์สุทธิ",k:1},{v:s.r.gross,l:"Gross"},{v:s.r.hc,l:"แฮนดิแคป"}];}
+  if(s.kind==="t"&&s.x){Object.assign(m,{pending:false,name:"ก๊วน "+grpLabel(s.x.t),grid:s.x.mem.slice(0,4).map(r=>photoSrc(r.p)).filter(Boolean)});
+    m.mem=[...s.x.mem].sort(cmp).map(r=>({n:cleanName(r.p.name),v:r.done?r.net:"–",d:r.done?`${r.gross} − ${r.hc}`:"",c:s.x.counted.includes(r)}));m.total=s.x.total;m.cnt=s.x.counted.length;}
+  if((s.kind==="n"||s.kind==="l")&&s.w){const p=s.p;Object.assign(m,{pending:false,name:cleanName(s.w.name),sub:p&&p.title||"",org:p&&orgOf(p),photo:p&&photoSrc(p)});
+    m.nums=s.kind==="n"?[{v:s.w.yds,l:"หลา ห่างธง",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}]:[{v:s.w.yds,l:"หลา ระยะไดรฟ์",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}];}
+  const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const pz=prize(k);
+  m.prize=pz&&!((s.kind==="t")&&s.rank>0)?{...pz,img:PRIZEIMG[k]}:null;
+  m.big=s.kind==="n"||s.kind==="l"?String(s.h):String((s.rank||0)+1);
+  return m;
+}
+function thPhoto(m,cls){
+  if(m.up)return `<div class="ph ${m.kind==="t"?"wide":""}"><img src="${m.up}" alt=""></div>`;
+  if(m.kind==="t"&&m.grid.length)return `<div class="ph ${cls||""} grid4">${m.grid.map(u=>`<img src="${u}" alt="">`).join("")}</div>`;
+  if(m.photo)return `<div class="ph"><img src="${m.photo}" alt=""></div>`;
+  return `<div class="ph empty">รูปผู้รับรางวัล</div>`;
+}
+function thNums(m){
+  if(m.mem)return `<div class="mem">${m.mem.map(x=>`<div class="${x.c?"c":""}"><span>${esc(x.n)}</span><span>${x.d?`<small style="opacity:.6;margin-right:18px">${x.d}</small>`:""}<b>${x.v}</b></span></div>`).join("")}<div class="tot"><span>สกอร์สุทธิรวม ${m.cnt} คน</span><b>${m.total}</b></div></div>`;
+  if(!m.nums.length)return "";
+  return `<div class="nums">${m.nums.map(n=>`<div class="${n.k?"k":""}"><b>${esc(n.v)}</b>${esc(n.l)}</div>`).join("")}</div>`;
+}
+function thPrize(m,inl){return m.prize?`<div class="pz${inl?" inl":""}">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}<div><b>${esc(m.prize.item||"")}</b>${[m.prize.value,m.prize.by?"มอบโดย "+m.prize.by:""].filter(Boolean).map(esc).join(" · ")}</div></div>`:"";}
+function thSub(m){const o=m.org;return (o||m.sub)?`<div class="sb">${o?`<img src="img/logo_${o}.png" alt="${o}">`:""}<span>${esc(m.sub||"")}</span></div>`:"";}
+function slideThemeHTML(s,th){
+  const m=slideModel(s),c=S.config,course=esc(c.course||"");
+  const team=m.kind==="t";
+  const nmSize=(w,max,min)=>fitFont(m.name,w,max,min);
+  if(th==="a")return `<div class="sl th thA"><div class="frame"></div>
+    <div class="shd"><span class="lw"><img src="img/logo_p1d1.png" alt=""></span>P1D1 Golf Day 2026 · ${course}</div>
+    <div class="tx"${team?' style="top:170px"':""}><div class="kc">${esc(m.cat)}</div>
+      <div class="ttl" style="font-size:${fitFont(m.title,780,52,30)}px">${esc(m.title)}</div><div class="rule"${team?' style="margin:18px 0 14px"':""}></div>
+      <div class="nm" style="font-size:${nmSize(780,team?84:100,54)}px">${esc(m.name)}</div>${thSub(m)}${thNums(m)}${team?thPrize(m,1):""}</div>
+    ${thPhoto(m)}${team?"":thPrize(m)}<div class="lgbar">${LOGOSTRIP}</div></div>`;
+  if(th==="b")return `<div class="sl th thB"><div class="bar"></div>${thPhoto(m)}
+    <div class="shd">${course}<img src="img/logo_p1d1.png" alt=""></div>
+    <div class="tx"${team?' style="top:120px"':""}><div class="kc">P1D1 Golf Day 2026 · ${esc(m.cat)}</div>
+      <div class="ttl" style="font-size:${fitFont(m.title,760,50,30)}px">${esc(m.title)}</div>
+      <div class="nm" style="font-size:${nmSize(760,team?80:96,52)}px${team?";margin-top:14px":""}">${esc(m.name)}</div>${thSub(m)}${thNums(m)}${team?thPrize(m,1):""}</div>
+    ${team?"":thPrize(m)}<div class="lgbar">${LOGOSTRIP}</div></div>`;
+  return `<div class="sl th thC"><div class="big">${esc(m.big)}</div>
+    <div class="shd"><span class="lw"><img src="img/logo_p1d1.png" alt=""></span><div><b style="color:#fff;font-size:26px">P1D1 Golf Day 2026</b><br>${course}</div></div>
+    ${thPhoto(m)}
+    <div class="tx"${team?' style="top:170px"':""}><div class="kc">${esc(m.cat)}</div>
+      <div class="ttl" style="font-size:${fitFont(m.title,820,50,30)}px">${esc(m.title)}</div>
+      <div class="nm" style="font-size:${nmSize(820,team?84:104,54)}px">${esc(m.name)}</div>${thSub(m)}${thNums(m)}${team?thPrize(m,1):""}</div>
+    ${team?"":thPrize(m)}<div class="lgbar">${LOGOSTRIP}</div></div>`;
+}
+
 function slideHTML(s){
+  const th=S.config.prTheme||"a";if(th!=="o")return slideThemeHTML(s,th);
   const pr=S.pr[s.id]||{}, title=pr.title||s.def, up=pr.img;
   let photo="",name="รอประกาศผล",org="",stats="",medal="";
   medal=(s.kind==="n"||s.kind==="l")?`<div class="medal mn">หลุม<br>${s.h}</div>`:`<div class="medal m${s.rank+1}">${s.rank+1}</div>`;
@@ -819,6 +973,7 @@ function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=
 window.addEventListener("resize",()=>{fitSlides();if(presIdx!=null)drawPresenter();});
 function renderPR(){
   const L=slideList();
+  $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(S.config.prTheme||"a")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
   $("prList").innerHTML=L.map(s=>{const pr=S.pr[s.id]||{};return `<div class="prcard"><div class="slwrap">${slideHTML(s)}</div>
    <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def)}">
    <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
@@ -834,7 +989,7 @@ $("prList").addEventListener("click",e=>{
 $("prList").addEventListener("change",e=>{const id=e.target.dataset.prt;if(!id)return;const s=slideList().find(x=>x.id===id);const v=e.target.value.trim();S.pr[id]={...(S.pr[id]||{}),title:v===s.def?"":v};savePR(id);renderPR();toast("บันทึกชื่อรางวัลแล้ว");});
 $("prFile").addEventListener("change",async e=>{const f=e.target.files[0];if(!f||!prTarget)return;
   toast("กำลังย่อรูป…");
-  try{const url=await shrinkImage(f);S.pr[prTarget]={...(S.pr[prTarget]||{}),img:url};savePR(prTarget);renderPR();toast("อัปโหลดรูปแล้ว");}
+  try{const url=await shrinkImage(f);S.pr[prTarget]={...(S.pr[prTarget]||{}),img:url};savePR(prTarget);renderPR();if(view==="pair")renderPair();toast("อัปโหลดรูปแล้ว");}
   catch(err){toast("อ่านรูปไม่สำเร็จ");}});
 function shrinkImage(file){return new Promise((ok,no)=>{const fr=new FileReader();fr.onerror=no;fr.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{
   let max=1400,q=.8,out="";for(let k=0;k<6;k++){const sc=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext("2d").drawImage(im,0,0,c.width,c.height);out=c.toDataURL("image/jpeg",q);if(out.length<850000)break;max*=.8;q-=.08;}
@@ -904,6 +1059,7 @@ function drawPresenter(){const el=$("presenter");if(!el)return;const f=presOrder
   const sc=Math.min(innerWidth/1600,innerHeight/900),st=el.querySelector(".stage");st.style.width=1600*sc+"px";st.style.height=900*sc+"px";
   st.innerHTML=f();st.firstElementChild.style.transform=`scale(${sc})`;}
 document.addEventListener("keydown",e=>{if(presIdx==null)return;if(["ArrowRight","PageDown"," ","Enter"].includes(e.key)){e.preventDefault();step(1);}else if(["ArrowLeft","PageUp"].includes(e.key))step(-1);else if(e.key==="Escape")closePresenter();});
+$("prThemes").onclick=e=>{const b=e.target.closest("[data-th]");if(!b)return;S.config={...S.config,prTheme:b.dataset.th};saveConfig();renderPR();toast("เปลี่ยนแบบสไลด์แล้ว");};
 $("prPlay").onclick=()=>openPresenter(false);$("prPlayRev").onclick=()=>openPresenter(true);
 
 // ---------- Pairing ----------
@@ -919,21 +1075,28 @@ function pairingHTML(){
   const side=groupsBySide(), rows=Math.max(4,side.L.length,side.R.length), sc=Math.min(1,4/rows);
   const col=(arr,left)=>`<div class="col" style="left:${left}px;transform:scale(${sc});transform-origin:0 0">${arr.map(g=>`<div class="grp"><div class="pill">${esc(grpLabel(g.t))} TEE OFF ${esc(fmtTime(g.t.time))}</div>
     <div class="mem">${g.mem.slice(0,4).map(p=>{const src=photoSrc(p);return `<div class="m">${src?`<img src="${src}" alt="">`:`<span class="ph">${esc(cleanName(p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ร้อยตำรวจเอก)\s*/,"").slice(0,1))}</span>`}<div class="tx">${esc(p.name)}${p.title?`<small>${esc(p.title)}</small>`:""}</div></div>`;}).join("")}</div></div>`).join("")}</div>`;
-  return `<div class="pg"><div class="hdr"><div class="t"><img src="img/logo_p1d1.png" alt="" style="height:86px"><span class="gd">GOLF DAY <b>2026</b></span></div><div class="lg2">${LOGOSTRIP}</div></div>${col(side.L,30)}${col(side.R,810)}</div>`;
+  const bg=(S.pr["pairing-bg"]||{}).img;
+  return `<div class="pg"><img class="pgbg" src="${bg||"img/course_bg.jpg"}" alt=""><div class="pgsh"></div><div class="hdr"><div class="t"><img src="img/logo_p1d1.png" alt="" style="height:86px"><span class="gd">GOLF DAY <b>2026</b></span></div><div class="lg2">${LOGOSTRIP}</div></div>${col(side.L,30)}${col(side.R,810)}</div>`;
 }
 function renderPair(){
+  const hasBg=!!(S.pr["pairing-bg"]||{}).img;
+  $("pairBgCtl").innerHTML=S.canWrite?`<button class="btn sm sec" id="pairBgUp">🏞️ ${hasBg?"เปลี่ยน":"อัปโหลด"}ภาพพื้นหลังสนาม</button>${hasBg?`<button class="btn sm sec" id="pairBgDel">ใช้ภาพวาดสนามแทน</button>`:""}<span class="meta">แนะนำภาพแนวนอนของสนามราชพฤกษ์</span>`:"";
   const w=$("pairSlide");w.innerHTML=pairingHTML();fitSlides(w.parentElement);
   const side=groupsBySide();
   $("pairList").innerHTML=[...side.L,...side.R].map(g=>`<div class="card"><h2>⛳ ${esc(grpLabel(g.t))} · Tee off ${esc(fmtTime(g.t.time))} <span class="meta">(ออกหลุม ${esc(g.t.start||"-")})</span></h2>${g.mem.map(p=>`<div class="who" style="padding:6px 0">${av(p)}<div><div class="nm">${esc(p.name)}</div><div class="meta">${lg(p)}${esc(p.title||"")}</div></div></div>`).join("")}</div>`).join("");
 }
 $("pairPptx").onclick=e=>downloadPPTX(e.target,{awards:false,file:"P1D1-Pairing.pptx"});
 $("prPptx").onclick=e=>downloadPPTX(e.target);
+$("pairBgCtl").addEventListener("click",e=>{
+  if(e.target.id==="pairBgUp"){prTarget="pairing-bg";$("prFile").value="";$("prFile").click();}
+  if(e.target.id==="pairBgDel"){S.pr["pairing-bg"]={img:"",title:""};savePR("pairing-bg");renderPair();}
+});
 $("pairPlay").onclick=()=>openPresenter("pair");
 $("pairDl").onclick=e=>downloadSlide("pairing",e.target,pairingHTML());
 // executive photo upload
 let phTarget=null;
 $("phFile").addEventListener("change",async e=>{const f=e.target.files[0];if(!f||!phTarget)return;toast("กำลังย่อรูป…");
-  try{const url=await shrinkSquare(f,320);S.photos[phTarget]=url;savePhoto(phTarget);drawRoster();render();toast("อัปเดตรูปแล้ว");}catch(err){toast("อ่านรูปไม่สำเร็จ");}});
+  try{const url=await shrinkSquare(f,560);S.photos[phTarget]=url;savePhoto(phTarget);drawRoster();render();toast("อัปเดตรูปแล้ว");}catch(err){toast("อ่านรูปไม่สำเร็จ");}});
 function shrinkSquare(file,size){return new Promise((ok,no)=>{const fr=new FileReader();fr.onerror=no;fr.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{
   const s0=Math.min(im.width,im.height),c=document.createElement("canvas");c.width=c.height=size;
   c.getContext("2d").drawImage(im,(im.width-s0)/2,Math.max(0,(im.height-s0)/2-s0*0.08),s0,s0,0,0,size,size);ok(c.toDataURL("image/jpeg",.85));};im.src=fr.result;};fr.readAsDataURL(file);});}
