@@ -111,7 +111,6 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
   <div class="brand">
     <div class="logo"><b><span class="p">P</span><span class="d">1</span></b></div>
     <div class="ttl grow"><h1 id="evName">Golf Event</h1><small id="evSub">System 36 · Nearest to Pin</small></div>
-    <button id="authBtn" class="btn sm hidden" style="background:#ffffff22;flex:none">🔑 เข้าสู่ระบบ</button>
   </div>
   <nav id="nav">
     <button data-v="results" class="on">🏆 ประกาศผล</button>
@@ -242,7 +241,7 @@ async function flush(path){
   while(q.next){const d=q.next;q.next=null;
     try{await db.doc(path).set(d);}catch(e){
       if(e&&e.code==="unavailable"){await new Promise(r=>setTimeout(r,800+Math.random()*800));try{await db.doc(path).set(d);continue;}catch(e2){e=e2;}}
-      if(e&&(e.code==="permission-denied"||e.code==="invalid_argument")){setBanner("บัญชีนี้ไม่มีสิทธิ์บันทึก — ติดต่อผู้ดูแลระบบให้เพิ่มอีเมลในรายชื่อผู้จดสกอร์","err");}
+      if(e&&(e.code==="permission-denied"||e.code==="invalid_argument")){setBanner("ฐานข้อมูลไม่อนุญาตให้บันทึก — ตรวจ Firestore Rules","err");}
       else setBanner("บันทึกไม่สำเร็จ: "+(e&&e.message||e),"err");
     }}
   q.busy=false;
@@ -253,7 +252,6 @@ const saveScore=pid=>write("scores/"+pid,{s:S.scores[pid]||[],t:Date.now()});
 const saveNtp=h=>write("ntp/h"+h,{entries:S.ntp[h]||[]});
 
 function loadScript(src){return new Promise((ok,no)=>{const e=document.createElement("script");e.src=src;e.onload=ok;e.onerror=no;document.head.appendChild(e);});}
-let auth=null;
 async function init(){
   render();
   const cfg=window.FIREBASE_CONFIG;
@@ -261,12 +259,10 @@ async function init(){
   try{
     const V="https://www.gstatic.com/firebasejs/10.12.2/";
     await loadScript(V+"firebase-app-compat.js");
-    await Promise.all([loadScript(V+"firebase-firestore-compat.js"),loadScript(V+"firebase-auth-compat.js")]);
-    firebase.initializeApp(cfg); db=firebase.firestore(); auth=firebase.auth();
+    await loadScript(V+"firebase-firestore-compat.js");
+    firebase.initializeApp(cfg); db=firebase.firestore();
   }catch(e){goLocal("โหลด Firebase ไม่สำเร็จ — ใช้โหมดเครื่องเดียวชั่วคราว");return;}
-  S.mode="cloud"; S.canWrite=false; applyPerm(); updateAuthUI();
-  auth.onAuthStateChanged(u=>{S.user=u||null;S.canWrite=!!u;updateAuthUI();applyPerm();render();});
-  auth.getRedirectResult().catch(e=>setBanner("เข้าสู่ระบบไม่สำเร็จ: "+(e.message||e),"err"));
+  S.mode="cloud"; S.canWrite=true; applyPerm();
   const timer=setTimeout(()=>setBanner("กำลังเชื่อมต่อ… (สัญญาณอาจช้า)"),10000);
   let pending=4; const done=()=>{if(--pending===0){clearTimeout(timer);setBanner("🟢 ออนไลน์ — ผลอัปเดตแบบเรียลไทม์","ok");setTimeout(()=>setBanner(null),3000);render();}};
   const once=f=>{let d=false;return x=>{f(x);if(!d){d=true;done();}};};
@@ -275,21 +271,6 @@ async function init(){
   db.doc("event/roster").onSnapshot(once(s=>{if(s.exists){S.roster=JSON.parse(JSON.stringify(s.data()));}render("remote");}),onErr);
   db.collection("scores").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id]=[...(d.data().s||[])]);S.scores=o;render("remote");}),onErr);
   db.collection("ntp").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id.replace(/^h/,"")]=JSON.parse(JSON.stringify(d.data().entries||[])));S.ntp=o;render("remote");}),onErr);
-}
-function updateAuthUI(){
-  const b=$("authBtn"); if(!b) return;
-  if(S.mode!=="cloud"){b.classList.add("hidden");return;}
-  b.classList.remove("hidden");
-  b.textContent=S.user?("ออกจากระบบ ("+(S.user.email||"").split("@")[0]+")"):"🔑 เข้าสู่ระบบผู้จดสกอร์";
-}
-async function authClick(){
-  if(!auth) return;
-  if(S.user){await auth.signOut();toast("ออกจากระบบแล้ว");return;}
-  const p=new firebase.auth.GoogleAuthProvider();
-  try{await auth.signInWithPopup(p);}catch(e){
-    if(e&&(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment"||e.code==="auth/popup-closed-by-user"&&/Line|FBAN|FBAV|Instagram/i.test(navigator.userAgent))) auth.signInWithRedirect(p);
-    else if(e&&e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request") setBanner("เข้าสู่ระบบไม่สำเร็จ: "+(e.message||e),"err");
-  }
 }
 function goLocal(msg){S.mode="local";loadLocal();setBanner(msg);applyPerm();render();}
 
@@ -456,7 +437,6 @@ function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.cl
 }
 
 // ---------- events ----------
-$("authBtn").onclick=authClick;
 $("nav").onclick=e=>{const b=e.target.closest("button");if(b)show(b.dataset.v);};
 $("resTabs").onclick=e=>{const b=e.target.closest("[data-r]");if(b){resTab=b.dataset.r;renderResults();}};
 $("resBody").addEventListener("change",e=>{if(e.target.id==="bdSel"){bdPid=e.target.value;renderResults();}});
