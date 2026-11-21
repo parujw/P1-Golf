@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>P1D1 Golf Day 2026 – ผลการแข่งขัน</title>
 <script src="config.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&family=Trirong:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/fonts.css">
 <style>
 :root{
   --navy:#1b2a6b; --navy2:#26398f; --red:#c8102e; --maroon:#8e3b46;
@@ -14,7 +13,7 @@
   --good:#0f8a4b; --gold:#c99a1b; --silver:#8a94a6; --bronze:#b06a3b;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Prompt",system-ui,sans-serif;font-size:15px}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Anuphan",system-ui,sans-serif;font-size:15px;font-feature-settings:"tnum"}
 button,input,select,textarea{font:inherit;color:inherit}
 header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:16px 16px 0}
 .hd{max-width:980px;margin:0 auto}
@@ -37,7 +36,8 @@ nav button i{font-style:normal;margin-right:6px}
   nav button i{font-size:20px;margin:0;line-height:1.1}
   nav button.on{background:#eef1f8;color:var(--navy)}
   main{padding-bottom:96px}
-  .logos{gap:8px;padding:6px 10px;flex-wrap:nowrap}
+  header .logos{display:none!important}
+  header{padding-top:12px}
   .logos img{height:15px}
   .logos img[alt=PTTEP],.logos img[alt=TOP]{height:22px}
   .toast{bottom:84px}
@@ -58,7 +58,7 @@ td{padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
 td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 .rk{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:#eef1f8;color:var(--navy);font-size:14px}
 .rk.g1{background:var(--gold);color:#fff}.rk.g2{background:var(--silver);color:#fff}.rk.g3{background:var(--bronze);color:#fff}
-.net{font-weight:800;color:var(--red);font-size:17px}
+.net{font-family:"Barlow Condensed","Anuphan",sans-serif;font-weight:700;color:var(--red);font-size:22px;letter-spacing:.3px}
 .nm{font-weight:600}
 .meta{font-size:12px;color:var(--mute)}
 .inc td{opacity:.6}
@@ -87,7 +87,7 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .hole.dx input{background:#fdecee;border-color:#f0aab6;color:var(--red)}
 .sumbar{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center}
 .sumbar div{background:#f6f8fc;border-radius:10px;padding:8px 2px}
-.sumbar b{display:block;font-size:20px;color:var(--navy)}
+.sumbar b{display:block;font-family:"Barlow Condensed","Anuphan",sans-serif;font-size:26px;color:var(--navy)}
 .sumbar span{font-size:11px;color:var(--mute)}
 .sumbar .hl b{color:var(--red)}
 /* ntp */
@@ -129,7 +129,8 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 /* ---- PR slides (1600x900 design, scaled) ---- */
 .slwrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:12px;background:#0b1440}
 .slwrap>.sl,.slwrap>.pg{position:absolute;left:0;top:0;transform-origin:0 0}
-.sl{width:1600px;height:900px;position:relative;overflow:hidden;font-family:"Prompt",sans-serif;color:#fff;
+.sl,.pg{font-feature-settings:normal}
+.sl{width:1600px;height:900px;position:relative;overflow:hidden;font-family:"Anuphan",sans-serif;color:#fff;
   background:radial-gradient(1200px 700px at 78% 30%,#2b49b8 0%,#16257a 45%,#0a1342 100%)}
 .sl .stripe{position:absolute;right:-180px;top:-120px;width:620px;height:1200px;transform:rotate(18deg);background:linear-gradient(180deg,#c8102e,#8e1430);opacity:.9}
 .sl .stripe2{position:absolute;right:-60px;top:-120px;width:90px;height:1200px;transform:rotate(18deg);background:#f4c542;opacity:.95}
@@ -190,7 +191,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .sl .logos2{position:absolute;left:0;right:0;bottom:0;height:86px;background:#fff;display:flex;align-items:center;justify-content:center;gap:56px;z-index:3}
 .sl .logos2 img{height:40px}
 .sl .logos2 img[alt=PTTEP],.sl .logos2 img[alt=TOP]{height:56px}
-.pg{width:1600px;height:900px;position:relative;overflow:hidden;font-family:"Prompt",sans-serif;color:#0b1440;
+.pg{width:1600px;height:900px;position:relative;overflow:hidden;font-family:"Anuphan",sans-serif;color:#0b1440;
   background:radial-gradient(900px 500px at 70% 20%,#e9f3d8 0%,#a9c97a 35%,#4f7f34 70%,#23461c 100%)}
 .pg .pgbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .pg .pgsh{position:absolute;inset:0;background:linear-gradient(180deg,#0c241470 0%,#0c241455 45%,#0c2414a8 100%)}
@@ -388,7 +389,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 
 /* prize intro slide */
 .thZ .bgp .dim{background:linear-gradient(90deg,#06102bf0 0%,#06102bd8 45%,#06102b80 100%)}
-.sl .zx{position:absolute;left:330px;top:170px;width:700px;z-index:2;font-family:"Chakra Petch","Prompt",sans-serif;color:#fff}
+.sl .zx{position:absolute;left:330px;top:170px;width:700px;z-index:2;font-family:"Chakra Petch","Anuphan",sans-serif;color:#fff}
 .sl.zo .zx{left:90px;top:200px}
 .sl .zx .k{display:inline-block;background:#F2B705;color:#0b1a12;font-weight:700;font-size:26px;padding:4px 18px;border-radius:4px}
 .sl .zx .zt{font-weight:700;color:#F2B705;line-height:1.2;margin-top:18px;white-space:nowrap}
@@ -401,6 +402,48 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .sl .zimg img{width:100%;height:100%;object-fit:contain}
 .sl .zimg span{font-size:160px}
 .sl.zo .zimg{right:110px;top:170px;width:500px;height:520px}
+
+
+/* group scoring */
+.gteams{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px}
+.gteams button{flex:none;border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;font-weight:700;cursor:pointer;text-align:center;line-height:1.2}
+.gteams button small{display:block;font-weight:500;font-size:11px;color:var(--mute)}
+.gteams button.on{background:var(--navy);color:#fff;border-color:var(--navy)}.gteams button.on small{color:#ffffffb0}
+.ghole{display:flex;align-items:center;gap:10px;background:var(--navy);color:#fff;border-radius:14px;padding:10px 12px;margin-bottom:10px}
+.ghole .hn{flex:1;text-align:center;line-height:1.15}
+.ghole .hn b{font-family:"Barlow Condensed","Anuphan",sans-serif;font-size:34px;display:block;letter-spacing:.5px}.ghole .hn span{font-size:13px;opacity:.85}
+.ghole button{width:52px;height:52px;border-radius:12px;border:0;background:#ffffff22;color:#fff;font-size:22px;font-weight:700;cursor:pointer}
+.gchips{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin-bottom:12px}
+.gchips button{height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:600;cursor:pointer;padding:0}
+.gchips button.done{background:#e3f4ea;border-color:#9fd6b6;color:var(--good)}
+.gchips button.part{background:#fff3e0;border-color:#f3c98b}
+.gchips button.on{outline:2px solid var(--navy);outline-offset:1px}
+.gp{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 10px;margin-bottom:8px}
+.gp .who2{flex:1;min-width:0}
+.gp .who2 .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gp .who2 small{display:block;font-size:12px;color:var(--mute)}
+.gp .st{width:48px;height:48px;border-radius:12px;border:0;background:#eef1f8;color:var(--navy);font-size:26px;font-weight:700;cursor:pointer}
+.gp .gv{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-family:"Barlow Condensed","Anuphan",sans-serif;font-size:32px;font-weight:700;background:#f6f8fc;border:2px solid var(--line);cursor:pointer}
+.gp .gv.b{background:#e3f4ea;border-color:#9fd6b6;color:var(--good)}.gp .gv.o{background:#fff3e0;border-color:#f3c98b}.gp .gv.dx{background:#fdecee;border-color:#f0aab6;color:var(--red)}
+.gp .gv.empty{color:#b8bfd0;font-size:16px;font-weight:600}
+.gnext{width:100%;padding:14px;font-size:17px;margin-top:4px}
+.ready li{padding:6px 0;border-bottom:1px dashed var(--line);list-style:none}
+.ready{padding:0;margin:0}
+
+
+/* opening slide */
+.sl.thO{background:#06102b;color:#fff}
+.thO .obg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thO .osh{position:absolute;inset:0;background:radial-gradient(900px 600px at 50% 45%,#06102b40 0%,#06102bb8 70%),linear-gradient(0deg,#06102bf0 0%,#06102b00 45%)}
+.thOo .osh{background:linear-gradient(135deg,#0a1342e6 0%,#16257ad0 60%,#c8102ea0 100%)}
+.thO .olg{position:absolute;left:50%;top:110px;transform:translateX(-50%);width:230px;height:230px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 20px 60px #000a,0 0 0 8px #F2B70590}
+.thO .olg img{width:160px}
+.thO .ot{position:absolute;left:0;right:0;top:380px;text-align:center}
+.thO .o1{font-family:"Barlow Condensed","Chakra Petch",sans-serif;font-weight:700;font-size:118px;letter-spacing:8px;line-height:1;text-shadow:0 6px 30px #000c}
+.thO .o2{display:inline-block;margin-top:22px;font-family:"Chakra Petch","Anuphan",sans-serif;font-weight:700;font-size:48px;color:#0b1a12;background:#F2B705;padding:6px 34px;border-radius:6px}
+.thO .o3{margin-top:22px;font-family:"Barlow Condensed","Chakra Petch",sans-serif;font-weight:600;font-size:36px;letter-spacing:4px;color:#ffffffd8;text-shadow:0 3px 14px #000}
+.thO .ologos{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);background:#fff;border-radius:999px;padding:14px 46px;display:flex;gap:40px;align-items:center}
+.thO .ologos img{height:36px}.thO .ologos img[alt=PTTEP],.thO .ologos img[alt=TOP]{height:48px}
 
 .prcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px}
 .prcard .ctl{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
@@ -459,7 +502,9 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 
   <!-- SCORE -->
   <section id="v-score" class="hidden">
-    <div class="card">
+    <div class="sub" id="scModes"><button class="chip on" data-sm="g">⛳ กรอกตามก๊วน (ทีละหลุม)</button><button class="chip" data-sm="s">👤 รายคน (18 หลุม)</button></div>
+    <div id="scGroup"></div>
+    <div class="card" id="scSolo" style="display:none">
       <div class="row">
         <button class="btn sec sm" id="prevP">◀</button>
         <select id="pSel" class="grow"></select>
@@ -502,6 +547,10 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 
   <!-- SETUP -->
   <section id="v-setup" class="hidden">
+    <div class="card">
+      <h2>✅ ความพร้อมก่อนวันงาน</h2>
+      <div id="readyBox"></div>
+    </div>
     <div class="card">
       <h2>ข้อมูลงาน</h2>
       <div class="grid2">
@@ -699,7 +748,7 @@ function compCards(kind){
     return `<div class="ntp"><div class="top"><div class="t">${isLD?"LONGEST DRIVE":"NEAREST TO PIN"}<br><span class="meta">Par ${c.pars[h-1]} · <span style="color:#2a4fd6">●</span>${YARDS.B[h-1]} <span style="color:#999">○</span>${YARDS.W[h-1]} หลา</span></div><div class="hn"><span class="meta" style="font-size:10px;letter-spacing:2px;display:block;text-align:right">HOLE</span>${h}</div></div>
     <div class="win">${w?`<div class="who">${av(pByName(w.name))}<div><div>🏆 <span class="w">${esc(cleanName(w.name))}</span></div><div>${lg(pByName(w.name))}<span class="y">${esc(w.yds)} หลา</span></div></div></div>`:`<span class="meta">ยังไม่มีผู้บันทึก</span>`}</div>
     <ul>${list.map(e=>`<li><span>${esc(e.name)}</span><span><b>${esc(e.yds)}</b> หลา ${S.canWrite?`<button class="x" data-dn="${k}" data-i="${e.i}">×</button>`:""}</span></li>`).join("")}</ul>
-    ${S.canWrite?`<div class="add"><input type="text" list="pNames" placeholder="ชื่อ" data-nn="${k}"><input type="number" step="0.1" placeholder="หลา" style="width:80px" data-ny="${k}"><button class="btn sm" data-na="${k}">+</button></div>`:""}</div>`;}).join("")}</div>
+    ${S.canWrite?`<div class="add"><select data-nn="${k}" style="flex:1;min-width:0"><option value="">เลือกผู้เล่น…</option>${S.roster.teams.map(t=>{const mm=S.roster.players.filter(p=>String(p.team)===String(t.id));return mm.length?`<optgroup label="${esc(t.name)}">${mm.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("")}</optgroup>`:"";}).join("")}</select><input type="number" inputmode="decimal" step="0.1" placeholder="หลา" style="width:80px" data-ny="${k}"><button class="btn sm" data-na="${k}">+</button></div>`:""}</div>`;}).join("")}</div>
     <div class="foot">${isLD?"ระยะไกลที่สุดชนะ · ลูกต้องหยุดอยู่บนแฟร์เวย์":"ระยะใกล้หลุมที่สุดชนะ · ลูกจาก Tee Shot ต้องอยู่บนกรีน"}</div>`;
 }
 const PRIZEIMG={team:"img/prize_team.jpg",ld:"img/prize_ld.jpg",ntp:"img/prize_ntp.jpg"};
@@ -713,7 +762,7 @@ function render(src){
   $("evName").textContent=S.config.name||"Golf Event";
   $("evSub").textContent=(S.config.course?S.config.course+" · ":"")+"System 36 · Nearest to Pin"+(S.config.date?" · "+S.config.date:"");
   renderResults();
-  if(view==="score") renderScore(src==="remote");
+  if(view==="score"){if(scMode==="g"){if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#scGroup")))renderGroup();}else renderScore(src==="remote");}
   if(view==="pr"&&!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#v-pr input"))) renderPR();
   if(view==="pair") renderPair();
   if(presIdx!=null) drawPresenter();
@@ -844,6 +893,7 @@ function renderSum(){
 }
 
 function renderSetup(){
+  renderReady();
   const c=S.config;
   $("cName").value=c.name||"";$("cDate").value=c.date||"";$("cCourse").value=c.course||"";$("cFA").value=c.flightA||"";$("cFB").value=c.flightB||"";
   draftHoles={ntp:[...(c.ntpHoles||[])],ld:[...(c.ldHoles||[])]};drawHoles();
@@ -876,7 +926,7 @@ function applyPerm(){
 }
 function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
   ["results","score","pair","pr","setup"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
-  if(v==="score")renderScore();if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();
+  if(v==="score"){if(scMode==="g")renderGroup();else renderScore();}if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();
   try{history.replaceState(null,"","#"+v);}catch(e){}
 }
 
@@ -887,7 +937,7 @@ $("resBody").addEventListener("change",e=>{if(e.target.id==="bdSel"){bdPid=e.tar
 $("resBody").addEventListener("click",e=>{
   const bdr=e.target.closest("[data-bd]"); if(bdr){bdPid=bdr.dataset.bd;resTab="R";renderResults();setTimeout(()=>{const x=$("bdSel");x&&x.scrollIntoView({behavior:"smooth",block:"start"});},50);return;}
   const a=e.target.closest("[data-na]"); if(a){const h=a.dataset.na;const n=document.querySelector(`[data-nn="${h}"]`),y=document.querySelector(`[data-ny="${h}"]`);
-    if(!n.value.trim()||y.value===""){toast("กรอกชื่อและระยะ");return;}
+    if(!n.value.trim()||y.value===""){toast("เลือกผู้เล่นและใส่ระยะ (หลา)");return;}
     (S.ntp[h]=S.ntp[h]||[]).push({name:n.value.trim(),yds:y.value});saveComp(h);renderResults();toast("บันทึก "+(String(h).startsWith("ld")?"ตีไกล หลุม "+h.slice(2):"Near Pin หลุม "+h));return;}
   const d=e.target.closest("[data-dn]"); if(d){const h=d.dataset.dn;confirmBox("ลบรายการนี้?").then(ok=>{if(!ok)return;S.ntp[h].splice(+d.dataset.i,1);saveComp(h);renderResults();});}
 });
@@ -975,7 +1025,7 @@ const PLACE=["ชนะเลิศ","รองชนะเลิศอันด
 const PZDEF={ntp:["Nearest to Pin","รางวัล Nearest to Pin"],ld:["Longest Drive (ตีไกล)","รางวัล Longest Drive"],ind:["ประเภทเดี่ยว","รางวัลประเภทเดี่ยว"],team:["ประเภททีม (ก๊วน)","รางวัลประเภททีม"]};
 function prizeSlide(k){const p=prize(k);if(!p)return null;return {id:`prize-${k}`,kind:"z",pk:k,cat:PZDEF[k][0],def:PZDEF[k][1]};}
 function slideList(){
-  const d=awardsData(), out=[];const pz=k=>{const z=prizeSlide(k);if(z)out.push(z);};
+  const d=awardsData(), out=[{id:"opening",kind:"open",cat:"สไลด์เปิด",def:"พิธีมอบรางวัล"}];const pz=k=>{const z=prizeSlide(k);if(z)out.push(z);};
   if(d.indOn)pz("ind");
   if(d.indOn)d.flights.forEach(F=>[...Array(Math.max(1,+S.config.indPlaces||3)).keys()].forEach(i=>out.push({id:`ind-${F.f}-${i+1}`,cat:"ประเภทเดี่ยว · "+F.name,def:`${PLACE[i]} ประเภทเดี่ยว ${F.name}`,rank:i,kind:"p",r:F.top[i]})));
   pz("team");
@@ -1041,6 +1091,20 @@ function bcTeam(x){
 }
 function symNet(n){return `<b style="color:#fff">${n}</b>`;}
 
+
+
+function openingHTML(s,th){
+  const c=S.config,pr=S.pr[s.id]||{},sub=pr.title||s.def,bg=pr.img||"img/course_bg.jpg";
+  const date=c.date?esc(c.date):"";
+  return `<div class="sl th thO ${th==="o"?"thOo":""}"><img class="obg" src="${bg}" alt=""><div class="osh"></div>
+    <div class="olg"><img src="img/logo_p1d1.png" alt=""></div>
+    <div class="ot">
+      <div class="o1">P1D1 GOLF DAY 2026</div>
+      <div class="o2">${esc(sub)}</div>
+      <div class="o3">At ${esc(c.course||"")}${date?` · ${date}`:""}</div>
+    </div>
+    <div class="ologos">${LOGOSTRIP}</div></div>`;
+}
 
 function prizeSlideHTML(s,th){
   const k=s.pk,p=prize(k)||{},c=S.config,pr=S.pr[s.id]||{},title=pr.title||s.def,img=pr.img||PRIZEIMG[k]||"";
@@ -1128,7 +1192,7 @@ function slideThemeHTML(s,th){
 }
 
 function slideHTML(s){
-  const th=["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d";if(s.kind==="z")return prizeSlideHTML(s,th);if(th==="p")return portraitHTML(s);if(th!=="o")return broadcastHTML(s);
+  const th=["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d";if(s.kind==="z")return prizeSlideHTML(s,th);if(s.kind==="open")return openingHTML(s,th);if(th==="p")return portraitHTML(s);if(th!=="o")return broadcastHTML(s);
   const pr=S.pr[s.id]||{}, title=pr.title||s.def, up=pr.img;
   let photo="",name="รอประกาศผล",org="",stats="",medal="";
   medal=(s.kind==="n"||s.kind==="l")?`<div class="medal mn">หลุม<br>${s.h}</div>`:`<div class="medal m${s.rank+1}">${s.rank+1}</div>`;
@@ -1159,7 +1223,7 @@ function renderPR(){
   $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
   $("prList").innerHTML=L.map(s=>{const pr=S.pr[s.id]||{};return `<div class="prcard"><div class="slwrap">${slideHTML(s)}</div>
    <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def)}">
-   <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="z"?"อัปโหลดรูปของรางวัล":s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
+   <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="open"?"อัปโหลดภาพพื้นหลัง":s.kind==="z"?"อัปโหลดรูปของรางวัล":s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
    <button class="btn sm sec" data-prdl="${s.id}">⬇️ ดาวน์โหลด PNG</button></div></div>`;}).join("");
   fitSlides($("prList"));
 }
@@ -1192,11 +1256,11 @@ async function renderCanvas(html){
   const box=document.createElement("div");box.style.cssText="position:fixed;left:-20000px;top:0;width:1600px;height:900px";box.innerHTML=html;document.body.appendChild(box);
   try{
     await Promise.all([...box.querySelectorAll("img")].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;})));
-    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    if(document.fonts){try{await Promise.all(['700 40px "Chakra Petch"','600 40px "Chakra Petch"','700 40px "Barlow Condensed"','600 40px "Barlow Condensed"','400 16px "Anuphan"','600 16px "Anuphan"','700 16px "Anuphan"'].map(f=>document.fonts.load(f,"กขคABC123")));}catch(e){} await document.fonts.ready;}
     return await html2canvas(box.firstElementChild,{scale:1.2,useCORS:true,backgroundColor:"#0a1342",logging:false});
   }finally{box.remove();}
 }
-function revealSlides(){const L=slideList(),g=f=>L.filter(f),z=k=>g(s=>s.id==="prize-"+k);return [...z("ntp"),...g(s=>s.kind==="n"),...z("ld"),...g(s=>s.kind==="l"),...z("ind"),...["A","B"].flatMap(f=>g(s=>s.id.startsWith("ind-"+f)).reverse()),...z("team"),...g(s=>s.kind==="t").reverse()];}
+function revealSlides(){const L=slideList(),g=f=>L.filter(f),z=k=>g(s=>s.id==="prize-"+k);return [...g(s=>s.kind==="open"),...z("ntp"),...g(s=>s.kind==="n"),...z("ld"),...g(s=>s.kind==="l"),...z("ind"),...["A","B"].flatMap(f=>g(s=>s.id.startsWith("ind-"+f)).reverse()),...z("team"),...g(s=>s.kind==="t").reverse()];}
 async function downloadPPTX(btn,opt){
   opt=opt||{};
   const label=btn?btn.textContent:"";
@@ -1382,6 +1446,58 @@ async function downloadExcel(btn,opt){
 }
 $("xlsRes").onclick=e=>downloadExcel(e.target);
 $("pairXls").onclick=e=>downloadExcel(e.target,{pairingOnly:true});
+
+// ---------- group scoring (one hole at a time for the 4 players of a group) ----------
+let scMode="g",gTeam=null,gHole=null;
+function gTeams(){return S.roster.teams.filter(t=>S.roster.players.some(p=>String(p.team)===String(t.id)));}
+function gMembers(t){return S.roster.players.filter(p=>String(p.team)===String(t.id));}
+function holeOrder(t){const st=String(t.start)==="10"?9:0;return [...Array(18)].map((_,i)=>(st+i)%18);}
+function holeState(mem,h){const n=mem.filter(p=>+((S.scores[p.id]||[])[h])>0).length;return n===0?"":n===mem.length?"done":"part";}
+function firstOpenHole(t){const mem=gMembers(t);for(const h of holeOrder(t))if(holeState(mem,h)!=="done")return h;return holeOrder(t)[17];}
+function renderGroup(){
+  const box=$("scGroup"),teams=gTeams();if(!teams.length){box.innerHTML=`<div class="card meta">ยังไม่มีก๊วน — เพิ่มรายชื่อที่ ⚙️ ตั้งค่า</div>`;return;}
+  let t=teams.find(x=>String(x.id)===gTeam);if(!t){t=teams[0];gTeam=String(t.id);gHole=null;}
+  if(gHole==null)gHole=firstOpenHole(t);
+  const mem=gMembers(t),par=S.config.pars[gHole],order=holeOrder(t),pos=order.indexOf(gHole);
+  box.innerHTML=`<div class="gteams">${teams.map(x=>{const mm=gMembers(x),dn=[...Array(18).keys()].filter(h=>holeState(mm,h)==="done").length;return `<button class="${String(x.id)===gTeam?"on":""}" data-gt="${x.id}">${esc(grpLabel(x))}<small>${dn}/18 หลุม</small></button>`;}).join("")}</div>
+  <div class="ghole"><button data-gh="-1" aria-label="หลุมก่อนหน้า">◀</button><div class="hn"><b>หลุม ${gHole+1}</b><span>Par ${par} · ${YARDS.W[gHole]} หลา (Tee ขาว) · ลำดับที่ ${pos+1}/18</span></div><button data-gh="1" aria-label="หลุมถัดไป">▶</button></div>
+  <div class="gchips">${order.map(h=>`<button class="${holeState(mem,h)} ${h===gHole?"on":""}" data-gj="${h}">${h+1}</button>`).join("")}</div>
+  ${mem.map(p=>{const v=+((S.scores[p.id]||[])[gHole])||0,r=calc(p);return `<div class="gp">${av(p)}<div class="who2"><div class="nm">${esc(p.name)}</div><small>${r.thru?`เล่นแล้ว ${r.thru} หลุม · Gross ${r.gross} · ${r.pts} แต้ม`:"ยังไม่มีสกอร์"}</small></div>
+    ${S.canWrite?`<button class="st" data-gs="-1" data-pid="${p.id}" aria-label="ลด">−</button>`:""}<div class="gv ${v?hcls(gHole,v):"empty"}" data-gpar="${p.id}">${v||"แตะ"}</div>${S.canWrite?`<button class="st" data-gs="1" data-pid="${p.id}" aria-label="เพิ่ม">+</button>`:""}</div>`;}).join("")}
+  <button class="btn gnext" data-gh="1">${holeState(mem,gHole)==="done"?"✓ ครบ 4 คน · ไปหลุมถัดไป ▶":"ไปหลุมถัดไป ▶"}</button>
+  <div class="foot">แตะช่องตัวเลขเพื่อใส่ Par แล้วกด + / − ปรับ · ระบบบันทึกให้ทันที · ช่องหลุมสีเขียว = ครบทุกคน สีส้ม = ยังไม่ครบ</div>`;
+}
+function setGroupScore(pid,v){const arr=(S.scores[pid]||Array(18).fill(null)).slice();arr[gHole]=v>0?v:null;S.scores[pid]=arr;
+  clearTimeout(scoreTimers[pid]);scoreTimers[pid]=setTimeout(()=>saveScore(pid),400);renderGroup();renderResults();}
+$("scGroup").addEventListener("click",e=>{
+  const t=e.target.closest("[data-gt]");if(t){gTeam=t.dataset.gt;gHole=null;renderGroup();return;}
+  const j=e.target.closest("[data-gj]");if(j){gHole=+j.dataset.gj;renderGroup();return;}
+  const h=e.target.closest("[data-gh]");if(h){const tt=gTeams().find(x=>String(x.id)===gTeam),o=holeOrder(tt);let i=o.indexOf(gHole)+(+h.dataset.gh);i=Math.max(0,Math.min(17,i));gHole=o[i];renderGroup();window.scrollTo({top:0,behavior:"smooth"});return;}
+  if(!S.canWrite)return;
+  const par=S.config.pars[gHole];
+  const g=e.target.closest("[data-gpar]");if(g){const pid=g.dataset.gpar,v=+((S.scores[pid]||[])[gHole])||0;if(!v)setGroupScore(pid,par);return;}
+  const st=e.target.closest("[data-gs]");if(st){const pid=st.dataset.pid,v=+((S.scores[pid]||[])[gHole])||0,d=+st.dataset.gs;setGroupScore(pid,v?Math.max(1,Math.min(15,v+d)):par+(d<0?-1:0));}
+});
+$("scModes").addEventListener("click",e=>{const b=e.target.closest("[data-sm]");if(!b)return;scMode=b.dataset.sm;
+  document.querySelectorAll("#scModes .chip").forEach(c=>c.classList.toggle("on",c.dataset.sm===scMode));
+  $("scGroup").style.display=scMode==="g"?"":"none";$("scSolo").style.display=scMode==="s"?"":"none";if(scMode==="g")renderGroup();else renderScore();});
+
+// ---------- readiness checklist ----------
+function renderReady(){
+  const c=S.config,P=S.roster.players,ok=(b,t)=>`<li>${b?"✅":"⚠️"} ${t}</li>`;
+  const tmp=P.filter(p=>/^(รอยืนยัน|ผู้เล่นใหม่|ผู้เล่น \d)/.test(p.name)).length;
+  const nophoto=P.filter(p=>!photoSrc(p)).length;
+  const scored=P.filter(p=>(S.scores[p.id]||[]).some(v=>+v>0)).length;
+  const comp=Object.keys(S.ntp).filter(k=>(S.ntp[k]||[]).length).length;
+  $("readyBox").innerHTML=`<ul class="ready">
+    ${ok(!tmp,tmp?`มีชื่อชั่วคราว ${tmp} คน (เช่น "รอยืนยัน") — แก้ในรายชื่อด้านล่าง`:`รายชื่อผู้เล่นครบ ${P.length} คน`)}
+    ${ok(!nophoto,nophoto?`ยังไม่มีรูป ${nophoto} คน — แตะวงกลมหน้าชื่อเพื่ออัปโหลด`:"รูปผู้เล่นครบทุกคน")}
+    ${ok(!!c.date,c.date?`วันที่ ${esc(c.date)}`:"ยังไม่ได้ใส่วันที่งาน")}
+    ${ok((c.ntpHoles||[]).length===3,`Near Pin ${(c.ntpHoles||[]).length} หลุม${(c.ntpHoles||[]).length?" ("+c.ntpHoles.join(", ")+")":""} · ของรางวัลมี 3 รางวัล`)}
+    ${ok((c.ldHoles||[]).length===1,`ตีไกล ${(c.ldHoles||[]).length} หลุม${(c.ldHoles||[]).length?" ("+c.ldHoles.join(", ")+")":""} · ของรางวัลมี 1 รางวัล`)}
+    ${ok(!scored&&!comp,scored||comp?`มีสกอร์ในระบบ ${scored} คน / Near Pin-ตีไกล ${comp} หลุม — ถ้าเป็นข้อมูลทดสอบ กด "ล้างสกอร์ทั้งหมด" ก่อนวันงาน`:"ไม่มีข้อมูลค้าง พร้อมเริ่มกรอกสกอร์")}
+  </ul>`;
+}
 
 const h0=(location.hash||"").slice(1); if(["results","score","pair","pr","setup"].includes(h0)) view=h0;
 show(view);
