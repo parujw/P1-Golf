@@ -370,6 +370,8 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .thP .strips{position:absolute;right:0;top:0;bottom:0;width:64%;display:grid;grid-template-columns:repeat(4,1fr)}
 .thP .strips img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
 .thP .brand2{position:absolute;left:70px;top:46px;display:flex;align-items:center;gap:18px;font-family:"Barlow Condensed","Chakra Petch";font-weight:600;font-size:30px;letter-spacing:1px;color:#ffffffd8}
+.thP .brand2 .bt b{display:block;font-size:38px;font-weight:700;color:#fff;letter-spacing:1px;line-height:1.1}
+.thP .brand2 .bt small{display:block;font-size:24px;color:#ffffffc0;letter-spacing:1px}
 .thP .lw2{width:112px;height:112px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 8px 22px #0006}
 .thP .lw2 img{width:80px}
 .thP .aw{left:70px;top:190px;max-width:none}
@@ -1027,7 +1029,7 @@ function portraitHTML(s){
   if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${esc(s.w.yds)}</b></div></div></div>`;
   const foot=m.prize?`<div class="foot">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}รับ ${esc(m.prize.item||"")}${m.prize.by?` · มอบโดย ${esc(m.prize.by)}`:""}</div>`:"";
   return `<div class="sl th thD thP"><div class="bgp">${bg}<div class="dim"></div></div>
-    <div class="brand2"><span class="lw2"><img src="img/logo_p1d1.png" alt=""></span><span>At ${esc(c.course||"")}</span></div>
+    <div class="brand2"><span class="lw2"><img src="img/logo_p1d1.png" alt=""></span><span class="bt"><b>P1D1 Golf Day 2026</b><small>At ${esc(c.course||"")}</small></span></div>
     <div class="lgp">${LOGOSTRIP}</div>
     <div class="aw"><span class="k">${esc(m.cat)}</span><div class="t" style="font-size:${fitFont(m.title,720,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(m.name,760,112,60)}px">${esc(m.name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
     ${card}${foot}</div>`;
