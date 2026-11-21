@@ -568,7 +568,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
       <h2>📋 Pairing · Tee Off</h2>
       <div class="meta" style="margin-bottom:10px">สร้างจากรายชื่อ / ก๊วน / เวลา ในแท็บตั้งค่า · แก้รูปและตำแหน่งผู้บริหารได้ที่ ⚙️ ผู้เล่น / ตั้งค่า</div>
       <div class="slwrap" id="pairSlide"></div>
-      <div class="row" style="margin-top:10px"><button class="btn" id="pairPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="pairDl">⬇️ ดาวน์โหลด PNG</button><button class="btn sec" id="pairPptx">📊 PowerPoint</button><button class="btn sec" id="pairXls">📗 Excel Pairing</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="pairPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="pairDl">⬇️ ดาวน์โหลด PNG</button><button class="btn sec" id="pairPptx">📊 PowerPoint</button><button class="btn sec" id="pairPdf">📄 PDF</button><button class="btn sec" id="pairXls">📗 Excel Pairing</button></div>
       <div class="row" style="margin-top:8px" id="pairBgCtl"></div>
     </div>
     <div id="pairList"></div>
@@ -581,8 +581,8 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
       <div class="meta" style="margin-bottom:10px">สไลด์ 16:9 สร้างจากผลจริงอัตโนมัติ · ทีมงานกด 📷 อัปโหลดรูปตอนรับรางวัลได้ (ถ้าไม่อัปโหลด จะใช้รูปโปรไฟล์) · แก้ชื่อรางวัลได้ในช่องข้อความ</div>
       <div class="sub" id="prThemes" style="margin-bottom:10px"></div>
       <div class="row" id="prShowBox" style="margin-bottom:10px;gap:14px"></div>
-      <div class="row"><button class="btn" id="prPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="prPlayRev">▶ นำเสนอ (ลุ้นจากอันดับ 3 → 1)</button><button class="btn sec" id="prPptx">📊 ดาวน์โหลด PowerPoint</button></div>
-      <div class="meta" style="margin-top:8px">PowerPoint: สไลด์ Pairing + รางวัลทั้งหมด เรียงตามลำดับประกาศ (อันดับ 3 → 1) · ใส่รูปรับรางวัลก่อนกดดาวน์โหลด</div>
+      <div class="row"><button class="btn" id="prPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="prPlayRev">▶ นำเสนอ (ลุ้นจากอันดับ 3 → 1)</button><button class="btn sec" id="prPptx">📊 ดาวน์โหลด PowerPoint</button><button class="btn sec" id="prPdf">📄 ดาวน์โหลด PDF</button></div>
+      <div class="meta" style="margin-top:8px">PowerPoint / PDF: สไลด์ Pairing + รางวัลทั้งหมด เรียงตามลำดับประกาศ (อันดับ 3 → 1) · ใส่รูปรับรางวัลก่อนกดดาวน์โหลด</div>
     </div>
     <div class="card" id="mcCard">
       <h2>🎤 สคริปต์พิธีกร</h2>
@@ -1351,6 +1351,25 @@ async function renderCanvas(html){
   }finally{box.remove();}
 }
 function revealSlides(){const L=slideList(),g=f=>L.filter(f),z=k=>g(s=>s.id==="prize-"+k);return [...g(s=>s.kind==="open"),...z("ntp"),...g(s=>s.kind==="n"),...z("ld"),...g(s=>s.kind==="l"),...z("ind"),...["A","B"].flatMap(f=>g(s=>s.id.startsWith("ind-"+f)).reverse()),...z("team"),...g(s=>s.kind==="t").reverse()];}
+async function downloadPDF(btn,opt){
+  opt=opt||{};const label=btn?btn.textContent:"";const items=[];
+  if(opt.pairing!==false)items.push(pairingHTML());
+  if(opt.awards!==false)revealSlides().forEach(s=>items.push(slideHTML(s)));
+  try{
+    if(btn)btn.disabled=true;
+    if(!window.jspdf)await loadScript("vendor/jspdf.umd.min.js");
+    const doc=new window.jspdf.jsPDF({orientation:"landscape",unit:"px",format:[1920,1080],compress:true});
+    for(let i=0;i<items.length;i++){
+      if(btn)btn.textContent=`กำลังสร้าง ${i+1}/${items.length}…`;
+      const cv=await renderCanvas(items[i]);
+      if(i>0)doc.addPage([1920,1080],"landscape");
+      doc.addImage(cv.toDataURL("image/jpeg",.9),"JPEG",0,0,1920,1080);
+    }
+    doc.save(opt.file||"P1D1-Golf-Day-2026.pdf");
+    toast("ดาวน์โหลด PDF แล้ว");
+  }catch(err){console.error(err);toast("สร้าง PDF ไม่สำเร็จ");}
+  if(btn){btn.disabled=false;btn.textContent=label;}
+}
 async function downloadPPTX(btn,opt){
   opt=opt||{};
   const label=btn?btn.textContent:"";
@@ -1424,6 +1443,8 @@ function renderPair(){
   $("pairList").innerHTML=[...side.L,...side.R].map(g=>`<div class="card"><h2>⛳ ${esc(grpLabel(g.t))} · Tee off ${esc(fmtTime(g.t.time))} <span class="meta">(ออกหลุม ${esc(g.t.start||"-")})</span></h2>${g.mem.map(p=>`<div class="who" style="padding:6px 0">${av(p)}<div><div class="nm">${esc(p.name)}</div><div class="meta">${lg(p)}${esc(p.title||"")}</div></div></div>`).join("")}</div>`).join("");
 }
 $("pairPptx").onclick=e=>downloadPPTX(e.target,{awards:false,file:"P1D1-Pairing.pptx"});
+$("prPdf").onclick=e=>downloadPDF(e.target);
+$("pairPdf").onclick=e=>downloadPDF(e.target,{awards:false,file:"P1D1-Pairing.pdf"});
 $("prPptx").onclick=e=>downloadPPTX(e.target);
 $("pairBgCtl").addEventListener("click",e=>{
   if(e.target.id==="pairBgUp"){prTarget="pairing-bg";$("prFile").value="";$("prFile").click();}
