@@ -97,6 +97,73 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .team .mem span.c{background:#e3f4ea;color:var(--good);font-weight:600}
 .team .tot{margin-left:auto;text-align:right}
 .hidden{display:none!important}
+/* ---- PR slides (1600x900 design, scaled) ---- */
+.slwrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:12px;background:#0b1440}
+.slwrap>.sl,.slwrap>.pg{position:absolute;left:0;top:0;transform-origin:0 0}
+.sl{width:1600px;height:900px;position:relative;overflow:hidden;font-family:"Prompt",sans-serif;color:#fff;
+  background:radial-gradient(1200px 700px at 78% 30%,#2b49b8 0%,#16257a 45%,#0a1342 100%)}
+.sl .stripe{position:absolute;right:-180px;top:-120px;width:620px;height:1200px;transform:rotate(18deg);background:linear-gradient(180deg,#c8102e,#8e1430);opacity:.9}
+.sl .stripe2{position:absolute;right:-60px;top:-120px;width:90px;height:1200px;transform:rotate(18deg);background:#f4c542;opacity:.95}
+.sl .top{position:absolute;left:70px;top:54px;right:70px;display:flex;align-items:center;justify-content:space-between}
+.sl .brand{font-weight:800;font-size:40px;letter-spacing:1px}
+.sl .brand b{color:#ff3b54;font-style:italic}
+.sl .brand small{display:block;font-weight:500;font-size:20px;opacity:.75;letter-spacing:0}
+.sl .cat{font-size:26px;font-weight:700;background:#ffffff1f;border:2px solid #ffffff55;border-radius:999px;padding:10px 30px;position:relative;z-index:2}
+.sl .photo{position:absolute;left:70px;top:190px;width:600px;height:560px;border-radius:28px;overflow:hidden;background:#ffffff14;box-shadow:0 30px 60px #0007;border:6px solid #fff}
+.sl .photo img{width:100%;height:100%;object-fit:cover;display:block}
+.sl .photo.circ{border-radius:50%;width:500px;height:500px;left:120px;top:210px;border:10px solid #f4c542}
+.sl .photo.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:26px;background:#ffffff18;border:4px solid #ffffff55}
+.sl .photo.grid div{text-align:center;font-size:22px;font-weight:600}
+.sl .photo.grid img{width:200px;height:200px;border-radius:50%;border:6px solid #fff;margin:0 auto 8px;display:block}
+.sl .photo.none{display:grid;place-items:center;font-size:30px;opacity:.6}
+.sl .info{position:absolute;left:740px;top:190px;right:110px;z-index:2}
+.sl .medal{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;font-size:64px;font-weight:800;color:#3a2a00;box-shadow:inset 0 -8px 0 #0002,0 10px 25px #0006;margin-bottom:26px}
+.sl .m1{background:radial-gradient(circle at 35% 30%,#fff3b0,#f4c542 45%,#c99a1b)}
+.sl .m2{background:radial-gradient(circle at 35% 30%,#fff,#cfd6e3 45%,#8a94a6)}
+.sl .m3{background:radial-gradient(circle at 35% 30%,#ffd9b8,#d98b4e 45%,#a35a26)}
+.sl .mn{background:radial-gradient(circle at 35% 30%,#fff,#e9eef9 45%,#9fb0d6);font-size:30px;color:#16257a;line-height:1;text-align:center}
+.sl .award{font-size:42px;font-weight:700;color:#f4c542;line-height:1.25}
+.sl .name{font-size:76px;font-weight:800;line-height:1.15;margin:14px 0 10px}
+.sl .name.sm{font-size:60px}
+.sl .org{display:flex;align-items:center;gap:16px;font-size:28px;opacity:.95}
+.sl .org img{height:46px;background:#fff;border-radius:10px;padding:6px 12px}
+.sl .stats{display:flex;gap:18px;margin-top:34px}
+.sl .stats div{background:#ffffff1a;border:2px solid #ffffff40;border-radius:18px;padding:12px 24px;text-align:center;min-width:130px}
+.sl .stats b{display:block;font-size:46px;line-height:1.1}
+.sl .stats span{font-size:20px;opacity:.8}
+.sl .stats .hl{background:#f4c542;color:#16257a;border-color:#f4c542}
+.sl .logos2{position:absolute;left:0;right:0;bottom:0;height:86px;background:#fff;display:flex;align-items:center;justify-content:center;gap:56px;z-index:3}
+.sl .logos2 img{height:40px}
+.sl .logos2 img[alt=PTTEP],.sl .logos2 img[alt=TOP]{height:56px}
+.pg{width:1600px;height:900px;position:relative;overflow:hidden;font-family:"Prompt",sans-serif;color:#0b1440;
+  background:radial-gradient(900px 500px at 70% 20%,#e9f3d8 0%,#a9c97a 35%,#4f7f34 70%,#23461c 100%)}
+.pg .hdr{position:absolute;left:0;top:0;right:0;height:110px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.pg .hdr .t{background:#ffffffe6;border-radius:0 0 40px 0;position:absolute;left:0;top:0;height:110px;width:860px;display:flex;align-items:center;padding-left:40px;gap:18px}
+.pg .hdr .t .p1{font-size:58px;font-weight:800;font-style:italic;color:#c8102e}
+.pg .hdr .t .p1 span{color:#1b2a6b}
+.pg .hdr .t .gd{font-size:60px;font-weight:800;letter-spacing:2px;color:#1a1a1a}
+.pg .hdr .t .gd b{color:#b8901f}
+.pg .hdr .lg2{position:absolute;right:30px;top:22px;display:flex;gap:18px;align-items:center;background:#ffffffe6;border-radius:16px;padding:12px 20px}
+.pg .hdr .lg2 img{height:34px}.pg .hdr .lg2 img[alt=PTTEP],.pg .hdr .lg2 img[alt=TOP]{height:46px}
+.pg .col{position:absolute;top:130px;width:760px}
+.pg .grp{margin-bottom:8px}
+.pg .pill{display:inline-flex;align-items:center;gap:14px;background:linear-gradient(90deg,#d9f0ff,#8fc2ff);border-radius:999px;padding:4px 34px;font-weight:800;font-size:38px;color:#0b1440;box-shadow:0 4px 12px #0003}
+.pg .pill .bd{display:inline-block;background:#1b2a6b;color:#fff;border-radius:999px;padding:2px 16px;font-size:30px;line-height:1.3;font-style:italic}
+.pg .mem{display:flex;gap:6px;margin-top:8px}
+.pg .m{display:flex;align-items:center;gap:7px;width:188px}
+.pg .m img,.pg .m .ph{width:82px;height:82px;border-radius:50%;border:4px solid #fff;object-fit:cover;flex:none;background:#dfe6f3;box-shadow:0 4px 10px #0004}
+.pg .m .ph{display:grid;place-items:center;font-size:34px;font-weight:700;color:#1b2a6b}
+.pg .m .tx{font-size:16px;word-break:keep-all;font-weight:700;color:#fff;text-shadow:0 1px 3px #000a;line-height:1.25}
+.pg .m .tx small{display:block;font-size:13px;font-weight:600;opacity:.95}
+.prcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px}
+.prcard .ctl{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.prcard .ctl input[type=text]{flex:1;min-width:160px}
+#presenter{position:fixed;inset:0;background:#000;z-index:80;display:grid;place-items:center}
+#presenter .stage{position:relative;overflow:hidden}
+#presenter .stage>.sl,#presenter .stage>.pg{position:absolute;left:0;top:0;transform-origin:0 0}
+#presenter .pctl{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;opacity:.25;transition:.2s}
+#presenter:hover .pctl{opacity:1}
+#presenter .pctl button{background:#ffffff22;color:#fff;border:0;border-radius:999px;padding:10px 16px;font-weight:600;cursor:pointer}
 .who{display:flex;gap:10px;align-items:center;min-width:0}
 .av{width:42px;height:42px;border-radius:50%;object-fit:cover;flex:none;background:#e3e7f1;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
 .av.lgav{width:64px;height:64px}
@@ -127,6 +194,8 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
   <nav id="nav">
     <button data-v="results" class="on">🏆 ประกาศผล</button>
     <button data-v="score">✍️ กรอกสกอร์</button>
+    <button data-v="pair">📋 Pairing</button>
+    <button data-v="pr">🖼️ สไลด์ PR</button>
     <button data-v="setup">⚙️ ผู้เล่น / ตั้งค่า</button>
   </nav>
 </div></header>
@@ -159,6 +228,28 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
     </div>
   </section>
 
+  <!-- PAIRING -->
+  <section id="v-pair" class="hidden">
+    <div class="card">
+      <h2>📋 Pairing · Tee Off</h2>
+      <div class="meta" style="margin-bottom:10px">สร้างจากรายชื่อ / ก๊วน / เวลา ในแท็บตั้งค่า · แก้รูปและตำแหน่งผู้บริหารได้ที่ ⚙️ ผู้เล่น / ตั้งค่า</div>
+      <div class="slwrap" id="pairSlide"></div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="pairPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="pairDl">⬇️ ดาวน์โหลด PNG</button></div>
+    </div>
+    <div id="pairList"></div>
+  </section>
+
+  <!-- PR -->
+  <section id="v-pr" class="hidden">
+    <div class="card">
+      <h2>🖼️ สไลด์ประกาศรางวัล</h2>
+      <div class="meta" style="margin-bottom:10px">สไลด์ 16:9 สร้างจากผลจริงอัตโนมัติ · ทีมงานกด 📷 อัปโหลดรูปตอนรับรางวัลได้ (ถ้าไม่อัปโหลด จะใช้รูปโปรไฟล์) · แก้ชื่อรางวัลได้ในช่องข้อความ</div>
+      <div class="row"><button class="btn" id="prPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="prPlayRev">▶ นำเสนอ (ลุ้นจากอันดับ 3 → 1)</button></div>
+    </div>
+    <div id="prList"></div>
+    <input type="file" id="prFile" accept="image/*" class="hidden"><input type="file" id="phFile" accept="image/*" class="hidden">
+  </section>
+
   <!-- SETUP -->
   <section id="v-setup" class="hidden">
     <div class="card">
@@ -183,7 +274,7 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
     <div class="card">
       <h2>รายชื่อผู้เล่น <span class="meta" id="rCount"></span></h2>
       <div style="overflow-x:auto">
-      <table class="roster"><thead><tr><th>#</th><th>ชื่อ</th><th>Flight</th><th>ก๊วน</th><th></th></tr></thead><tbody id="rBody"></tbody></table>
+      <table class="roster"><thead><tr><th>#</th><th>รูป</th><th>ชื่อ</th><th>ตำแหน่ง</th><th>บริษัท</th><th>Flight</th><th>ก๊วน</th><th></th></tr></thead><tbody id="rBody"></tbody></table>
       </div>
       <div class="row" style="margin-top:10px">
         <button class="btn sec" id="addP">+ เพิ่มผู้เล่น</button>
@@ -229,11 +320,17 @@ const DEFAULT_CONFIG = {
   pars:[4,5,4,3,4,4,5,3,4, 4,3,5,3,5,4,3,5,4], course:"Rajpruek Club",
   ntpHoles:[4,8,11,13,16], hcCap:null, teamCount:8, teamBest:3
 };
-const TEEOFF={"players": [{"id": "p01", "no": 1, "name": "คุณคงกระพัน (PTT)", "flight": "A", "team": "1"}, {"id": "p02", "no": 2, "name": "ร.ต.อ. ปิยะ (PTT Board)", "flight": "A", "team": "1"}, {"id": "p03", "no": 3, "name": "พลเอก นิมิตต์ (GC Board)", "flight": "A", "team": "1"}, {"id": "p04", "no": 4, "name": "คุณชาญศิลป์", "flight": "A", "team": "1"}, {"id": "p05", "no": 5, "name": "พลอากาศเอก ชานนท์ (TOP Board)", "flight": "A", "team": "2"}, {"id": "p06", "no": 6, "name": "คุณดิษทัต", "flight": "A", "team": "2"}, {"id": "p07", "no": 7, "name": "พลเอก นิธิ", "flight": "A", "team": "2"}, {"id": "p08", "no": 8, "name": "คุณไกรพัท (OR)", "flight": "A", "team": "2"}, {"id": "p09", "no": 9, "name": "คุณสุรชัย (PTT)", "flight": "A", "team": "3"}, {"id": "p10", "no": 10, "name": "คุณนิสิต (OR)", "flight": "A", "team": "3"}, {"id": "p11", "no": 11, "name": "คุณณัฏฐะวุฒิ (PTT)", "flight": "A", "team": "3"}, {"id": "p12", "no": 12, "name": "คุณกฤษณ์ (PTTEP)", "flight": "A", "team": "3"}, {"id": "p13", "no": 13, "name": "คุณรชา (OR)", "flight": "A", "team": "4"}, {"id": "p14", "no": 14, "name": "คุณปิยะวัฒน์ (PTT)", "flight": "A", "team": "4"}, {"id": "p15", "no": 15, "name": "คุณไวรยางค์ (PTT)", "flight": "A", "team": "4"}, {"id": "p16", "no": 16, "name": "คุณณัฐพงษ์ (TOP)", "flight": "A", "team": "4"}, {"id": "p17", "no": 17, "name": "คุณพงศธร (PTTEP Board)", "flight": "B", "team": "5"}, {"id": "p18", "no": 18, "name": "คุณประสงค์ (PTT)", "flight": "B", "team": "5"}, {"id": "p19", "no": 19, "name": "คุณปิกทอง (OR)", "flight": "B", "team": "5"}, {"id": "p20", "no": 20, "name": "คุณพงษ์พันธ์ (TOP)", "flight": "B", "team": "5"}, {"id": "p21", "no": 21, "name": "คุณชญาน์ (PTT)", "flight": "B", "team": "6"}, {"id": "p22", "no": 22, "name": "คุณพิลาสพรรณ", "flight": "B", "team": "6"}, {"id": "p23", "no": 23, "name": "คุณศุภศจี (PTT)", "flight": "B", "team": "6"}, {"id": "p24", "no": 24, "name": "คุณสุชีลา (PTT)", "flight": "B", "team": "6"}, {"id": "p25", "no": 25, "name": "คุณพรรคพงษ์ (GC)", "flight": "B", "team": "7"}, {"id": "p26", "no": 26, "name": "คุณทรงพล (OR)", "flight": "B", "team": "7"}, {"id": "p27", "no": 27, "name": "คุณไพศาล (OR)", "flight": "B", "team": "7"}, {"id": "p28", "no": 28, "name": "คุณอธิวัฒน์ (OR)", "flight": "B", "team": "7"}, {"id": "p29", "no": 29, "name": "รอยืนยัน 1", "flight": "B", "team": "8"}, {"id": "p30", "no": 30, "name": "รอยืนยัน 2", "flight": "B", "team": "8"}, {"id": "p31", "no": 31, "name": "รอยืนยัน 3", "flight": "B", "team": "8"}, {"id": "p32", "no": 32, "name": "รอยืนยัน 4", "flight": "B", "team": "8"}], "teams": [{"id": "1", "name": "1/1 · 13:02"}, {"id": "2", "name": "1/2 · 13:10"}, {"id": "3", "name": "1/3 · 13:18"}, {"id": "4", "name": "1/4 · 13:26"}, {"id": "5", "name": "10/1 · 13:02"}, {"id": "6", "name": "10/2 · 13:10"}, {"id": "7", "name": "10/3 · 13:18"}, {"id": "8", "name": "10/4 · (รอยืนยัน)"}]};
+const TEEOFF={"players": [{"id": "p01", "no": 1, "name": "คุณคงกระพัน", "flight": "A", "team": "1", "title": "CEO PTT", "org": "PTT"}, {"id": "p02", "no": 2, "name": "ร.ต.อ. ปิยะ", "flight": "A", "team": "1", "title": "PTT BOARD", "org": "PTT"}, {"id": "p03", "no": 3, "name": "พลเอก นิมิตต์", "flight": "A", "team": "1", "title": "GC BOARD", "org": "GC"}, {"id": "p04", "no": 4, "name": "คุณชาญศิลป์", "flight": "A", "team": "1", "title": "", "org": ""}, {"id": "p05", "no": 5, "name": "พลอากาศเอก ชานนท์", "flight": "A", "team": "2", "title": "TOP BOARD", "org": "TOP"}, {"id": "p06", "no": 6, "name": "คุณดิษทัต", "flight": "A", "team": "2", "title": "", "org": ""}, {"id": "p07", "no": 7, "name": "พลเอก นิธิ", "flight": "A", "team": "2", "title": "", "org": ""}, {"id": "p08", "no": 8, "name": "คุณไกรพัท", "flight": "A", "team": "2", "title": "OR", "org": "OR"}, {"id": "p09", "no": 9, "name": "คุณสุรชัย", "flight": "A", "team": "3", "title": "PTT", "org": "PTT"}, {"id": "p10", "no": 10, "name": "คุณนิสิต", "flight": "A", "team": "3", "title": "OR", "org": "OR"}, {"id": "p11", "no": 11, "name": "คุณณัฏฐะวุฒิ", "flight": "A", "team": "3", "title": "PTT", "org": "PTT"}, {"id": "p12", "no": 12, "name": "คุณกฤษณ์", "flight": "A", "team": "3", "title": "PTTEP", "org": "PTTEP"}, {"id": "p13", "no": 13, "name": "คุณรชา", "flight": "A", "team": "4", "title": "OR", "org": "OR"}, {"id": "p14", "no": 14, "name": "คุณปิยะวัฒน์", "flight": "A", "team": "4", "title": "PTT", "org": "PTT"}, {"id": "p15", "no": 15, "name": "คุณไวรยางค์", "flight": "A", "team": "4", "title": "PTT", "org": "PTT"}, {"id": "p16", "no": 16, "name": "คุณณัฐพงษ์", "flight": "A", "team": "4", "title": "TOP", "org": "TOP"}, {"id": "p17", "no": 17, "name": "คุณพงศธร", "flight": "B", "team": "5", "title": "PTTEP BOARD", "org": "PTTEP"}, {"id": "p18", "no": 18, "name": "คุณประสงค์", "flight": "B", "team": "5", "title": "PTT", "org": "PTT"}, {"id": "p19", "no": 19, "name": "คุณปิกทอง", "flight": "B", "team": "5", "title": "OR", "org": "OR"}, {"id": "p20", "no": 20, "name": "คุณพงษ์พันธ์", "flight": "B", "team": "5", "title": "TOP", "org": "TOP"}, {"id": "p21", "no": 21, "name": "คุณชญาน์", "flight": "B", "team": "6", "title": "PTT", "org": "PTT"}, {"id": "p22", "no": 22, "name": "คุณพิลาสพรรณ", "flight": "B", "team": "6", "title": "", "org": ""}, {"id": "p23", "no": 23, "name": "คุณศุภศจี", "flight": "B", "team": "6", "title": "PTT", "org": "PTT"}, {"id": "p24", "no": 24, "name": "คุณสุชีลา", "flight": "B", "team": "6", "title": "PTT", "org": "PTT"}, {"id": "p25", "no": 25, "name": "คุณพรรคพงษ์", "flight": "B", "team": "7", "title": "GC", "org": "GC"}, {"id": "p26", "no": 26, "name": "คุณทรงพล", "flight": "B", "team": "7", "title": "OR", "org": "OR"}, {"id": "p27", "no": 27, "name": "คุณไพศาล", "flight": "B", "team": "7", "title": "OR", "org": "OR"}, {"id": "p28", "no": 28, "name": "คุณอธิวัฒน์", "flight": "B", "team": "7", "title": "OR", "org": "OR"}, {"id": "p29", "no": 29, "name": "รอยืนยัน 1", "flight": "B", "team": "8", "title": "", "org": ""}, {"id": "p30", "no": 30, "name": "รอยืนยัน 2", "flight": "B", "team": "8", "title": "", "org": ""}, {"id": "p31", "no": 31, "name": "รอยืนยัน 3", "flight": "B", "team": "8", "title": "", "org": ""}, {"id": "p32", "no": 32, "name": "รอยืนยัน 4", "flight": "B", "team": "8", "title": "", "org": ""}], "teams": [{"id": "1", "name": "1/1 · 13:02", "start": "1", "time": "13:02"}, {"id": "2", "name": "1/2 · 13:10", "start": "1", "time": "13:10"}, {"id": "3", "name": "1/3 · 13:18", "start": "1", "time": "13:18"}, {"id": "4", "name": "1/4 · 13:26", "start": "1", "time": "13:26"}, {"id": "5", "name": "10/1 · 13:02", "start": "10", "time": "13:02"}, {"id": "6", "name": "10/2 · 13:10", "start": "10", "time": "13:10"}, {"id": "7", "name": "10/3 · 13:18", "start": "10", "time": "13:18"}, {"id": "8", "name": "10/4 · (รอยืนยัน)", "start": "10", "time": ""}]};
+function normRoster(R){
+  R=JSON.parse(JSON.stringify(R||{players:[],teams:[]}));
+  (R.players||[]).forEach(p=>{if(p.title===undefined){const m=String(p.name||"").match(/\((.*?)\)/);const par=m?m[1]:"";p.title=par;p.name=String(p.name||"").replace(/\s*\(.*?\)\s*/g," ").trim();const o=["PTTEP","PTT","GC","TOP","IRPC","OR"].find(o=>par.toUpperCase().startsWith(o));p.org=o||"";}});
+  (R.teams||[]).forEach(t=>{if(t.start===undefined){const m=String(t.name||"").match(/^(\d+)\/(\d+)\s*·?\s*(\d{1,2}[:.]\d{2})?/);t.start=m?m[1]:"";t.time=m&&m[3]?m[3].replace(".",":"):"";}});
+  return R;
+}
 function defaultRoster(){return JSON.parse(JSON.stringify(TEEOFF));}
 
 // ---------- state ----------
-const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
+const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
 let db=null, view="results", resTab="W", curPid=null;
 
 // ---------- utils ----------
@@ -246,8 +343,8 @@ function setBanner(t,cls){const b=$("banner");if(!t){b.classList.add("hidden");r
 
 // ---------- storage ----------
 const LKEY="p1golf_v1";
-function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp}));}catch(e){}}
-function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};if(JSON.stringify(S.config.pars)===OLD_PARS)S.config.pars=[...DEFAULT_CONFIG.pars];S.roster=d.roster||S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};}}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};if(JSON.stringify(S.config.pars)===OLD_PARS)S.config.pars=[...DEFAULT_CONFIG.pars];S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};}}catch(e){}}
 
 const queues={};
 function write(path,data){
@@ -268,6 +365,8 @@ const saveConfig=()=>write("event/config",S.config);
 const saveRoster=()=>write("event/roster",S.roster);
 const saveScore=pid=>write("scores/"+pid,{s:S.scores[pid]||[],t:Date.now()});
 const saveNtp=h=>write("ntp/h"+h,{entries:S.ntp[h]||[]});
+const savePhoto=id=>write("photos/"+id,{img:S.photos[id]||"",t:Date.now()});
+const savePR=id=>write("pr/"+id,{img:(S.pr[id]||{}).img||"",title:(S.pr[id]||{}).title||"",t:Date.now()});
 
 function loadScript(src){return new Promise((ok,no)=>{const e=document.createElement("script");e.src=src;e.onload=ok;e.onerror=no;document.head.appendChild(e);});}
 async function init(){
@@ -286,8 +385,10 @@ async function init(){
   const once=f=>{let d=false;return x=>{f(x);if(!d){d=true;done();}};};
   const onErr=e=>setBanner("การเชื่อมต่อขัดข้อง: "+(e&&e.message||""),"err");
   db.doc("event/config").onSnapshot(once(s=>{if(s.exists){S.config={...DEFAULT_CONFIG,...s.data()};if(JSON.stringify(S.config.pars)===OLD_PARS||!S.config.course){S.config.pars=[...DEFAULT_CONFIG.pars];S.config.course=S.config.course||DEFAULT_CONFIG.course;saveConfig();}}render("remote");}),onErr);
-  db.doc("event/roster").onSnapshot(once(s=>{if(s.exists){S.roster=JSON.parse(JSON.stringify(s.data()));}render("remote");}),onErr);
+  db.doc("event/roster").onSnapshot(once(s=>{if(s.exists){S.roster=normRoster(s.data());}render("remote");}),onErr);
   db.collection("scores").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id]=[...(d.data().s||[])]);S.scores=o;render("remote");}),onErr);
+  db.collection("photos").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();if(x.img)o[d.id]=x.img;});S.photos=o;render("remote");},onErr);
+  db.collection("pr").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();o[d.id]={img:x.img||"",title:x.title||""};});S.pr=o;render("remote");},onErr);
   db.collection("ntp").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id.replace(/^h/,"")]=JSON.parse(JSON.stringify(d.data().entries||[])));S.ntp=o;render("remote");}),onErr);
 }
 function goLocal(msg){S.mode="local";loadLocal();setBanner(msg);applyPerm();render();}
@@ -320,6 +421,9 @@ function render(src){
   $("evSub").textContent=(S.config.course?S.config.course+" · ":"")+"System 36 · Nearest to Pin"+(S.config.date?" · "+S.config.date:"");
   renderResults();
   if(view==="score") renderScore(src==="remote");
+  if(view==="pr"&&!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#v-pr input"))) renderPR();
+  if(view==="pair") renderPair();
+  if(presIdx!=null) drawPresenter();
   if(view==="setup"&&src!=="remote") renderSetup();
   if(view==="setup"&&src==="remote"&&!document.activeElement.closest("#v-setup")) renderSetup();
 }
@@ -419,9 +523,11 @@ function awardsHtml(){
 }
 const PHOTOS=new Set([...Array(28)].map((_,i)=>"p"+String(i+1).padStart(2,"0")));
 const ORGS=["PTTEP","PTT","GC","TOP","IRPC","OR"];
-function orgOf(p){const m=String(p.name||"").match(/\(([A-Za-z]+)/);if(!m)return null;const o=m[1].toUpperCase();return ORGS.includes(o)?o:(o==="THAIOIL"?"TOP":null);}
+function orgOf(p){if(p&&p.org!==undefined)return p.org||null;return orgOf0(p);}
+function orgOf0(p){const m=String(p.name||"").match(/\(([A-Za-z]+)/);if(!m)return null;const o=m[1].toUpperCase();return ORGS.includes(o)?o:(o==="THAIOIL"?"TOP":null);}
 function cleanName(n){return String(n||"").replace(/\s*\(.*?\)\s*/g,"").trim();}
-function av(p,cls){cls=cls||"";if(p&&PHOTOS.has(p.id))return `<img class="av ${cls}" src="img/${p.id}.jpg" alt="" loading="lazy">`;const n=cleanName(p&&p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.)\s*/,"");return `<span class="av ini ${cls}">${esc(n.slice(0,1)||"?")}</span>`;}
+function photoSrc(p){if(!p)return null;return (S.photos&&S.photos[p.id])||(PHOTOS.has(p.id)?`img/${p.id}.jpg`:null);}
+function av(p,cls){cls=cls||"";if(p&&photoSrc(p))return `<img class="av ${cls}" src="${photoSrc(p)}" alt="" loading="lazy">`;const n=cleanName(p&&p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.)\s*/,"");return `<span class="av ini ${cls}">${esc(n.slice(0,1)||"?")}</span>`;}
 function lg(p){const o=p&&orgOf(p);return o?`<img class="lg" src="img/logo_${o}.png" alt="${o}">`:"";}
 function pByName(n){return S.roster.players.find(p=>p.name===n)||S.roster.players.find(p=>cleanName(p.name)===cleanName(n));}
 function teamName(id){const t=S.roster.teams.find(t=>String(t.id)===String(id));return t?t.name:"";}
@@ -468,8 +574,8 @@ function renderRoster(){
 function drawRoster(){
   const R=draftRoster, topt=sel=>R.teams.map(t=>`<option value="${t.id}"${String(sel)===String(t.id)?" selected":""}>${esc(t.name)}</option>`).join("");
   $("rCount").textContent=`(${R.players.length} คน · A ${R.players.filter(p=>p.flight==="A").length} / B ${R.players.filter(p=>p.flight==="B").length})`;
-  $("rBody").innerHTML=R.players.map((p,i)=>`<tr><td class="meta">${i+1}</td><td><input type="text" value="${esc(p.name)}" data-rn="${i}"></td><td><select data-rf="${i}"><option value="A"${p.flight==="A"?" selected":""}>A</option><option value="B"${p.flight==="B"?" selected":""}>B</option></select></td><td><select data-rt="${i}">${topt(p.team)}</select></td><td><button class="x" data-rd="${i}">×</button></td></tr>`).join("");
-  $("teamNames").innerHTML=R.teams.map((t,i)=>`<div><label class="f">ก๊วน ${i+1}</label><input type="text" value="${esc(t.name)}" data-tn="${i}"></div>`).join("");
+  $("rBody").innerHTML=R.players.map((p,i)=>`<tr><td class="meta">${i+1}</td><td><button class="x" data-rph="${p.id}" title="อัปโหลดรูป" style="padding:0">${av(p)}</button></td><td><input type="text" value="${esc(p.name)}" data-rn="${i}" style="min-width:130px"></td><td><input type="text" value="${esc(p.title||"")}" data-rti="${i}" placeholder="เช่น CEO PTT" style="min-width:110px"></td><td><select data-ro="${i}">${["","PTT","PTTEP","GC","TOP","IRPC","OR"].map(o=>`<option value="${o}"${(p.org||"")===o?" selected":""}>${o?ORGNAME[o]:"—"}</option>`).join("")}</select></td><td><select data-rf="${i}"><option value="A"${p.flight==="A"?" selected":""}>A</option><option value="B"${p.flight==="B"?" selected":""}>B</option></select></td><td><select data-rt="${i}">${topt(p.team)}</select></td><td><button class="x" data-rd="${i}">×</button></td></tr>`).join("");
+  $("teamNames").innerHTML=R.teams.map((t,i)=>`<div><label class="f">ก๊วน ${i+1} · ชื่อ / ออกหลุม / เวลา Tee off</label><div class="row" style="flex-wrap:nowrap"><input type="text" value="${esc(t.name)}" data-tn="${i}"><select data-tst="${i}" style="width:90px">${["1","10"].map(h=>`<option value="${h}"${String(t.start)===h?" selected":""}>หลุม ${h}</option>`).join("")}</select><input type="time" value="${esc(t.time||"")}" data-ttm="${i}" style="width:110px"></div></div>`).join("");
 }
 
 // ---------- permissions / nav ----------
@@ -478,8 +584,8 @@ function applyPerm(){
   if(!S.canWrite&&view!=="results") show("results");
 }
 function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
-  ["results","score","setup"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
-  if(v==="score")renderScore();if(v==="setup")renderSetup();if(v==="results")renderResults();
+  ["results","score","pair","pr","setup"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
+  if(v==="score")renderScore();if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();
   try{history.replaceState(null,"","#"+v);}catch(e){}
 }
 
@@ -518,13 +624,17 @@ $("v-setup").addEventListener("input",e=>{
   if(d.rn!=null) draftRoster.players[+d.rn].name=t.value;
   if(d.rf!=null){draftRoster.players[+d.rf].flight=t.value;drawRosterCount();}
   if(d.rt!=null) draftRoster.players[+d.rt].team=t.value;
+  if(d.rti!=null) draftRoster.players[+d.rti].title=t.value;
+  if(d.ro!=null) draftRoster.players[+d.ro].org=t.value;
+  if(d.tst!=null) draftRoster.teams[+d.tst].start=t.value;
+  if(d.ttm!=null) draftRoster.teams[+d.ttm].time=t.value;
   if(d.tn!=null) draftRoster.teams[+d.tn].name=t.value;
 });
 function drawRosterCount(){const R=draftRoster;$("rCount").textContent=`(${R.players.length} คน · A ${R.players.filter(p=>p.flight==="A").length} / B ${R.players.filter(p=>p.flight==="B").length})`;}
-$("rBody").onclick=e=>{const b=e.target.closest("[data-rd]");if(!b)return;draftRoster.players.splice(+b.dataset.rd,1);drawRoster();};
-$("addP").onclick=()=>{const R=draftRoster;let n=1;while(R.players.find(p=>p.id==="p"+String(n).padStart(2,"0")))n++;R.players.push({id:"p"+String(n).padStart(2,"0"),no:R.players.length+1,name:"ผู้เล่นใหม่",flight:"B",team:R.teams[0]?R.teams[0].id:"1"});drawRoster();};
+$("rBody").onclick=e=>{const ph=e.target.closest("[data-rph]");if(ph){phTarget=ph.dataset.rph;$("phFile").value="";$("phFile").click();return;}const b=e.target.closest("[data-rd]");if(!b)return;draftRoster.players.splice(+b.dataset.rd,1);drawRoster();};
+$("addP").onclick=()=>{const R=draftRoster;let n=1;while(R.players.find(p=>p.id==="p"+String(n).padStart(2,"0")))n++;R.players.push({id:"p"+String(n).padStart(2,"0"),no:R.players.length+1,name:"ผู้เล่นใหม่",title:"",org:"",flight:"B",team:R.teams[0]?R.teams[0].id:"1"});drawRoster();};
 $("autoTeam").onclick=()=>{const R=draftRoster,k=R.teams.length||1,size=Math.ceil(R.players.length/k);R.players.forEach((p,i)=>p.team=R.teams[Math.min(k-1,Math.floor(i/size))].id);drawRoster();toast("จัดก๊วนแล้ว — กดบันทึกรายชื่อ");};
-$("cTeams").onchange=e=>{const n=Math.max(1,Math.min(32,+e.target.value||1)),R=draftRoster;while(R.teams.length<n)R.teams.push({id:String(R.teams.length+1),name:"ก๊วน "+(R.teams.length+1)});R.teams.length=n;R.players.forEach(p=>{if(!R.teams.find(t=>t.id===String(p.team)))p.team=R.teams[R.teams.length-1].id;});drawRoster();};
+$("cTeams").onchange=e=>{const n=Math.max(1,Math.min(32,+e.target.value||1)),R=draftRoster;while(R.teams.length<n)R.teams.push({id:String(R.teams.length+1),name:"ก๊วน "+(R.teams.length+1),start:"10",time:""});R.teams.length=n;R.players.forEach(p=>{if(!R.teams.find(t=>t.id===String(p.team)))p.team=R.teams[R.teams.length-1].id;});drawRoster();};
 $("saveRoster").onclick=()=>{draftRoster.players.forEach((p,i)=>p.no=i+1);S.roster=JSON.parse(JSON.stringify(draftRoster));saveRoster();render();toast("บันทึกรายชื่อแล้ว");};
 $("saveCfg").onclick=()=>{
   const pars=[...document.querySelectorAll("[data-par]")].map(e=>Math.max(3,Math.min(6,+e.value||4)));
@@ -540,7 +650,7 @@ $("impBtn").onclick=async()=>{const ta=$("impTxt");if(ta.classList.contains("hid
   let d;try{d=JSON.parse(ta.value);}catch(e){toast("JSON ไม่ถูกต้อง");return;}
   if(!(await confirmBox("นำเข้าข้อมูลนี้แทนข้อมูลปัจจุบัน?")))return;
   if(d.config){S.config={...DEFAULT_CONFIG,...d.config};saveConfig();}
-  if(d.roster){S.roster=d.roster;saveRoster();}
+  if(d.roster){S.roster=normRoster(d.roster);saveRoster();}
   if(d.scores){for(const k in d.scores){S.scores[k]=d.scores[k];saveScore(k);}}
   if(d.ntp){for(const k in d.ntp){S.ntp[k]=d.ntp[k];saveNtp(k);}}
   ta.value="";ta.classList.add("hidden");render();renderSetup();toast("นำเข้าแล้ว");};
@@ -561,7 +671,137 @@ $("copyRes").onclick=()=>{
   copyText(L.join("\n"));
 };
 
-const h0=(location.hash||"").slice(1); if(["results","score","setup"].includes(h0)) view=h0;
+const LOGOSTRIP=`<img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.png" alt="PTTEP"><img src="img/logo_GC.png" alt="GC"><img src="img/logo_TOP.png" alt="TOP"><img src="img/logo_IRPC.png" alt="IRPC"><img src="img/logo_OR.png" alt="OR">`;
+
+// ---------- PR slides ----------
+const PLACE=["ชนะเลิศ","รองชนะเลิศอันดับ 1","รองชนะเลิศอันดับ 2"];
+function slideList(){
+  const d=awardsData(), out=[];
+  d.flights.forEach(F=>[0,1,2].forEach(i=>out.push({id:`ind-${F.f}-${i+1}`,cat:"ประเภทเดี่ยว · "+F.name,def:`${PLACE[i]} ประเภทเดี่ยว ${F.name}`,rank:i,kind:"p",r:F.top[i]})));
+  [0,1,2].forEach(i=>out.push({id:`team-${i+1}`,cat:"ประเภททีม (ก๊วน)",def:`${PLACE[i]} ประเภททีม`,rank:i,kind:"t",x:d.teams[i]}));
+  d.ntp.forEach(n=>out.push({id:`ntp-${n.h}`,cat:"Nearest to Pin",def:`Nearest to Pin หลุม ${n.h}`,kind:"n",h:n.h,w:n.w,p:n.w?pByName(n.w.name):null}));
+  return out;
+}
+const ORGNAME={PTT:"PTT",PTTEP:"PTTEP",GC:"GC",TOP:"Thaioil",IRPC:"IRPC",OR:"OR"};
+function slideHTML(s){
+  const pr=S.pr[s.id]||{}, title=pr.title||s.def, up=pr.img;
+  let photo="",name="รอประกาศผล",org="",stats="",medal="";
+  medal=s.kind==="n"?`<div class="medal mn">หลุม<br>${s.h}</div>`:`<div class="medal m${s.rank+1}">${s.rank+1}</div>`;
+  const img=src=>`<img src="${src}" alt="">`;
+  if(s.kind==="p"&&s.r){const p=s.r.p;name=cleanName(p.name);const o=orgOf(p);
+    org=`<div class="org">${o?`<img src="img/logo_${o}.png" alt="${o}">`:""}<span>${esc(p.title||teamName(p.team))}</span></div>`;
+    photo=up?`<div class="photo">${img(up)}</div>`:(photoSrc(p)?`<div class="photo circ">${img(photoSrc(p))}</div>`:"");
+    stats=`<div class="stats"><div class="hl"><b>${s.r.net}</b><span>Net</span></div><div><b>${s.r.gross}</b><span>Gross</span></div><div><b>${s.r.hc}</b><span>Handicap</span></div><div><b>${s.r.pts}</b><span>แต้ม S36</span></div></div>`;}
+  if(s.kind==="t"&&s.x){name="ก๊วน "+grpLabel(s.x.t);
+    photo=up?`<div class="photo">${img(up)}</div>`:`<div class="photo grid">${s.x.mem.slice(0,4).map(r=>`<div>${photoSrc(r.p)?img(photoSrc(r.p)):""}${esc(cleanName(r.p.name))}</div>`).join("")}</div>`;
+    org=`<div class="org" style="flex-wrap:wrap;font-size:24px">${s.x.mem.map(r=>esc(cleanName(r.p.name))).join(" · ")}</div>`;
+    stats=`<div class="stats"><div class="hl"><b>${s.x.total}</b><span>Net รวม (${s.x.counted.length} คน)</span></div>${s.x.counted.map(r=>`<div><b>${r.net}</b><span>${esc(cleanName(r.p.name).replace(/^คุณ/,""))}</span></div>`).join("")}</div>`;}
+  if(s.kind==="n"&&s.w){const p=s.p;name=cleanName(s.w.name);const o=p&&orgOf(p);
+    if(o)org=`<div class="org"><img src="img/logo_${o}.png" alt="${o}"></div>`;
+    photo=up?`<div class="photo">${img(up)}</div>`:(p&&photoSrc(p)?`<div class="photo circ">${img(photoSrc(p))}</div>`:"");
+    stats=`<div class="stats"><div class="hl"><b>${esc(s.w.yds)}</b><span>หลา จากหลุม</span></div><div><b>Par ${S.config.pars[s.h-1]}</b><span>หลุม ${s.h}</span></div></div>`;}
+  if(!photo)photo=`<div class="photo none">📷</div>`;
+  return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
+   <div class="top"><div class="brand"><b>P1D1</b> GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div><div class="cat">${esc(s.cat)}</div></div>
+   ${photo}
+   <div class="info">${medal}<div class="award">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
+   <div class="logos2">LOGOS</div></div>`.replace("LOGOS",LOGOSTRIP);
+}
+function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=>{const sl=w.firstElementChild;if(sl)sl.style.transform=`scale(${w.clientWidth/1600})`;});}
+window.addEventListener("resize",()=>{fitSlides();if(presIdx!=null)drawPresenter();});
+function renderPR(){
+  const L=slideList();
+  $("prList").innerHTML=L.map(s=>{const pr=S.pr[s.id]||{};return `<div class="prcard"><div class="slwrap">${slideHTML(s)}</div>
+   <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def)}">
+   <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":"อัปโหลดรูป"}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
+   <button class="btn sm sec" data-prdl="${s.id}">⬇️ ดาวน์โหลด PNG</button></div></div>`;}).join("");
+  fitSlides($("prList"));
+}
+let prTarget=null;
+$("prList").addEventListener("click",e=>{
+  const u=e.target.closest("[data-pru]");if(u){prTarget=u.dataset.pru;$("prFile").value="";$("prFile").click();return;}
+  const d=e.target.closest("[data-prd]");if(d){confirmBox("ลบรูปของสไลด์นี้?").then(ok=>{if(!ok)return;S.pr[d.dataset.prd]={...(S.pr[d.dataset.prd]||{}),img:""};savePR(d.dataset.prd);renderPR();});return;}
+  const dl=e.target.closest("[data-prdl]");if(dl){downloadSlide(dl.dataset.prdl,dl);}
+});
+$("prList").addEventListener("change",e=>{const id=e.target.dataset.prt;if(!id)return;const s=slideList().find(x=>x.id===id);const v=e.target.value.trim();S.pr[id]={...(S.pr[id]||{}),title:v===s.def?"":v};savePR(id);renderPR();toast("บันทึกชื่อรางวัลแล้ว");});
+$("prFile").addEventListener("change",async e=>{const f=e.target.files[0];if(!f||!prTarget)return;
+  toast("กำลังย่อรูป…");
+  try{const url=await shrinkImage(f);S.pr[prTarget]={...(S.pr[prTarget]||{}),img:url};savePR(prTarget);renderPR();toast("อัปโหลดรูปแล้ว");}
+  catch(err){toast("อ่านรูปไม่สำเร็จ");}});
+function shrinkImage(file){return new Promise((ok,no)=>{const fr=new FileReader();fr.onerror=no;fr.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{
+  let max=1400,q=.8,out="";for(let k=0;k<6;k++){const sc=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext("2d").drawImage(im,0,0,c.width,c.height);out=c.toDataURL("image/jpeg",q);if(out.length<850000)break;max*=.8;q-=.08;}
+  ok(out);};im.src=fr.result;};fr.readAsDataURL(file);});}
+async function downloadSlide(id,btn,html){
+  const s=html?null:slideList().find(x=>x.id===id);if(!s&&!html)return;
+  if(btn){btn.disabled=true;btn.textContent="กำลังสร้างภาพ…";}
+  try{
+    if(!window.html2canvas)await loadScript("vendor/html2canvas.min.js");
+    const box=document.createElement("div");box.style.cssText="position:fixed;left:-20000px;top:0;width:1600px;height:900px";box.innerHTML=html||slideHTML(s);document.body.appendChild(box);
+    await Promise.all([...box.querySelectorAll("img")].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;})));
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    const cv=await html2canvas(box.firstElementChild,{scale:1.2,useCORS:true,backgroundColor:"#0a1342",logging:false});
+    box.remove();
+    const a=document.createElement("a");a.download=`P1D1-${id}.png`;a.href=cv.toDataURL("image/png");document.body.appendChild(a);a.click();a.remove();
+    toast("ดาวน์โหลดแล้ว");
+  }catch(err){toast("สร้างภาพไม่สำเร็จ");}
+  if(btn){btn.disabled=false;btn.textContent="⬇️ ดาวน์โหลด PNG";}
+}
+// presenter
+let presIdx=null,presOrder=[];
+function openPresenter(rev){
+  const L=slideList();
+  let ids;
+  if(rev===true){const g=(f)=>L.filter(f);ids=[...["A","B"].flatMap(f=>g(s=>s.id.startsWith("ind-"+f)).reverse()),...g(s=>s.kind==="t").reverse(),...g(s=>s.kind==="n")].map(s=>s.id);}
+  else ids=L.map(s=>s.id);
+  presOrder=rev==="pair"?[()=>pairingHTML()]:ids.map(id=>()=>{const s=slideList().find(x=>x.id===id);return s?slideHTML(s):"";});
+  presIdx=0;
+  const el=document.createElement("div");el.id="presenter";el.innerHTML=`<div class="stage"></div><div class="pctl"><button data-pa="prev">◀</button><button data-pa="fs">⛶ เต็มจอ</button><button data-pa="next">▶</button><button data-pa="x">✕ ปิด</button></div>`;
+  document.body.appendChild(el);
+  el.addEventListener("click",e=>{const b=e.target.closest("[data-pa]");
+    if(b){const a=b.dataset.pa;if(a==="x")closePresenter();else if(a==="fs"){(document.fullscreenElement?document.exitFullscreen():el.requestFullscreen&&el.requestFullscreen()).catch&&0;}else step(a==="next"?1:-1);return;}
+    step(e.clientX>innerWidth/2?1:-1);});
+  try{el.requestFullscreen&&el.requestFullscreen().catch(()=>{});}catch(e){}
+  drawPresenter();
+}
+function step(d){presIdx=Math.max(0,Math.min(presOrder.length-1,presIdx+d));drawPresenter();}
+function closePresenter(){const el=$("presenter");if(el)el.remove();presIdx=null;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});}
+function drawPresenter(){const el=$("presenter");if(!el)return;const f=presOrder[presIdx];if(!f)return;
+  const sc=Math.min(innerWidth/1600,innerHeight/900),st=el.querySelector(".stage");st.style.width=1600*sc+"px";st.style.height=900*sc+"px";
+  st.innerHTML=f();st.firstElementChild.style.transform=`scale(${sc})`;}
+document.addEventListener("keydown",e=>{if(presIdx==null)return;if(["ArrowRight","PageDown"," ","Enter"].includes(e.key)){e.preventDefault();step(1);}else if(["ArrowLeft","PageUp"].includes(e.key))step(-1);else if(e.key==="Escape")closePresenter();});
+$("prPlay").onclick=()=>openPresenter(false);$("prPlayRev").onclick=()=>openPresenter(true);
+
+// ---------- Pairing ----------
+function fmtTime(t){if(!t)return "";const [h,m]=t.split(":").map(Number);if(isNaN(h))return t;const ap=h>=12?"PM":"AM";const hh=((h+11)%12)+1;return `${hh}.${String(m).padStart(2,"0")} ${ap}`;}
+function groupsBySide(){
+  const R=S.roster, side={L:[],R:[]};
+  R.teams.forEach(t=>{const mem=R.players.filter(p=>String(p.team)===String(t.id));if(!mem.length)return;(String(t.start)==="10"?side.R:side.L).push({t,mem});});
+  const key=g=>(g.t.time||"99:99")+String(g.t.name);side.L.sort((a,b)=>key(a)<key(b)?-1:1);side.R.sort((a,b)=>key(a)<key(b)?-1:1);
+  return side;
+}
+function grpLabel(t){const m=String(t.name).match(/^\s*(\d+\/\d+)/);return m?m[1]:t.name;}
+function pairingHTML(){
+  const side=groupsBySide(), rows=Math.max(4,side.L.length,side.R.length), sc=Math.min(1,4/rows);
+  const col=(arr,left)=>`<div class="col" style="left:${left}px;transform:scale(${sc});transform-origin:0 0">${arr.map(g=>`<div class="grp"><div class="pill">${esc(grpLabel(g.t))} TEE OFF ${esc(fmtTime(g.t.time))}</div>
+    <div class="mem">${g.mem.slice(0,4).map(p=>{const src=photoSrc(p);return `<div class="m">${src?`<img src="${src}" alt="">`:`<span class="ph">${esc(cleanName(p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ร้อยตำรวจเอก)\s*/,"").slice(0,1))}</span>`}<div class="tx">${esc(p.name)}${p.title?`<small>${esc(p.title)}</small>`:""}</div></div>`;}).join("")}</div></div>`).join("")}</div>`;
+  return `<div class="pg"><div class="hdr"><div class="t"><span class="p1">P<span>1</span>D<span>1</span></span><span class="gd">GOLF DAY <b>2026</b></span></div><div class="lg2">${LOGOSTRIP}</div></div>${col(side.L,30)}${col(side.R,810)}</div>`;
+}
+function renderPair(){
+  const w=$("pairSlide");w.innerHTML=pairingHTML();fitSlides(w.parentElement);
+  const side=groupsBySide();
+  $("pairList").innerHTML=[...side.L,...side.R].map(g=>`<div class="card"><h2>⛳ ${esc(grpLabel(g.t))} · Tee off ${esc(fmtTime(g.t.time))} <span class="meta">(ออกหลุม ${esc(g.t.start||"-")})</span></h2>${g.mem.map(p=>`<div class="who" style="padding:6px 0">${av(p)}<div><div class="nm">${esc(p.name)}</div><div class="meta">${lg(p)}${esc(p.title||"")}</div></div></div>`).join("")}</div>`).join("");
+}
+$("pairPlay").onclick=()=>openPresenter("pair");
+$("pairDl").onclick=e=>downloadSlide("pairing",e.target,pairingHTML());
+// executive photo upload
+let phTarget=null;
+$("phFile").addEventListener("change",async e=>{const f=e.target.files[0];if(!f||!phTarget)return;toast("กำลังย่อรูป…");
+  try{const url=await shrinkSquare(f,320);S.photos[phTarget]=url;savePhoto(phTarget);drawRoster();render();toast("อัปเดตรูปแล้ว");}catch(err){toast("อ่านรูปไม่สำเร็จ");}});
+function shrinkSquare(file,size){return new Promise((ok,no)=>{const fr=new FileReader();fr.onerror=no;fr.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{
+  const s0=Math.min(im.width,im.height),c=document.createElement("canvas");c.width=c.height=size;
+  c.getContext("2d").drawImage(im,(im.width-s0)/2,Math.max(0,(im.height-s0)/2-s0*0.08),s0,s0,0,0,size,size);ok(c.toDataURL("image/jpeg",.85));};im.src=fr.result;};fr.readAsDataURL(file);});}
+
+const h0=(location.hash||"").slice(1); if(["results","score","pair","pr","setup"].includes(h0)) view=h0;
 show(view);
 init();
 </script>

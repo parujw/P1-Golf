@@ -3,6 +3,7 @@ import { mkdirSync, copyFileSync, writeFileSync, cpSync } from "node:fs";
 mkdirSync("dist", { recursive: true });
 copyFileSync("index.html", "dist/index.html");
 cpSync("img", "dist/img", { recursive: true });
+cpSync("vendor", "dist/vendor", { recursive: true });
 const raw = (process.env.FIREBASE_CONFIG || "").trim();
 if (raw) {
   let cfg;
