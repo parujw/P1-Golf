@@ -483,6 +483,10 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .sl .zimg{top:150px;height:600px;right:60px}
 .thZ .zx{left:360px;width:620px}
 .sl .zx .zi{margin-top:30px}
+.sl .zx .zh{display:flex;align-items:center;gap:16px;margin-top:26px}
+.sl .zx .zh span{font-family:"Chakra Petch","Anuphan",sans-serif;font-weight:700;font-size:30px;color:#F2B705;margin-right:4px}
+.sl .zx .zh b{width:104px;height:104px;border-radius:50%;background:#F2B705;color:#0b1a12;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:56px;line-height:.95;box-shadow:0 8px 22px #0007}
+.sl .zx .zh b small{font-size:17px;font-weight:600;letter-spacing:1px;margin-top:2px}
 .sl .zx .zrows{margin-top:18px}
 .sl .zx .zrows div{display:flex;gap:18px;font-size:34px;line-height:1.5;font-family:"Anuphan",sans-serif;color:#ffffffd8}
 .sl .zx .zrows span{min-width:150px;color:#ffffff99}
@@ -1197,15 +1201,15 @@ function noParen(t){return String(t||"").replace(/\s*\([^)]*\)/g,"").trim();}
 function prizeSlideHTML(s,th){
   const k=s.pk,p=prize(k)||{},c=S.config,pr=S.pr[s.id]||{},title=pr.title||s.def,img=pr.img||PRIZEIMG[k]||"";
   let cnt="";
-  if(k==="ntp")cnt=`หลุม ${(c.ntpHoles||[]).join(", ")}`;
-  if(k==="ld")cnt=`หลุม ${(c.ldHoles||[]).join(", ")}`;
+  const holes=k==="ntp"?(c.ntpHoles||[]):k==="ld"?(c.ldHoles||[]):[];
+  
   if(k==="team")cnt=(+c.teamPlaces||1)===1?"":`อันดับ 1–${c.teamPlaces}`;
   if(k==="ind")cnt=`อันดับ 1–${c.indPlaces||3} ของแต่ละ Flight`;
   const body=`<div class="zx">
       <div class="zt" style="font-size:${fitFont(title,600,64,34)}px">${esc(title)}</div>
       <div class="zi" style="font-size:${fitFont(p.item||"",600,56,30)}px">${esc(p.item||"")}</div>
       <div class="zrows">${p.qty?`<div><span>จำนวน</span><b>${esc(noParen(p.qty))}</b></div>`:""}${p.value?`<div><span>มูลค่ารวม</span><b>${esc(noParen(p.value))}</b></div>`:""}</div>
-      ${cnt?`<div class="zc">${esc(cnt)}</div>`:""}
+      ${holes.length?`<div class="zh"><span>หลุม</span>${holes.map(h=>`<b>${h}<small>PAR ${c.pars[h-1]}</small></b>`).join("")}</div>`:""}${cnt?`<div class="zc">${esc(cnt)}</div>`:""}
       ${p.by?`<div class="zb">มอบโดย <b>${esc(p.by)}</b></div>`:""}</div>
     <div class="zimg">${img?`<img src="${img}" alt="">`:`<span>🎁</span>`}</div>`;
   if(th==="o")return `<div class="sl zo"><div class="stripe"></div><div class="stripe2"></div><div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(c.course||"")}</small></div></div></div>${body}<div class="logos2">${LOGOSTRIP}</div></div>`;
