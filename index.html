@@ -166,6 +166,7 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
       <div class="grid2">
         <div><label class="f">ชื่องาน</label><input type="text" id="cName"></div>
         <div><label class="f">วันที่</label><input type="text" id="cDate" placeholder="เช่น 29/03/2027"></div>
+        <div><label class="f">สนาม</label><input type="text" id="cCourse"></div>
         <div><label class="f">ชื่อ Flight A</label><input type="text" id="cFA"></div>
         <div><label class="f">ชื่อ Flight B</label><input type="text" id="cFB"></div>
         <div><label class="f">หลุม Nearest to Pin (คั่นด้วย ,)</label><input type="text" id="cNtp"></div>
@@ -218,10 +219,14 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 
 <script>
 // ---------- defaults ----------
+const OLD_PARS=JSON.stringify([4,5,4,3,4,4,5,3,4,4,3,5,3,4,4,3,5,5]);
+// Rajpruek Club yardage (Blue / White) + stroke index
+const YARDS={B:[374,495,361,214,385,366,548,189,345,421,165,492,196,502,419,162,551,380],W:[345,480,338,190,357,342,526,156,327,408,106,473,181,487,396,143,532,354]};
+const SI=[13,3,9,15,5,11,1,17,7,2,18,12,10,16,8,6,14,4];
 const DEFAULT_CONFIG = {
   name:"P1D1 Golf Day 2026", date:"",
   flightA:"Flight A", flightB:"Flight B",
-  pars:[4,5,4,3,4,4,5,3,4, 4,3,5,3,4,4,3,5,5],
+  pars:[4,5,4,3,4,4,5,3,4, 4,3,5,3,5,4,3,5,4], course:"Rajpruek Club",
   ntpHoles:[4,8,11,13,16], hcCap:null, teamCount:8, teamBest:3
 };
 const TEEOFF={"players": [{"id": "p01", "no": 1, "name": "คุณคงกระพัน (PTT)", "flight": "A", "team": "1"}, {"id": "p02", "no": 2, "name": "ร.ต.อ. ปิยะ (PTT Board)", "flight": "A", "team": "1"}, {"id": "p03", "no": 3, "name": "พลเอก นิมิตต์ (GC Board)", "flight": "A", "team": "1"}, {"id": "p04", "no": 4, "name": "คุณชาญศิลป์", "flight": "A", "team": "1"}, {"id": "p05", "no": 5, "name": "พลอากาศเอก ชานนท์ (TOP Board)", "flight": "A", "team": "2"}, {"id": "p06", "no": 6, "name": "คุณดิษทัต", "flight": "A", "team": "2"}, {"id": "p07", "no": 7, "name": "พลเอก นิธิ", "flight": "A", "team": "2"}, {"id": "p08", "no": 8, "name": "คุณไกรพัท (OR)", "flight": "A", "team": "2"}, {"id": "p09", "no": 9, "name": "คุณสุรชัย (PTT)", "flight": "A", "team": "3"}, {"id": "p10", "no": 10, "name": "คุณนิสิต (OR)", "flight": "A", "team": "3"}, {"id": "p11", "no": 11, "name": "คุณณัฏฐะวุฒิ (PTT)", "flight": "A", "team": "3"}, {"id": "p12", "no": 12, "name": "คุณกฤษณ์ (PTTEP)", "flight": "A", "team": "3"}, {"id": "p13", "no": 13, "name": "คุณรชา (OR)", "flight": "A", "team": "4"}, {"id": "p14", "no": 14, "name": "คุณปิยะวัฒน์ (PTT)", "flight": "A", "team": "4"}, {"id": "p15", "no": 15, "name": "คุณไวรยางค์ (PTT)", "flight": "A", "team": "4"}, {"id": "p16", "no": 16, "name": "คุณณัฐพงษ์ (TOP)", "flight": "A", "team": "4"}, {"id": "p17", "no": 17, "name": "คุณพงศธร (PTTEP Board)", "flight": "B", "team": "5"}, {"id": "p18", "no": 18, "name": "คุณประสงค์ (PTT)", "flight": "B", "team": "5"}, {"id": "p19", "no": 19, "name": "คุณปิกทอง (OR)", "flight": "B", "team": "5"}, {"id": "p20", "no": 20, "name": "คุณพงษ์พันธ์ (TOP)", "flight": "B", "team": "5"}, {"id": "p21", "no": 21, "name": "คุณชญาน์ (PTT)", "flight": "B", "team": "6"}, {"id": "p22", "no": 22, "name": "คุณพิลาสพรรณ", "flight": "B", "team": "6"}, {"id": "p23", "no": 23, "name": "คุณศุภศจี (PTT)", "flight": "B", "team": "6"}, {"id": "p24", "no": 24, "name": "คุณสุชีลา (PTT)", "flight": "B", "team": "6"}, {"id": "p25", "no": 25, "name": "คุณพรรคพงษ์ (GC)", "flight": "B", "team": "7"}, {"id": "p26", "no": 26, "name": "คุณทรงพล (OR)", "flight": "B", "team": "7"}, {"id": "p27", "no": 27, "name": "คุณไพศาล (OR)", "flight": "B", "team": "7"}, {"id": "p28", "no": 28, "name": "คุณอธิวัฒน์ (OR)", "flight": "B", "team": "7"}, {"id": "p29", "no": 29, "name": "รอยืนยัน 1", "flight": "B", "team": "8"}, {"id": "p30", "no": 30, "name": "รอยืนยัน 2", "flight": "B", "team": "8"}, {"id": "p31", "no": 31, "name": "รอยืนยัน 3", "flight": "B", "team": "8"}, {"id": "p32", "no": 32, "name": "รอยืนยัน 4", "flight": "B", "team": "8"}], "teams": [{"id": "1", "name": "1/1 · 13:02"}, {"id": "2", "name": "1/2 · 13:10"}, {"id": "3", "name": "1/3 · 13:18"}, {"id": "4", "name": "1/4 · 13:26"}, {"id": "5", "name": "10/1 · 13:02"}, {"id": "6", "name": "10/2 · 13:10"}, {"id": "7", "name": "10/3 · 13:18"}, {"id": "8", "name": "10/4 · (รอยืนยัน)"}]};
@@ -242,7 +247,7 @@ function setBanner(t,cls){const b=$("banner");if(!t){b.classList.add("hidden");r
 // ---------- storage ----------
 const LKEY="p1golf_v1";
 function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp}));}catch(e){}}
-function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};S.roster=d.roster||S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};}}catch(e){}}
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};if(JSON.stringify(S.config.pars)===OLD_PARS)S.config.pars=[...DEFAULT_CONFIG.pars];S.roster=d.roster||S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};}}catch(e){}}
 
 const queues={};
 function write(path,data){
@@ -280,7 +285,7 @@ async function init(){
   let pending=4; const done=()=>{if(--pending===0){clearTimeout(timer);setBanner("🟢 ออนไลน์ — ผลอัปเดตแบบเรียลไทม์","ok");setTimeout(()=>setBanner(null),3000);render();}};
   const once=f=>{let d=false;return x=>{f(x);if(!d){d=true;done();}};};
   const onErr=e=>setBanner("การเชื่อมต่อขัดข้อง: "+(e&&e.message||""),"err");
-  db.doc("event/config").onSnapshot(once(s=>{if(s.exists){S.config={...DEFAULT_CONFIG,...s.data()};}render("remote");}),onErr);
+  db.doc("event/config").onSnapshot(once(s=>{if(s.exists){S.config={...DEFAULT_CONFIG,...s.data()};if(JSON.stringify(S.config.pars)===OLD_PARS||!S.config.course){S.config.pars=[...DEFAULT_CONFIG.pars];S.config.course=S.config.course||DEFAULT_CONFIG.course;saveConfig();}}render("remote");}),onErr);
   db.doc("event/roster").onSnapshot(once(s=>{if(s.exists){S.roster=JSON.parse(JSON.stringify(s.data()));}render("remote");}),onErr);
   db.collection("scores").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id]=[...(d.data().s||[])]);S.scores=o;render("remote");}),onErr);
   db.collection("ntp").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id.replace(/^h/,"")]=JSON.parse(JSON.stringify(d.data().entries||[])));S.ntp=o;render("remote");}),onErr);
@@ -312,7 +317,7 @@ function ntpWinner(h){const e=(S.ntp[h]||[]).filter(x=>x.yds!==""&&!isNaN(+x.yds
 // ---------- render ----------
 function render(src){
   $("evName").textContent=S.config.name||"Golf Event";
-  $("evSub").textContent="System 36 · Nearest to Pin"+(S.config.date?" · "+S.config.date:"");
+  $("evSub").textContent=(S.config.course?S.config.course+" · ":"")+"System 36 · Nearest to Pin"+(S.config.date?" · "+S.config.date:"");
   renderResults();
   if(view==="score") renderScore(src==="remote");
   if(view==="setup"&&src!=="remote") renderSetup();
@@ -333,7 +338,7 @@ function renderResults(){
   } else if(resTab==="N"){
     const names=S.roster.players.map(p=>`<option value="${esc(p.name)}">`).join("");
     body.innerHTML=`<datalist id="pNames">${names}</datalist><div class="ntpgrid">${(c.ntpHoles||[]).map(h=>{const w=ntpWinner(h), list=(S.ntp[h]||[]).map((e,i)=>({...e,i})).sort((a,b)=>(+a.yds)-(+b.yds));
-      return `<div class="ntp"><div class="top"><div class="t">NEAREST TO PIN<br><span class="meta">Par ${c.pars[h-1]}</span></div><div class="hn"><span class="meta" style="font-size:10px;letter-spacing:2px;display:block;text-align:right">HOLE</span>${h}</div></div>
+      return `<div class="ntp"><div class="top"><div class="t">NEAREST TO PIN<br><span class="meta">Par ${c.pars[h-1]} · <span style="color:#2a4fd6">●</span>${YARDS.B[h-1]} <span style="color:#999">○</span>${YARDS.W[h-1]} หลา</span></div><div class="hn"><span class="meta" style="font-size:10px;letter-spacing:2px;display:block;text-align:right">HOLE</span>${h}</div></div>
       <div class="win">${w?`<div class="who">${av(pByName(w.name))}<div><div>🏆 <span class="w">${esc(cleanName(w.name))}</span></div><div>${lg(pByName(w.name))}<span class="y">${esc(w.yds)} หลา</span></div></div></div>`:`<span class="meta">ยังไม่มีผู้บันทึก</span>`}</div>
       <ul>${list.map(e=>`<li><span>${esc(e.name)}</span><span><b>${esc(e.yds)}</b> หลา ${S.canWrite?`<button class="x" data-dn="${h}" data-i="${e.i}">×</button>`:""}</span></li>`).join("")}</ul>
       ${S.canWrite?`<div class="add"><input type="text" list="pNames" placeholder="ชื่อ" data-nn="${h}"><input type="number" step="0.1" placeholder="หลา" style="width:80px" data-ny="${h}"><button class="btn sm" data-na="${h}">+</button></div>`:""}</div>`;}).join("")}</div>`;
@@ -447,7 +452,7 @@ function renderSum(){
 
 function renderSetup(){
   const c=S.config;
-  $("cName").value=c.name||"";$("cDate").value=c.date||"";$("cFA").value=c.flightA||"";$("cFB").value=c.flightB||"";
+  $("cName").value=c.name||"";$("cDate").value=c.date||"";$("cCourse").value=c.course||"";$("cFA").value=c.flightA||"";$("cFB").value=c.flightB||"";
   $("cNtp").value=(c.ntpHoles||[]).join(", ");$("cCap").value=c.hcCap??"";$("cTeams").value=S.roster.teams.length;$("cBest").value=c.teamBest;
   const pc=i=>`<div class="hole"><div class="h">${i+1}</div><input type="number" min="3" max="6" data-par="${i}" value="${c.pars[i]}"></div>`;
   $("parOut").innerHTML=[...Array(9)].map((_,i)=>pc(i)).join("");$("parIn").innerHTML=[...Array(9)].map((_,i)=>pc(i+9)).join("");
@@ -525,7 +530,7 @@ $("saveCfg").onclick=()=>{
   const pars=[...document.querySelectorAll("[data-par]")].map(e=>Math.max(3,Math.min(6,+e.value||4)));
   const ntp=$("cNtp").value.split(/[,\s]+/).map(Number).filter(n=>n>=1&&n<=18);
   const cap=$("cCap").value===""?null:Math.max(0,+$("cCap").value);
-  S.config={...S.config,name:$("cName").value.trim(),date:$("cDate").value.trim(),flightA:$("cFA").value.trim()||"Flight A",flightB:$("cFB").value.trim()||"Flight B",pars,ntpHoles:ntp,hcCap:cap,teamBest:Math.max(1,+$("cBest").value||3),teamCount:draftRoster.teams.length};
+  S.config={...S.config,name:$("cName").value.trim(),date:$("cDate").value.trim(),course:$("cCourse").value.trim(),flightA:$("cFA").value.trim()||"Flight A",flightB:$("cFB").value.trim()||"Flight B",pars,ntpHoles:ntp,hcCap:cap,teamBest:Math.max(1,+$("cBest").value||3),teamCount:draftRoster.teams.length};
   saveConfig();
   if(JSON.stringify(draftRoster.teams)!==JSON.stringify(S.roster.teams)){S.roster=JSON.parse(JSON.stringify(draftRoster));saveRoster();}
   render();toast("บันทึกการตั้งค่าแล้ว");
