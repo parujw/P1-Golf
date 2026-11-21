@@ -149,6 +149,9 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .sl .org{display:flex;align-items:center;gap:16px;font-size:28px;opacity:.95}
 .sl .org img{height:46px;background:#fff;border-radius:10px;padding:6px 12px}
 .sl .info.tinfo{top:150px}
+.sl .photo.wide{left:56px;top:175px;width:760px;height:570px;border-radius:24px}
+.sl .info.wide{left:860px;right:60px}
+.sl .info.wide .tt{min-width:0;width:100%;font-size:22px}
 .sl .info.tinfo .medal{width:92px;height:92px;font-size:48px;margin-bottom:12px}
 .sl .info.tinfo .name{font-size:64px;margin:4px 0 0}
 .sl .tt{border-collapse:separate;border-spacing:0 5px;margin-top:4px;font-size:24px;min-width:660px}
@@ -729,7 +732,7 @@ function slideHTML(s){
     photo=up?`<div class="photo">${img(up)}</div>`:(photoSrc(p)?`<div class="photo circ">${img(photoSrc(p))}</div>`:"");
     stats=`<div class="stats"><div class="hl"><b>${s.r.net}</b><span>Net</span></div><div><b>${s.r.gross}</b><span>Gross</span></div><div><b>${s.r.hc}</b><span>Handicap</span></div><div><b>${s.r.pts}</b><span>แต้ม S36</span></div></div>`;}
   if(s.kind==="t"&&s.x){name="ก๊วน "+grpLabel(s.x.t);
-    photo=up?`<div class="photo">${img(up)}</div>`:`<div class="photo grid">${s.x.mem.slice(0,4).map(r=>`<div>${photoSrc(r.p)?img(photoSrc(r.p)):""}${esc(cleanName(r.p.name))}</div>`).join("")}</div>`;
+    photo=up?`<div class="photo wide">${img(up)}</div>`:`<div class="photo grid">${s.x.mem.slice(0,4).map(r=>`<div>${photoSrc(r.p)?img(photoSrc(r.p)):""}${esc(cleanName(r.p.name))}</div>`).join("")}</div>`;
     org="";
     stats=`<table class="tt"><tr><th></th><th>Gross</th><th>HC</th><th>Net</th></tr>${[...s.x.mem].sort(cmp).map(r=>`<tr class="${s.x.counted.includes(r)?"c":"nc"}"><td>${esc(cleanName(r.p.name))}</td><td>${r.done?r.gross:"–"}</td><td>${r.done?r.hc:"–"}</td><td><b>${r.done?r.net:"–"}</b></td></tr>`).join("")}<tr class="tot"><td>Net รวม ${s.x.counted.length} คนที่ดีที่สุด</td><td></td><td></td><td><b>${s.x.total}</b></td></tr></table>`;}
   if(s.kind==="n"&&s.w){const p=s.p;name=cleanName(s.w.name);const o=p&&orgOf(p);
@@ -740,7 +743,7 @@ function slideHTML(s){
   return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
    <div class="top"><div class="brand"><b>P1D1</b> GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div><div class="cat">${esc(s.cat)}</div></div>
    ${photo}
-   <div class="info${s.kind==="t"?" tinfo":""}">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
+   <div class="info${s.kind==="t"?" tinfo":""}${s.kind==="t"&&up?" wide":""}">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
    <div class="logos2">LOGOS</div></div>`.replace("LOGOS",LOGOSTRIP);
 }
 function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=>{const sl=w.firstElementChild;if(sl)sl.style.transform=`scale(${w.clientWidth/1600})`;});}
@@ -749,7 +752,7 @@ function renderPR(){
   const L=slideList();
   $("prList").innerHTML=L.map(s=>{const pr=S.pr[s.id]||{};return `<div class="prcard"><div class="slwrap">${slideHTML(s)}</div>
    <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def)}">
-   <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":"อัปโหลดรูป"}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
+   <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
    <button class="btn sm sec" data-prdl="${s.id}">⬇️ ดาวน์โหลด PNG</button></div></div>`;}).join("");
   fitSlides($("prList"));
 }
