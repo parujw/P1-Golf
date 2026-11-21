@@ -383,6 +383,23 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .thP .side b{font-size:40px}.thP .side .gold b{font-size:52px}
 .thP .foot{left:70px;right:auto;bottom:34px}
 
+
+/* prize intro slide */
+.thZ .bgp .dim{background:linear-gradient(90deg,#06102bf0 0%,#06102bd8 45%,#06102b80 100%)}
+.sl .zx{position:absolute;left:330px;top:170px;width:700px;z-index:2;font-family:"Chakra Petch","Prompt",sans-serif;color:#fff}
+.sl.zo .zx{left:90px;top:200px}
+.sl .zx .k{display:inline-block;background:#F2B705;color:#0b1a12;font-weight:700;font-size:26px;padding:4px 18px;border-radius:4px}
+.sl .zx .zt{font-weight:700;color:#F2B705;line-height:1.2;margin-top:18px;white-space:nowrap}
+.sl .zx .zi{font-weight:700;color:#fff;line-height:1.2;margin-top:26px;white-space:nowrap;text-shadow:0 3px 14px #0009}
+.sl .zx .zv{font-size:34px;color:#ffffffe0;margin-top:14px}
+.sl .zx .zc{display:inline-block;margin-top:22px;font-size:26px;color:#fff;border:2px solid #ffffff60;border-radius:999px;padding:6px 22px}
+.sl .zx .zb{font-size:30px;color:#ffffffc8;margin-top:30px;padding-top:22px;border-top:2px solid #F2B70580;width:fit-content}
+.sl .zx .zb b{color:#fff}
+.sl .zimg{position:absolute;right:90px;top:150px;width:520px;height:560px;background:#fff;border-radius:28px;box-shadow:0 30px 80px #000a;display:grid;place-items:center;overflow:hidden;z-index:2}
+.sl .zimg img{width:100%;height:100%;object-fit:contain}
+.sl .zimg span{font-size:160px}
+.sl.zo .zimg{right:110px;top:170px;width:500px;height:520px}
+
 .prcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px}
 .prcard .ctl{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
 .prcard .ctl input[type=text]{flex:1;min-width:160px}
@@ -953,11 +970,17 @@ const LOGOSTRIP=`<img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.
 
 // ---------- PR slides ----------
 const PLACE=["ชนะเลิศ","รองชนะเลิศอันดับ 1","รองชนะเลิศอันดับ 2"];
+const PZDEF={ntp:["Nearest to Pin","รางวัล Nearest to Pin"],ld:["Longest Drive (ตีไกล)","รางวัล Longest Drive"],ind:["ประเภทเดี่ยว","รางวัลประเภทเดี่ยว"],team:["ประเภททีม (ก๊วน)","รางวัลประเภททีม"]};
+function prizeSlide(k){const p=prize(k);if(!p)return null;return {id:`prize-${k}`,kind:"z",pk:k,cat:PZDEF[k][0],def:PZDEF[k][1]};}
 function slideList(){
-  const d=awardsData(), out=[];
+  const d=awardsData(), out=[];const pz=k=>{const z=prizeSlide(k);if(z)out.push(z);};
+  if(d.indOn)pz("ind");
   if(d.indOn)d.flights.forEach(F=>[...Array(Math.max(1,+S.config.indPlaces||3)).keys()].forEach(i=>out.push({id:`ind-${F.f}-${i+1}`,cat:"ประเภทเดี่ยว · "+F.name,def:`${PLACE[i]} ประเภทเดี่ยว ${F.name}`,rank:i,kind:"p",r:F.top[i]})));
+  pz("team");
   [...Array(Math.max(1,+S.config.teamPlaces||1)).keys()].forEach(i=>out.push({id:`team-${i+1}`,cat:"ประเภททีม (ก๊วน)",def:(+S.config.teamPlaces||1)===1?"ชนะเลิศ ประเภททีม":`${PLACE[i]} ประเภททีม`,rank:i,kind:"t",x:d.teams[i]}));
+  if(d.ld.length)pz("ld");
   d.ld.forEach(n=>out.push({id:`ld-${n.h}`,cat:"Longest Drive (ตีไกล)",def:d.ld.length>1?`Longest Drive หลุม ${n.h}`:"Longest Drive",kind:"l",h:n.h,w:n.w,p:n.w?pByName(n.w.name):null}));
+  if(d.ntp.length)pz("ntp");
   d.ntp.forEach(n=>out.push({id:`ntp-${n.h}`,cat:"Nearest to Pin",def:`Nearest to Pin หลุม ${n.h}`,kind:"n",h:n.h,w:n.w,p:n.w?pByName(n.w.name):null}));
   return out;
 }
@@ -1016,6 +1039,27 @@ function bcTeam(x){
 }
 function symNet(n){return `<b style="color:#fff">${n}</b>`;}
 
+
+function prizeSlideHTML(s,th){
+  const k=s.pk,p=prize(k)||{},c=S.config,pr=S.pr[s.id]||{},title=pr.title||s.def,img=pr.img||PRIZEIMG[k]||"";
+  let cnt="";
+  if(k==="ntp")cnt=`${(c.ntpHoles||[]).length} รางวัล · หลุม ${(c.ntpHoles||[]).join(", ")}`;
+  if(k==="ld")cnt=`${(c.ldHoles||[]).length>1?(c.ldHoles||[]).length+" รางวัล · ":""}หลุม ${(c.ldHoles||[]).join(", ")}`;
+  if(k==="team")cnt=(+c.teamPlaces||1)===1?"สำหรับทีมชนะเลิศ":`อันดับ 1–${c.teamPlaces}`;
+  if(k==="ind")cnt=`อันดับ 1–${c.indPlaces||3} ของแต่ละ Flight`;
+  const body=`<div class="zx"><span class="k">${esc(s.cat)}</span>
+      <div class="zt" style="font-size:${fitFont(title,700,64,36)}px">${esc(title)}</div>
+      <div class="zi" style="font-size:${fitFont(p.item||"",700,52,30)}px">${esc(p.item||"")}</div>
+      ${p.value?`<div class="zv">มูลค่า ${esc(p.value)}</div>`:""}
+      ${cnt?`<div class="zc">${esc(cnt)}</div>`:""}
+      ${p.by?`<div class="zb">มอบโดย <b>${esc(p.by)}</b></div>`:""}</div>
+    <div class="zimg">${img?`<img src="${img}" alt="">`:`<span>🎁</span>`}</div>`;
+  if(th==="o")return `<div class="sl zo"><div class="stripe"></div><div class="stripe2"></div><div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(c.course||"")}</small></div></div></div>${body}<div class="logos2">${LOGOSTRIP}</div></div>`;
+  return `<div class="sl th thD thZ"><div class="bgp"><img class="full" src="img/course_bg.jpg" alt=""><div class="dim"></div></div>
+    <div class="band"><div class="lw"><img src="img/logo_p1d1.png" alt=""></div><div class="gl"></div><div class="vt"><div class="e">AT ${esc((c.course||"").toUpperCase())}</div></div></div>
+    <div class="lgp">${LOGOSTRIP}</div>${body}</div>`;
+}
+
 function portraitHTML(s){
   const m=slideModel(s),c=S.config;
   let bg;
@@ -1027,7 +1071,7 @@ function portraitHTML(s){
   if(s.kind==="p"&&s.r)card=bcScorecard(s.r);
   if(s.kind==="t"&&s.x)card=bcTeam(s.x);
   if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${esc(s.w.yds)}</b></div></div></div>`;
-  const foot=m.prize?`<div class="foot">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}รับ ${esc(m.prize.item||"")}${m.prize.by?` · มอบโดย ${esc(m.prize.by)}`:""}</div>`:"";
+  const foot="";
   return `<div class="sl th thD thP"><div class="bgp">${bg}<div class="dim"></div></div>
     <div class="brand2"><span class="lw2"><img src="img/logo_p1d1.png" alt=""></span><span class="bt"><b>P1D1 Golf Day 2026</b><small>At ${esc(c.course||"")}</small></span></div>
     <div class="lgp">${LOGOSTRIP}</div>
@@ -1046,7 +1090,7 @@ function broadcastHTML(s){
   if(s.kind==="t"&&s.x)card=bcTeam(s.x);
   if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${esc(s.w.yds)}</b></div></div></div>`;
   const name=m.name;
-  const foot=m.prize?`<div class="foot">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}รับ ${esc(m.prize.item||"")}${m.prize.by?` · มอบโดย ${esc(m.prize.by)}`:""}</div>`:"";
+  const foot="";
   return `<div class="sl th thD"><div class="bgp">${bg}</div>
     <div class="band"><div class="lw"><img src="img/logo_p1d1.png" alt=""></div><div class="gl"></div>
       <div class="vt"><div class="e">AT ${esc((c.course||"").toUpperCase())}</div></div></div>
@@ -1082,7 +1126,7 @@ function slideThemeHTML(s,th){
 }
 
 function slideHTML(s){
-  const th=["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d";if(th==="p")return portraitHTML(s);if(th!=="o")return broadcastHTML(s);
+  const th=["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d";if(s.kind==="z")return prizeSlideHTML(s,th);if(th==="p")return portraitHTML(s);if(th!=="o")return broadcastHTML(s);
   const pr=S.pr[s.id]||{}, title=pr.title||s.def, up=pr.img;
   let photo="",name="รอประกาศผล",org="",stats="",medal="";
   medal=(s.kind==="n"||s.kind==="l")?`<div class="medal mn">หลุม<br>${s.h}</div>`:`<div class="medal m${s.rank+1}">${s.rank+1}</div>`;
@@ -1103,7 +1147,7 @@ function slideHTML(s){
   return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
    <div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div></div><div class="cat">${esc(s.cat)}</div></div>
    ${photo}
-   <div class="info${s.kind==="t"?" tinfo":""}${s.kind==="n"||s.kind==="l"?" cmp":""}${s.kind==="t"&&up?" wide":""}">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}${slidePrize(s)}</div>
+   <div class="info${s.kind==="t"?" tinfo":""}${s.kind==="n"||s.kind==="l"?" cmp":""}${s.kind==="t"&&up?" wide":""}">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
    <div class="logos2">LOGOS</div></div>`.replace("LOGOS",LOGOSTRIP);
 }
 function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=>{const sl=w.firstElementChild;if(sl)sl.style.transform=`scale(${w.clientWidth/1600})`;});}
@@ -1113,7 +1157,7 @@ function renderPR(){
   $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
   $("prList").innerHTML=L.map(s=>{const pr=S.pr[s.id]||{};return `<div class="prcard"><div class="slwrap">${slideHTML(s)}</div>
    <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def)}">
-   <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
+   <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="z"?"อัปโหลดรูปของรางวัล":s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
    <button class="btn sm sec" data-prdl="${s.id}">⬇️ ดาวน์โหลด PNG</button></div></div>`;}).join("");
   fitSlides($("prList"));
 }
@@ -1150,7 +1194,7 @@ async function renderCanvas(html){
     return await html2canvas(box.firstElementChild,{scale:1.2,useCORS:true,backgroundColor:"#0a1342",logging:false});
   }finally{box.remove();}
 }
-function revealSlides(){const L=slideList(),g=f=>L.filter(f);return [...g(s=>s.kind==="n"),...g(s=>s.kind==="l"),...["A","B"].flatMap(f=>g(s=>s.id.startsWith("ind-"+f)).reverse()),...g(s=>s.kind==="t").reverse()];}
+function revealSlides(){const L=slideList(),g=f=>L.filter(f),z=k=>g(s=>s.id==="prize-"+k);return [...z("ntp"),...g(s=>s.kind==="n"),...z("ld"),...g(s=>s.kind==="l"),...z("ind"),...["A","B"].flatMap(f=>g(s=>s.id.startsWith("ind-"+f)).reverse()),...z("team"),...g(s=>s.kind==="t").reverse()];}
 async function downloadPPTX(btn,opt){
   opt=opt||{};
   const label=btn?btn.textContent:"";
