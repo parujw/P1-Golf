@@ -136,7 +136,7 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .sl .m2{background:radial-gradient(circle at 35% 30%,#fff,#cfd6e3 45%,#8a94a6)}
 .sl .m3{background:radial-gradient(circle at 35% 30%,#ffd9b8,#d98b4e 45%,#a35a26)}
 .sl .mn{background:radial-gradient(circle at 35% 30%,#fff,#e9eef9 45%,#9fb0d6);font-size:30px;color:#16257a;line-height:1;text-align:center}
-.sl .award{font-size:42px;font-weight:700;color:#f4c542;line-height:1.25}
+.sl .award{white-space:nowrap;font-size:42px;font-weight:700;color:#f4c542;line-height:1.25}
 .sl .name{font-size:76px;font-weight:800;line-height:1.15;margin:14px 0 10px}
 .sl .name.sm{font-size:60px}
 .sl .org{display:flex;align-items:center;gap:16px;font-size:28px;opacity:.95}
@@ -248,7 +248,7 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
       <h2>📋 Pairing · Tee Off</h2>
       <div class="meta" style="margin-bottom:10px">สร้างจากรายชื่อ / ก๊วน / เวลา ในแท็บตั้งค่า · แก้รูปและตำแหน่งผู้บริหารได้ที่ ⚙️ ผู้เล่น / ตั้งค่า</div>
       <div class="slwrap" id="pairSlide"></div>
-      <div class="row" style="margin-top:10px"><button class="btn" id="pairPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="pairDl">⬇️ ดาวน์โหลด PNG</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="pairPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="pairDl">⬇️ ดาวน์โหลด PNG</button><button class="btn sec" id="pairPptx">📊 PowerPoint</button></div>
     </div>
     <div id="pairList"></div>
   </section>
@@ -258,7 +258,8 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
     <div class="card">
       <h2>🖼️ สไลด์ประกาศรางวัล</h2>
       <div class="meta" style="margin-bottom:10px">สไลด์ 16:9 สร้างจากผลจริงอัตโนมัติ · ทีมงานกด 📷 อัปโหลดรูปตอนรับรางวัลได้ (ถ้าไม่อัปโหลด จะใช้รูปโปรไฟล์) · แก้ชื่อรางวัลได้ในช่องข้อความ</div>
-      <div class="row"><button class="btn" id="prPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="prPlayRev">▶ นำเสนอ (ลุ้นจากอันดับ 3 → 1)</button></div>
+      <div class="row"><button class="btn" id="prPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="prPlayRev">▶ นำเสนอ (ลุ้นจากอันดับ 3 → 1)</button><button class="btn sec" id="prPptx">📊 ดาวน์โหลด PowerPoint</button></div>
+      <div class="meta" style="margin-top:8px">PowerPoint: สไลด์ Pairing + รางวัลทั้งหมด เรียงตามลำดับประกาศ (อันดับ 3 → 1) · ใส่รูปรับรางวัลก่อนกดดาวน์โหลด</div>
     </div>
     <div id="prList"></div>
     <input type="file" id="prFile" accept="image/*" class="hidden"><input type="file" id="phFile" accept="image/*" class="hidden">
@@ -697,6 +698,8 @@ function slideList(){
   return out;
 }
 const ORGNAME={PTT:"PTT",PTTEP:"PTTEP",GC:"GC",TOP:"Thaioil",IRPC:"IRPC",OR:"OR"};
+// estimate font size so text fits on one line (Thai combining marks don't take width)
+function fitFont(t,width,max,min){const n=String(t||"").replace(/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/g,"").length||1;return Math.max(min,Math.min(max,Math.floor(width/(n*0.56))));}
 function slideHTML(s){
   const pr=S.pr[s.id]||{}, title=pr.title||s.def, up=pr.img;
   let photo="",name="รอประกาศผล",org="",stats="",medal="";
@@ -718,7 +721,7 @@ function slideHTML(s){
   return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
    <div class="top"><div class="brand"><b>P1D1</b> GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div><div class="cat">${esc(s.cat)}</div></div>
    ${photo}
-   <div class="info">${medal}<div class="award">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
+   <div class="info">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
    <div class="logos2">LOGOS</div></div>`.replace("LOGOS",LOGOSTRIP);
 }
 function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=>{const sl=w.firstElementChild;if(sl)sl.style.transform=`scale(${w.clientWidth/1600})`;});}
@@ -749,23 +752,50 @@ async function downloadSlide(id,btn,html){
   const s=html?null:slideList().find(x=>x.id===id);if(!s&&!html)return;
   if(btn){btn.disabled=true;btn.textContent="กำลังสร้างภาพ…";}
   try{
-    if(!window.html2canvas)await loadScript("vendor/html2canvas.min.js");
-    const box=document.createElement("div");box.style.cssText="position:fixed;left:-20000px;top:0;width:1600px;height:900px";box.innerHTML=html||slideHTML(s);document.body.appendChild(box);
-    await Promise.all([...box.querySelectorAll("img")].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;})));
-    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
-    const cv=await html2canvas(box.firstElementChild,{scale:1.2,useCORS:true,backgroundColor:"#0a1342",logging:false});
-    box.remove();
+    const cv=await renderCanvas(html||slideHTML(s));
     const a=document.createElement("a");a.download=`P1D1-${id}.png`;a.href=cv.toDataURL("image/png");document.body.appendChild(a);a.click();a.remove();
     toast("ดาวน์โหลดแล้ว");
   }catch(err){toast("สร้างภาพไม่สำเร็จ");}
   if(btn){btn.disabled=false;btn.textContent="⬇️ ดาวน์โหลด PNG";}
+}
+async function renderCanvas(html){
+  if(!window.html2canvas)await loadScript("vendor/html2canvas.min.js");
+  const box=document.createElement("div");box.style.cssText="position:fixed;left:-20000px;top:0;width:1600px;height:900px";box.innerHTML=html;document.body.appendChild(box);
+  try{
+    await Promise.all([...box.querySelectorAll("img")].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;})));
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    return await html2canvas(box.firstElementChild,{scale:1.2,useCORS:true,backgroundColor:"#0a1342",logging:false});
+  }finally{box.remove();}
+}
+function revealSlides(){const L=slideList(),g=f=>L.filter(f);return [...["A","B"].flatMap(f=>g(s=>s.id.startsWith("ind-"+f)).reverse()),...g(s=>s.kind==="t").reverse(),...g(s=>s.kind==="n")];}
+async function downloadPPTX(btn,opt){
+  opt=opt||{};
+  const label=btn?btn.textContent:"";
+  const items=[];
+  if(opt.pairing!==false)items.push({html:pairingHTML(),note:"Pairing · Tee Off"});
+  if(opt.awards!==false)revealSlides().forEach(s=>items.push({html:slideHTML(s),note:((S.pr[s.id]||{}).title||s.def)}));
+  try{
+    if(btn)btn.disabled=true;
+    if(!window.PptxGenJS)await loadScript("vendor/pptxgen.bundle.js");
+    const pptx=new PptxGenJS();pptx.layout="LAYOUT_WIDE";pptx.title=S.config.name||"P1D1 Golf Day 2026";
+    for(let i=0;i<items.length;i++){
+      if(btn)btn.textContent=`กำลังสร้าง ${i+1}/${items.length}…`;
+      const cv=await renderCanvas(items[i].html);
+      const sl=pptx.addSlide();sl.background={color:"0A1342"};
+      sl.addImage({data:cv.toDataURL("image/jpeg",.9),x:0,y:0,w:13.333,h:7.5});
+      sl.addNotes(items[i].note);
+    }
+    await pptx.writeFile({fileName:opt.file||"P1D1-Golf-Day-2026.pptx"});
+    toast("ดาวน์โหลด PowerPoint แล้ว");
+  }catch(err){console.error(err);toast("สร้าง PowerPoint ไม่สำเร็จ");}
+  if(btn){btn.disabled=false;btn.textContent=label;}
 }
 // presenter
 let presIdx=null,presOrder=[];
 function openPresenter(rev){
   const L=slideList();
   let ids;
-  if(rev===true){const g=(f)=>L.filter(f);ids=[...["A","B"].flatMap(f=>g(s=>s.id.startsWith("ind-"+f)).reverse()),...g(s=>s.kind==="t").reverse(),...g(s=>s.kind==="n")].map(s=>s.id);}
+  if(rev===true){ids=revealSlides().map(s=>s.id);}
   else ids=L.map(s=>s.id);
   presOrder=rev==="pair"?[()=>pairingHTML()]:ids.map(id=>()=>{const s=slideList().find(x=>x.id===id);return s?slideHTML(s):"";});
   presIdx=0;
@@ -805,6 +835,8 @@ function renderPair(){
   const side=groupsBySide();
   $("pairList").innerHTML=[...side.L,...side.R].map(g=>`<div class="card"><h2>⛳ ${esc(grpLabel(g.t))} · Tee off ${esc(fmtTime(g.t.time))} <span class="meta">(ออกหลุม ${esc(g.t.start||"-")})</span></h2>${g.mem.map(p=>`<div class="who" style="padding:6px 0">${av(p)}<div><div class="nm">${esc(p.name)}</div><div class="meta">${lg(p)}${esc(p.title||"")}</div></div></div>`).join("")}</div>`).join("");
 }
+$("pairPptx").onclick=e=>downloadPPTX(e.target,{awards:false,file:"P1D1-Pairing.pptx"});
+$("prPptx").onclick=e=>downloadPPTX(e.target);
 $("pairPlay").onclick=()=>openPresenter("pair");
 $("pairDl").onclick=e=>downloadSlide("pairing",e.target,pairingHTML());
 // executive photo upload
