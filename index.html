@@ -320,9 +320,10 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .thD .band .lw{position:absolute;left:35px;top:44px;width:180px;height:180px;background:#fff;border-radius:50%;display:grid;place-items:center;box-shadow:0 10px 24px #0005}
 .thD .band .lw img{width:128px}
 .thD .band .gl{position:absolute;left:28px;right:28px;top:262px;height:4px;background:#F2B705}
-.thD .vt{position:absolute;left:100px;top:868px;width:580px;transform:rotate(-90deg);transform-origin:0 0;white-space:nowrap}
+.thD .vt{position:absolute;left:70px;top:875px;width:580px;transform:rotate(-90deg);transform-origin:0 0;white-space:nowrap}
 .thD .vt .n{font-family:"Chakra Petch",sans-serif;font-weight:700;line-height:1.05;color:#fff}
-.thD .vt .e{font-family:"Barlow Condensed","Chakra Petch",sans-serif;font-weight:600;font-size:40px;letter-spacing:5px;color:#ffffffb0}
+.thD .vt .e{font-family:"Barlow Condensed","Chakra Petch",sans-serif;font-weight:700;font-size:44px;letter-spacing:3px;color:#ffffff;line-height:1.1}
+.thD .vt .e2{font-family:"Barlow Condensed","Chakra Petch",sans-serif;font-weight:600;font-size:29px;letter-spacing:4px;color:#F2B705;line-height:1.25}
 .thD .aw .t{color:#F2B705!important}
 .thD .nm3{font-family:"Chakra Petch",sans-serif;font-weight:700;line-height:1.1;color:#fff;margin-top:6px;white-space:nowrap;text-shadow:0 4px 18px #000d}
 .thD .sb3{display:inline-flex;align-items:center;gap:12px;margin-top:10px;background:#000000a0;border-radius:999px;padding:6px 18px 6px 8px;font-family:"Chakra Petch";font-size:24px;color:#fff}
@@ -1057,7 +1058,7 @@ function prizeSlideHTML(s,th){
     <div class="zimg">${img?`<img src="${img}" alt="">`:`<span>🎁</span>`}</div>`;
   if(th==="o")return `<div class="sl zo"><div class="stripe"></div><div class="stripe2"></div><div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(c.course||"")}</small></div></div></div>${body}<div class="logos2">${LOGOSTRIP}</div></div>`;
   return `<div class="sl th thD thZ"><div class="bgp"><img class="full" src="img/course_bg.jpg" alt=""><div class="dim"></div></div>
-    <div class="band"><div class="lw"><img src="img/logo_p1d1.png" alt=""></div><div class="gl"></div><div class="vt"><div class="e">AT ${esc((c.course||"").toUpperCase())}</div></div></div>
+    <div class="band"><div class="lw"><img src="img/logo_p1d1.png" alt=""></div><div class="gl"></div><div class="vt"><div class="e">P1D1 GOLF DAY 2026</div><div class="e2">AT ${esc((c.course||"").toUpperCase())}</div></div></div>
     <div class="lgp">${LOGOSTRIP}</div>${body}</div>`;
 }
 
@@ -1094,7 +1095,7 @@ function broadcastHTML(s){
   const foot="";
   return `<div class="sl th thD"><div class="bgp">${bg}</div>
     <div class="band"><div class="lw"><img src="img/logo_p1d1.png" alt=""></div><div class="gl"></div>
-      <div class="vt"><div class="e">AT ${esc((c.course||"").toUpperCase())}</div></div></div>
+      <div class="vt"><div class="e">P1D1 GOLF DAY 2026</div><div class="e2">AT ${esc((c.course||"").toUpperCase())}</div></div></div>
     <div class="lgp">${LOGOSTRIP}</div>
     <div class="aw"><span class="k">${esc(flag)}</span><div class="t" style="font-size:${fitFont(m.title,640,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(name,660,104,56)}px">${esc(name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
     ${card}${foot}</div>`;
