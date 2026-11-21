@@ -1046,7 +1046,7 @@ const PLACE=["ชนะเลิศ","รองชนะเลิศอันด
 const PZDEF={ntp:["Nearest to Pin","รางวัล Nearest to Pin"],ld:["Longest Drive (ตีไกล)","รางวัล Longest Drive"],ind:["ประเภทเดี่ยว","รางวัลประเภทเดี่ยว"],team:["ประเภททีม (ก๊วน)","รางวัลประเภททีม"]};
 function prizeSlide(k){const p=prize(k);if(!p)return null;return {id:`prize-${k}`,kind:"z",pk:k,cat:PZDEF[k][0],def:PZDEF[k][1]};}
 function slideList(){
-  const d=awardsData(), out=[{id:"opening",kind:"open",cat:"สไลด์เปิด",def:"พิธีมอบรางวัล"}];const pz=k=>{const z=prizeSlide(k);if(z)out.push(z);};
+  const d=awardsData(), out=[{id:"opening",kind:"open",cat:"สไลด์เปิด",def:""}];const pz=k=>{const z=prizeSlide(k);if(z)out.push(z);};
   if(d.indOn)pz("ind");
   if(d.indOn)d.flights.forEach(F=>[...Array(Math.max(1,+S.config.indPlaces||3)).keys()].forEach(i=>out.push({id:`ind-${F.f}-${i+1}`,cat:"ประเภทเดี่ยว · "+F.name,def:`${PLACE[i]} ประเภทเดี่ยว ${F.name}`,rank:i,kind:"p",r:F.top[i]})));
   pz("team");
@@ -1121,7 +1121,7 @@ function openingHTML(s,th){
     <div class="olg"><img src="img/logo_p1d1.png" alt=""></div>
     <div class="ot">
       <div class="o1">P1D1 GOLF DAY 2026</div>
-      <div class="o2">${esc(sub)}</div>
+      ${sub?`<div class="o2">${esc(sub)}</div>`:""}
       <div class="o3">At ${esc(c.course||"")}${date?` · ${date}`:""}</div>
     </div>
     <div class="ologos">${LOGOSTRIP}</div></div>`;
@@ -1244,7 +1244,7 @@ function renderPR(){
   const L=slideList();
   $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
   $("prList").innerHTML=L.map(s=>{const pr=S.pr[s.id]||{};return `<div class="prcard"><div class="slwrap">${slideHTML(s)}</div>
-   <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def)}">
+   <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def||"ข้อความใต้ชื่องาน (เว้นว่างได้)")}">
    <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="open"?"อัปโหลดภาพพื้นหลัง":s.kind==="z"?"อัปโหลดรูปของรางวัล":s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
    <button class="btn sm sec" data-prdl="${s.id}">⬇️ ดาวน์โหลด PNG</button></div></div>`;}).join("");
   fitSlides($("prList"));
@@ -1535,11 +1535,11 @@ function mcScript(){
   const pz=k=>prize(k)||{};
   const ldH=c.ldHoles||[],ntH=c.ntpHoles||[];
   // 1. opening
-  h("ช่วงเปิด");cue("ขึ้นสไลด์เปิด · พิธีมอบรางวัล");
+  h("ช่วงเปิด");cue("ขึ้นสไลด์เปิด");
   p(`สวัสดี${K} ท่านผู้บริหาร แขกผู้มีเกียรติ และนักกอล์ฟทุกท่าน ยินดีต้อนรับกลับสู่คลับเฮาส์${K}`);
   p(`ตลอดบ่ายวันนี้ นักกอล์ฟทั้ง ${P.length} ท่าน ใน ${G.length} ก๊วน จากกลุ่ม ปตท. ได้ออกสวิงกันครบ 18 หลุม ที่สนาม${esc(CN)} ในรายการ <b>P1D1 Golf Day 2026</b>`);
   p(`เกมวันนี้ใช้ระบบ System 36 ทุกหลุมที่ทำได้พาร์หรือดีกว่าได้ 2 แต้ม โบกี้ได้ 1 แต้ม เอาแต้มไปหักจาก 36 ได้เป็นแฮนดิแคปของวันนี้ แล้วหักออกจากสกอร์จริง เป็นสกอร์สุทธิ ใครตีสม่ำเสมอ ก็มีลุ้นถึงตอนจบ${K}`);
-  pause();p(`และตอนนี้ ถึงเวลาที่ทุกท่านรอคอย พิธีมอบรางวัล${K}`);
+  pause();p(`และตอนนี้ ถึงเวลาที่ทุกท่านรอคอย ประกาศผลรางวัลประจำวันนี้${K}`);
   // 2. overview
   h("แนะนำรางวัลทั้งหมด");
   const ov=[];
