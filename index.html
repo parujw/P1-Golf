@@ -574,6 +574,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
       <h2>🖼️ สไลด์ประกาศรางวัล</h2>
       <div class="meta" style="margin-bottom:10px">สไลด์ 16:9 สร้างจากผลจริงอัตโนมัติ · ทีมงานกด 📷 อัปโหลดรูปตอนรับรางวัลได้ (ถ้าไม่อัปโหลด จะใช้รูปโปรไฟล์) · แก้ชื่อรางวัลได้ในช่องข้อความ</div>
       <div class="sub" id="prThemes" style="margin-bottom:10px"></div>
+      <div class="row" id="prShowBox" style="margin-bottom:10px;gap:14px"></div>
       <div class="row"><button class="btn" id="prPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="prPlayRev">▶ นำเสนอ (ลุ้นจากอันดับ 3 → 1)</button><button class="btn sec" id="prPptx">📊 ดาวน์โหลด PowerPoint</button></div>
       <div class="meta" style="margin-top:8px">PowerPoint: สไลด์ Pairing + รางวัลทั้งหมด เรียงตามลำดับประกาศ (อันดับ 3 → 1) · ใส่รูปรับรางวัลก่อนกดดาวน์โหลด</div>
     </div>
@@ -1086,12 +1087,15 @@ const LOGOSTRIP=`<img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.
 const PLACE=["ชนะเลิศ","รองชนะเลิศอันดับ 1","รองชนะเลิศอันดับ 2"];
 const PZDEF={ntp:["Nearest to Pin","รางวัล Nearest to Pin"],ld:["Longest Drive (ตีไกล)","รางวัล Longest Drive"],ind:["ประเภทเดี่ยว","รางวัลประเภทเดี่ยว"],team:["ประเภททีม (ก๊วน)","รางวัลประเภททีม"]};
 function prizeSlide(k){const p=prize(k);if(!p)return null;return {id:`prize-${k}`,kind:"z",pk:k,cat:PZDEF[k][0],def:PZDEF[k][1]};}
+const PRSHOW=[["ind","ประเภทเดี่ยว"],["team","ประเภททีม"],["ntp","Nearest to Pin"],["ld","Longest Drive"]];
+function prShow(k){return ((S.config.prShow||{})[k])!==false;}
 function slideList(){
-  const d=awardsData(), out=[{id:"opening",kind:"open",cat:"สไลด์เปิด",def:""}];const pz=k=>{const z=prizeSlide(k);if(z)out.push(z);};
+  const d=awardsData();if(!prShow("ind"))d.indOn=false;if(!prShow("ld"))d.ld=[];if(!prShow("ntp"))d.ntp=[];if(!prShow("team"))d.teams=[];
+  const out=[{id:"opening",kind:"open",cat:"สไลด์เปิด",def:""}];const pz=k=>{const z=prizeSlide(k);if(z)out.push(z);};
   if(d.indOn)pz("ind");
   if(d.indOn)d.flights.forEach(F=>[...Array(Math.max(1,+S.config.indPlaces||3)).keys()].forEach(i=>out.push({id:`ind-${F.f}-${i+1}`,cat:"ประเภทเดี่ยว · "+F.name,def:`${PLACE[i]} ประเภทเดี่ยว ${F.name}`,rank:i,kind:"p",r:F.top[i]})));
-  pz("team");
-  [...Array(Math.max(1,+S.config.teamPlaces||1)).keys()].forEach(i=>out.push({id:`team-${i+1}`,cat:"ประเภททีม (ก๊วน)",def:(+S.config.teamPlaces||1)===1?"ชนะเลิศ ประเภททีม":`${PLACE[i]} ประเภททีม`,rank:i,kind:"t",x:d.teams[i]}));
+  if(prShow("team"))pz("team");
+  if(prShow("team"))[...Array(Math.max(1,+S.config.teamPlaces||1)).keys()].forEach(i=>out.push({id:`team-${i+1}`,cat:"ประเภททีม (ก๊วน)",def:(+S.config.teamPlaces||1)===1?"ชนะเลิศ ประเภททีม":`${PLACE[i]} ประเภททีม`,rank:i,kind:"t",x:d.teams[i]}));
   if(d.ld.length)pz("ld");
   d.ld.forEach(n=>out.push({id:`ld-${n.h}`,cat:"Longest Drive (ตีไกล)",def:d.ld.length>1?`Longest Drive หลุม ${n.h}`:"Longest Drive",kind:"l",h:n.h,w:n.w,p:n.w?pByName(n.w.name):null}));
   if(d.ntp.length)pz("ntp");
@@ -1282,6 +1286,7 @@ function slideHTML(s){
 function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=>{const sl=w.firstElementChild;if(sl)sl.style.transform=`scale(${w.clientWidth/1600})`;});}
 window.addEventListener("resize",()=>{fitSlides();if(presIdx!=null)drawPresenter();});
 function renderPR(){
+  $("prShowBox").innerHTML=`<span class="meta">แสดงในสไลด์:</span>`+PRSHOW.map(([k,l])=>`<label style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer"><input type="checkbox" data-ps="${k}" ${prShow(k)?"checked":""} ${S.canWrite?"":"disabled"} style="width:20px;height:20px">${l}</label>`).join("");
   renderMC();
   const L=slideList();
   $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
@@ -1370,6 +1375,7 @@ function drawPresenter(){const el=$("presenter");if(!el)return;const f=presOrder
   const sc=Math.min(innerWidth/1600,innerHeight/900),st=el.querySelector(".stage");st.style.width=1600*sc+"px";st.style.height=900*sc+"px";
   st.innerHTML=f();st.firstElementChild.style.transform=`scale(${sc})`;}
 document.addEventListener("keydown",e=>{if(presIdx==null)return;if(["ArrowRight","PageDown"," ","Enter"].includes(e.key)){e.preventDefault();step(1);}else if(["ArrowLeft","PageUp"].includes(e.key))step(-1);else if(e.key==="Escape")closePresenter();});
+$("prShowBox").onchange=e=>{const k=e.target.dataset.ps;if(!k)return;S.config={...S.config,prShow:{...(S.config.prShow||{}),[k]:e.target.checked}};saveConfig();renderPR();toast(e.target.checked?"แสดงในสไลด์แล้ว":"ซ่อนจากสไลด์แล้ว");};
 $("prThemes").onclick=e=>{const b=e.target.closest("[data-th]");if(!b)return;S.config={...S.config,prTheme:b.dataset.th};saveConfig();renderPR();toast("เปลี่ยนแบบสไลด์แล้ว");};
 $("prPlay").onclick=()=>openPresenter(false);$("prPlayRev").onclick=()=>openPresenter(true);
 
@@ -1566,7 +1572,7 @@ function renderReady(){
 // ---------- MC script (sports-announcer style, generated from live results) ----------
 let mcVoice="m";
 function mcScript(){
-  const c=S.config,d=awardsData(),P=S.roster.players,G=gTeams(),par=c.pars.reduce((a,b)=>a+b,0);
+  const c=S.config,d=awardsData(),P=S.roster.players,SHT=prShow("team"),G=gTeams(),par=c.pars.reduce((a,b)=>a+b,0);
   const K=mcVoice==="f"?"ค่ะ":"ครับ", CN=/rajpruek/i.test(c.course||"")?"ราชพฤกษ์ คลับ":(c.course||""), ME=mcVoice==="f"?"ดิฉัน":"ผม";
   const L=[];const h=t=>L.push({h:t}),p=t=>L.push({p:t}),cue=t=>L.push({cue:t}),pause=()=>L.push({pause:1});
   const who=pl=>pl?`<b>${esc(pl.name)}</b>${pl.title?` ${esc(pl.title)}`:""}`:`<b>[รอผล]</b>`;
@@ -1575,7 +1581,8 @@ function mcScript(){
     const sc=S.scores[pl.id]||[],out=sc.slice(0,9).reduce((a,b)=>a+(+b||0),0),inn=sc.slice(9).reduce((a,b)=>a+(+b||0),0);
     return `สกอร์ 9 หลุมแรก <b>${out}</b> · 9 หลุมหลัง <b>${inn}</b> · รวม <b>${r.gross}</b> คิดเป็น <span class="hl">${ovp(r.gross)}</span>`;};
   const pz=k=>prize(k)||{};
-  const ldH=c.ldHoles||[],ntH=c.ntpHoles||[];
+  if(!prShow("ind"))d.indOn=false;if(!prShow("ld"))d.ld=[];if(!prShow("ntp"))d.ntp=[];
+  const ldH=prShow("ld")?(c.ldHoles||[]):[],ntH=prShow("ntp")?(c.ntpHoles||[]):[];
   // 1. opening
   h("ช่วงเปิด");cue("ขึ้นสไลด์เปิด");
   p(`สวัสดี${K} ท่านผู้บริหาร แขกผู้มีเกียรติ และนักกอล์ฟทุกท่าน ยินดีต้อนรับกลับสู่คลับเฮาส์${K}`);
@@ -1588,9 +1595,9 @@ function mcScript(){
   if(ldH.length)ov.push(`<b>Longest Drive</b> ไดรฟ์ไกลที่สุด ที่หลุม ${ldH.join(", ")} ${pz("ld").item?`รับ ${esc(pz("ld").item)}`:""}${pz("ld").by?` มอบโดย ${esc(pz("ld").by)}`:""}`);
   if(ntH.length)ov.push(`<b>Nearest to Pin</b> ทีช็อตใกล้ธงที่สุด ${ntH.length} หลุม คือหลุม ${ntH.join(", ")} ${pz("ntp").item?`รับ ${esc(pz("ntp").item)}`:""}${pz("ntp").value?` ${esc(pz("ntp").value)}`:""}${pz("ntp").by?` มอบโดย ${esc(pz("ntp").by)}`:""}`);
   if(d.indOn)ov.push(`<b>ประเภทเดี่ยว</b> อันดับ 1 ถึง ${c.indPlaces||3} ของแต่ละ Flight${pz("ind").item?` รับ ${esc(pz("ind").item)}`:""}`);
-  ov.push(`<b>รางวัลชนะเลิศประเภททีม</b> ก๊วนที่สกอร์สุทธิรวม ${c.teamBest||3} ใบที่ดีที่สุดต่ำที่สุด ${pz("team").item?`รับ ${esc(pz("team").item)}`:""}${pz("team").by?` มอบโดย ${esc(pz("team").by)}`:""}`);
+  if(SHT)ov.push(`<b>รางวัลชนะเลิศประเภททีม</b> ก๊วนที่สกอร์สุทธิรวม ${c.teamBest||3} ใบที่ดีที่สุดต่ำที่สุด ${pz("team").item?`รับ ${esc(pz("team").item)}`:""}${pz("team").by?` มอบโดย ${esc(pz("team").by)}`:""}`);
   p(`วันนี้เรามีรางวัลทั้งหมด ${ov.length} ประเภท${K}`);ov.forEach((t,i)=>p(`${i+1}. ${t}`));
-  p(`${ME}จะไล่ประกาศจาก Longest Drive ต่อด้วย Nearest to Pin${d.indOn?" ประเภทเดี่ยว":""} และปิดท้ายด้วยรางวัลใหญ่ ชนะเลิศประเภททีม${K}`);
+  {const seq=[ldH.length?"Longest Drive":"",ntH.length?"Nearest to Pin":"",d.indOn?"ประเภทเดี่ยว":""].filter(Boolean);if(seq.length||SHT)p(`${ME}จะไล่ประกาศ${seq.length?"จาก "+seq.join(" ต่อด้วย "):""}${SHT?`${seq.length?" และ":""}ปิดท้ายด้วยรางวัลใหญ่ ชนะเลิศประเภททีม`:""}${K}`);}
   // 3. Longest drive
   if(ldH.length){h("Longest Drive");cue("ขึ้นสไลด์ของรางวัล Longest Drive");
     p(`เริ่มกันที่รางวัลที่วัดกันด้วยพละกำลังล้วน ๆ <b>Longest Drive</b>${pz("ld").item?` ของรางวัลคือ ${esc(pz("ld").item)}${pz("ld").value?` มูลค่า ${esc(pz("ld").value)}`:""}`:""}${pz("ld").by?` ได้รับการสนับสนุนจาก ${esc(pz("ld").by)}`:""}`);
@@ -1614,7 +1621,7 @@ function mcScript(){
       p(`${["ชนะเลิศ","รองชนะเลิศอันดับ 1","รองชนะเลิศอันดับ 2"][rank-1]} ประเภทเดี่ยว ${esc(F.name)} ได้แก่ ${who(r.p)}`);
       p(`${card(r.p)} แฮนดิแคป ${r.hc} สกอร์สุทธิ <span class="hl">${r.net}</span>`);});});}
   // 6. team champion
-  h("ชนะเลิศประเภททีม");cue("ขึ้นสไลด์ของรางวัลประเภททีม");
+  if(SHT){h("ชนะเลิศประเภททีม");cue("ขึ้นสไลด์ของรางวัลประเภททีม");
   p(`และแล้วก็มาถึงรางวัลใหญ่ที่สุดของวันนี้ <b>รางวัลชนะเลิศประเภททีม</b>${pz("team").item?` ของรางวัลคือ ${esc(pz("team").item)}${pz("team").value?` มูลค่ารวม ${esc(pz("team").value)}`:""}`:""}${pz("team").by?` มอบโดย ${esc(pz("team").by)}`:""}`);
   p(`ทุกก๊วนสู้กันสูสีมาก แต่มีเพียงก๊วนเดียวที่ทำสกอร์สุทธิรวมได้ดีที่สุด <span class="pause">(เว้นจังหวะ)</span>`);
   d.teams.forEach((x,ti)=>{cue(`ขึ้นสไลด์ ${ti===0?"ชนะเลิศ":"อันดับ "+(ti+1)} ประเภททีม`);
@@ -1622,7 +1629,7 @@ function mcScript(){
     p(`ขอแนะนำสมาชิกทั้ง 4 ท่าน${K}`);
     [...x.mem].sort(cmp).forEach(r=>p(`• ${who(r.p)} — ${card(r.p)} แฮนดิแคป ${r.done?r.hc:"-"} สกอร์สุทธิ <b>${r.done?r.net:"-"}</b>${x.counted.includes(r)?"":" <span class=\"pause\">(ไม่ได้นับในสกอร์ทีม)</span>"}`));
     p(`ขอเชิญทั้ง 4 ท่านขึ้นรับรางวัล${pz("team").by&&ti===0?`จาก ${esc(pz("team").by)} `:""}${K} ขอเสียงปรบมือดัง ๆ ให้ทีมแชมป์${K}`);});
-  if(!d.teams.length)p(`<b>[รอผลประเภททีม]</b>`);
+  if(!d.teams.length)p(`<b>[รอผลประเภททีม]</b>`);}
   // 7. closing
   h("ปิดพิธี");
   p(`ขอแสดงความยินดีอีกครั้งกับผู้ได้รับรางวัลทุกท่าน${K} ไม่ว่าจะเป็นไดรฟ์ที่ไกลที่สุด ทีช็อตที่แม่นที่สุด หรือทีมเวิร์กที่ดีที่สุด`);
