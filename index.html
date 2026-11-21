@@ -109,7 +109,14 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .team .mem{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .team .mem span{font-size:12px;background:#f1f3f9;border-radius:6px;padding:2px 7px}
 .team .mem span.c{background:#e3f4ea;color:var(--good);font-weight:600}
-.team .tot{margin-left:auto;text-align:right}
+.team .tot{margin-left:auto;text-align:right;flex:none}
+.team{align-items:flex-start}
+table.tm{margin-top:6px;font-size:13px}
+table.tm th{padding:4px 6px;font-size:11px}
+table.tm td{padding:5px 6px}
+table.tm td:first-child{white-space:nowrap}
+table.tm tr.c td{background:#e9f7ef}
+table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .hidden{display:none!important}
 /* ---- PR slides (1600x900 design, scaled) ---- */
 .slwrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:12px;background:#0b1440}
@@ -141,6 +148,18 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .sl .name.sm{font-size:60px}
 .sl .org{display:flex;align-items:center;gap:16px;font-size:28px;opacity:.95}
 .sl .org img{height:46px;background:#fff;border-radius:10px;padding:6px 12px}
+.sl .info.tinfo{top:150px}
+.sl .info.tinfo .medal{width:92px;height:92px;font-size:48px;margin-bottom:12px}
+.sl .info.tinfo .name{font-size:64px;margin:4px 0 0}
+.sl .tt{border-collapse:separate;border-spacing:0 5px;margin-top:4px;font-size:24px;min-width:660px}
+.sl .tt th{font-size:18px;font-weight:600;opacity:.75;text-align:right;padding:0 18px}
+.sl .tt td{padding:5px 18px;line-height:1.3;text-align:right;background:#ffffff14;font-variant-numeric:tabular-nums}
+.sl .tt td:first-child{text-align:left;border-radius:12px 0 0 12px;font-weight:600}
+.sl .tt td:last-child{border-radius:0 12px 12px 0}
+.sl .tt tr.c td{background:#ffffff26}
+.sl .tt tr.nc td{color:#ffffffa0}
+.sl .tt tr.tot td{background:#f4c542;color:#16257a;font-weight:700}
+.sl .tt tr.tot td b{font-size:30px}
 .sl .stats{display:flex;gap:18px;margin-top:34px}
 .sl .stats div{background:#ffffff1a;border:2px solid #ffffff40;border-radius:18px;padding:12px 24px;text-align:center;min-width:130px}
 .sl .stats b{display:block;font-size:46px;line-height:1.1}
@@ -453,7 +472,7 @@ function renderResults(){
     body.innerHTML=`<div class="card"><h2>${esc(resTab==="A"?c.flightA:c.flightB)} · Net (System 36)</h2><div class="meta" style="margin:-4px 0 8px">แตะชื่อผู้เล่นเพื่อดูวิธีคำนวณรายหลุม</div><table><thead><tr><th></th><th>ผู้เล่น</th><th class="n">Gross</th><th class="n">แต้ม</th><th class="n">HC</th><th class="n">Net</th></tr></thead><tbody>${done.map(row).join("")}${inc.map(row).join("")}${!done.length&&!inc.length?`<tr><td colspan="6" class="meta">ยังไม่มีผู้เล่นใน Flight นี้</td></tr>`:""}</tbody></table></div>`;
   } else if(resTab==="T"){
     const tr=teamResults(), best=+c.teamBest||3;
-    body.innerHTML=`<div class="card"><h2>ประเภทก๊วน (4 คน) · รวม Net ดีที่สุด ${best} คน</h2>${tr.map((x,i)=>`<div class="team"><div class="rk${x.ok?rkCls(i):""}">${x.ok?i+1:"–"}</div><div><div class="nm">${esc(x.t.name)}</div><div class="mem">${x.mem.sort(cmp).map(r=>`<span class="${x.counted.includes(r)?"c":""}" style="display:inline-flex;align-items:center;gap:4px">${av(r.p,"sm")}${esc(cleanName(r.p.name))} ${r.done?r.net:`(${r.thru}/18)`}</span>`).join("")}</div></div><div class="tot"><span class="net">${x.ok?x.total:"–"}</span><div class="meta">Net รวม</div></div></div>`).join("")||`<div class="meta">ยังไม่มีก๊วน</div>`}<div class="foot">ช่องสีเขียว = คะแนนที่นับรวม · Net รวมเท่ากัน ตัดสินที่ Net ดีที่สุดของก๊วน → Net รวมทุกคนในก๊วน</div></div>`;
+    body.innerHTML=`<div class="card"><h2>ประเภทก๊วน (4 คน) · รวม Net ดีที่สุด ${best} คน</h2>${tr.map((x,i)=>`<div class="team" style="display:block"><div class="row" style="flex-wrap:nowrap"><div class="rk${x.ok?rkCls(i):""}">${x.ok?i+1:"–"}</div><div class="nm grow">${esc(x.t.name)}</div><div class="tot"><span class="net">${x.ok?x.total:"–"}</span><div class="meta">Net รวม</div></div></div><div><table class="tm"><thead><tr><th>ผู้เล่น</th><th class="n">Gross</th><th class="n">แต้ม</th><th class="n">HC</th><th class="n">Net</th></tr></thead><tbody>${x.mem.sort(cmp).map(r=>`<tr class="${x.counted.includes(r)?"c":""}"><td><span class="who" style="gap:6px">${av(r.p,"sm")}${esc(cleanName(r.p.name))}</span></td><td class="n">${r.thru?r.gross:"–"}</td><td class="n">${r.thru?r.pts:"–"}</td><td class="n">${r.done?r.hc:"–"}</td><td class="n"><b>${r.done?r.net:`${r.thru}/18`}</b></td></tr>`).join("")}</tbody></table></div></div>`).join("")||`<div class="meta">ยังไม่มีก๊วน</div>`}<div class="foot">ช่องสีเขียว = คะแนนที่นับรวม · Net รวมเท่ากัน ตัดสินที่ Net ดีที่สุดของก๊วน → Net รวมทุกคนในก๊วน</div></div>`;
   } else if(resTab==="N"){
     const names=S.roster.players.map(p=>`<option value="${esc(p.name)}">`).join("");
     body.innerHTML=`<datalist id="pNames">${names}</datalist><div class="ntpgrid">${(c.ntpHoles||[]).map(h=>{const w=ntpWinner(h), list=(S.ntp[h]||[]).map((e,i)=>({...e,i})).sort((a,b)=>(+a.yds)-(+b.yds));
@@ -530,7 +549,7 @@ function awardsHtml(){
    ${d.flights.map(F=>`<h3>${esc(F.name)}</h3>${F.top.length?F.top.map((r,i)=>prow(medal[i],r.p.name,`Gross ${r.gross} · HC ${r.hc}`,r.net,"Net",r.p)).join(""):pend("ยังไม่มีผู้เล่นครบ 18 หลุม")}`).join("")}
   </div>
   <div class="card"><h2>2. ประเภททีม (ก๊วน)</h2>
-   ${d.teams.length?d.teams.map((x,i)=>prow(medal[i],x.t.name,`<span style="display:inline-flex;gap:2px;vertical-align:middle;margin-right:4px">${x.mem.map(r=>av(r.p,"sm")).join("")}</span>`+x.counted.map(r=>esc(cleanName(r.p.name))+" "+r.net).join(" · "),x.total,"Net รวม")).join(""):pend("ยังไม่มีก๊วนที่ครบ")}
+   ${d.teams.length?d.teams.map((x,i)=>prow(medal[i],x.t.name,`<span style="display:flex;gap:2px;margin:3px 0 4px">${x.mem.map(r=>av(r.p,"sm")).join("")}</span>`+x.counted.map(r=>`${esc(cleanName(r.p.name))} <b>${r.net}</b> <span style="opacity:.7">(G ${r.gross} · HC ${r.hc})</span>`).join("<br>"),x.total,"Net รวม")).join(""):pend("ยังไม่มีก๊วนที่ครบ")}
   </div>
   <div class="card"><h2>3. Nearest to Pin</h2>
    ${d.ntp.map(n=>prow("🎯",n.w?n.w.name:"—",`หลุม ${n.h} · Par ${S.config.pars[n.h-1]}`,n.w?esc(n.w.yds):"–","หลา",n.w?(pByName(n.w.name)||{name:n.w.name}):null)).join("")}
@@ -711,8 +730,8 @@ function slideHTML(s){
     stats=`<div class="stats"><div class="hl"><b>${s.r.net}</b><span>Net</span></div><div><b>${s.r.gross}</b><span>Gross</span></div><div><b>${s.r.hc}</b><span>Handicap</span></div><div><b>${s.r.pts}</b><span>แต้ม S36</span></div></div>`;}
   if(s.kind==="t"&&s.x){name="ก๊วน "+grpLabel(s.x.t);
     photo=up?`<div class="photo">${img(up)}</div>`:`<div class="photo grid">${s.x.mem.slice(0,4).map(r=>`<div>${photoSrc(r.p)?img(photoSrc(r.p)):""}${esc(cleanName(r.p.name))}</div>`).join("")}</div>`;
-    org=`<div class="org" style="flex-wrap:wrap;font-size:24px">${s.x.mem.map(r=>esc(cleanName(r.p.name))).join(" · ")}</div>`;
-    stats=`<div class="stats"><div class="hl"><b>${s.x.total}</b><span>Net รวม (${s.x.counted.length} คน)</span></div>${s.x.counted.map(r=>`<div><b>${r.net}</b><span>${esc(cleanName(r.p.name).replace(/^คุณ/,""))}</span></div>`).join("")}</div>`;}
+    org="";
+    stats=`<table class="tt"><tr><th></th><th>Gross</th><th>HC</th><th>Net</th></tr>${[...s.x.mem].sort(cmp).map(r=>`<tr class="${s.x.counted.includes(r)?"c":"nc"}"><td>${esc(cleanName(r.p.name))}</td><td>${r.done?r.gross:"–"}</td><td>${r.done?r.hc:"–"}</td><td><b>${r.done?r.net:"–"}</b></td></tr>`).join("")}<tr class="tot"><td>Net รวม ${s.x.counted.length} คนที่ดีที่สุด</td><td></td><td></td><td><b>${s.x.total}</b></td></tr></table>`;}
   if(s.kind==="n"&&s.w){const p=s.p;name=cleanName(s.w.name);const o=p&&orgOf(p);
     if(o)org=`<div class="org"><img src="img/logo_${o}.png" alt="${o}"></div>`;
     photo=up?`<div class="photo">${img(up)}</div>`:(p&&photoSrc(p)?`<div class="photo circ">${img(photoSrc(p))}</div>`:"");
@@ -721,7 +740,7 @@ function slideHTML(s){
   return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
    <div class="top"><div class="brand"><b>P1D1</b> GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div><div class="cat">${esc(s.cat)}</div></div>
    ${photo}
-   <div class="info">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
+   <div class="info${s.kind==="t"?" tinfo":""}">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
    <div class="logos2">LOGOS</div></div>`.replace("LOGOS",LOGOSTRIP);
 }
 function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=>{const sl=w.firstElementChild;if(sl)sl.style.transform=`scale(${w.clientWidth/1600})`;});}
