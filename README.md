@@ -9,7 +9,7 @@
 2. **Build → Firestore Database → Create database** (region `asia-southeast1`)
 3. แท็บ **Rules** → วางเนื้อหาไฟล์ `firestore.rules` → **Publish**
 4. **Project settings ⚙️ → Your apps → Web `</>`** → Register app → คัดลอก `firebaseConfig = { ... }`
-5. Vercel → Project **p1-golf** → **Settings → Environment Variables**
+5. ใส่ค่าใน `config.js` (ใส่แล้ว) หรือ Vercel → Settings → Environment Variables
    เพิ่ม `FIREBASE_CONFIG` = วาง `{ apiKey: "...", authDomain: "...", projectId: "...", ... }` (Production)
 6. **Deployments → Redeploy**
 
