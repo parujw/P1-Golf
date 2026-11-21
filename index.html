@@ -765,18 +765,21 @@ function compCards(kind){
   const names=S.roster.players.map(p=>`<option value="${esc(p.name)}">`).join("");
   if(!holes.length)return `<div class="card meta">ยังไม่ได้เลือกหลุม — ไปที่ ⚙️ ตั้งค่า → รางวัล</div>`;
   return `<datalist id="pNames">${names}</datalist>${prizeBox(isLD?"ld":"ntp")}<div class="ntpgrid">${holes.map(h=>{const k=isLD?"ld"+h:String(h), w=isLD?ldWinner(h):ntpWinner(h);
-    const list=(S.ntp[k]||[]).map((e,i)=>({...e,i})).sort((a,b)=>isLD?(+b.yds)-(+a.yds):(+a.yds)-(+b.yds));
+    const list=(S.ntp[k]||[]).map((e,i)=>({...e,i})).sort((a,b)=>(hasYds(b)-hasYds(a))||(isLD?(+b.yds)-(+a.yds):(+a.yds)-(+b.yds)));const manual=(S.ntp[k]||[]).some(x=>x.win);const multi=(S.ntp[k]||[]).length>1&&!w;
     return `<div class="ntp"><div class="top"><div class="t">${isLD?"LONGEST DRIVE":"NEAREST TO PIN"}<br><span class="meta">Par ${c.pars[h-1]} · <span style="color:#2a4fd6">●</span>${YARDS.B[h-1]} <span style="color:#999">○</span>${YARDS.W[h-1]} หลา</span></div><div class="hn"><span class="meta" style="font-size:10px;letter-spacing:2px;display:block;text-align:right">HOLE</span>${h}</div></div>
-    <div class="win">${w?`<div class="who">${av(pByName(w.name))}<div><div>🏆 <span class="w">${esc(cleanName(w.name))}</span></div><div>${lg(pByName(w.name))}<span class="y">${esc(w.yds)} หลา</span></div></div></div>`:`<span class="meta">ยังไม่มีผู้บันทึก</span>`}</div>
-    <ul>${list.map(e=>`<li><span>${esc(e.name)}</span><span><b>${esc(e.yds)}</b> หลา ${S.canWrite?`<button class="x" data-dn="${k}" data-i="${e.i}">×</button>`:""}</span></li>`).join("")}</ul>
-    ${S.canWrite?`<div class="add"><select data-nn="${k}" style="flex:1;min-width:0"><option value="">เลือกผู้เล่น…</option>${S.roster.teams.map(t=>{const mm=S.roster.players.filter(p=>String(p.team)===String(t.id));return mm.length?`<optgroup label="${esc(t.name)}">${mm.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("")}</optgroup>`:"";}).join("")}</select><input type="number" inputmode="decimal" step="0.1" placeholder="หลา" style="width:80px" data-ny="${k}"><button class="btn sm" data-na="${k}">+</button></div>`:""}</div>`;}).join("")}</div>
-    <div class="foot">${isLD?"ระยะไกลที่สุดชนะ · ลูกต้องหยุดอยู่บนแฟร์เวย์":"ระยะใกล้หลุมที่สุดชนะ · ลูกจาก Tee Shot ต้องอยู่บนกรีน"}</div>`;
+    <div class="win">${w?`<div class="who">${av(pByName(w.name))}<div><div>🏆 <span class="w">${esc(cleanName(w.name))}</span></div><div>${lg(pByName(w.name))}<span class="y">${ydsTxt(w)}</span>${manual?` <span class="meta">· เลือกโดยทีมงาน</span>`:""}${dupBadge(w.name)}</div></div></div>`:`<span class="meta">${multi?"⚠️ ไม่มีระยะให้เทียบ — แตะ 🏆 เพื่อเลือกผู้ชนะ":"ยังไม่มีผู้บันทึก"}</span>`}</div>
+    <ul>${list.map(e=>`<li${w&&e.name===w.name&&e.yds===w.yds?' style="font-weight:700"':""}><span>${esc(e.name)}</span><span>${hasYds(e)?`<b>${esc(e.yds)}</b> หลา`:`<span class="meta">ไม่ระบุระยะ</span>`} ${S.canWrite?`<button class="x" data-dw="${k}" data-i="${e.i}" title="เลือกเป็นผู้ชนะ" style="opacity:${e.win?1:.35}">🏆</button><button class="x" data-dn="${k}" data-i="${e.i}">×</button>`:""}</span></li>`).join("")}</ul>
+    ${S.canWrite?`<div class="add"><select data-nn="${k}" style="flex:1;min-width:0"><option value="">เลือกผู้เล่น…</option>${S.roster.teams.map(t=>{const mm=S.roster.players.filter(p=>String(p.team)===String(t.id));return mm.length?`<optgroup label="${esc(t.name)}">${mm.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("")}</optgroup>`:"";}).join("")}</select><input type="number" inputmode="decimal" step="0.1" placeholder="หลา (ถ้ามี)" style="width:104px" data-ny="${k}"><button class="btn sm" data-na="${k}">+</button></div>`:""}</div>`;}).join("")}</div>
+    <div class="foot">${isLD?"ระยะไกลที่สุดชนะ · ลูกต้องหยุดอยู่บนแฟร์เวย์":"ระยะใกล้หลุมที่สุดชนะ · ลูกจาก Tee Shot ต้องอยู่บนกรีน"}<br>ไม่รู้ระยะ? เลือกผู้เล่นแล้วกด + ได้เลย · แตะ 🏆 ที่ชื่อเพื่อเลือก/เปลี่ยนผู้ชนะเอง (เช่น กรณีได้รางวัลซ้ำ)</div>`;
 }
 const PRIZEIMG={team:"img/prize_team.jpg",ld:"img/prize_ld.jpg",ntp:"img/prize_ntp.jpg"};
 function prize(k){const p=((S.config.prizes||{})[k])||{};return p.item||p.value||p.by?p:null;}
 function prizeBox(k){const p=prize(k);if(!p)return "";return `<div class="prizebox">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:"<span style='font-size:28px'>🎁</span>"}<div><div class="nm">🎁 ${esc(p.item||"")}</div><div class="meta">${p.value?esc(p.value):""}${p.by?` · มอบโดย ${esc(p.by)}`:""}</div></div></div>`;}
-function ldWinner(h){const e=(S.ntp["ld"+h]||[]).filter(x=>x.yds!==""&&!isNaN(+x.yds));if(!e.length)return null;return e.reduce((a,b)=>(+b.yds>+a.yds?b:a));}
-function ntpWinner(h){const e=(S.ntp[h]||[]).filter(x=>x.yds!==""&&!isNaN(+x.yds));if(!e.length)return null;return e.reduce((a,b)=>(+b.yds<+a.yds?b:a));}
+const hasYds=x=>x&&x.yds!==""&&x.yds!=null&&!isNaN(+x.yds);
+function compWinner(k,asc){const e=S.ntp[k]||[];const m=e.find(x=>x.win);if(m)return m;const v=e.filter(hasYds);if(v.length)return v.reduce((a,b)=>asc?(+b.yds<+a.yds?b:a):(+b.yds>+a.yds?b:a));return e.length===1?e[0]:null;}
+const ydsTxt=w=>hasYds(w)?`${esc(w.yds)} หลา`:"ไม่ระบุระยะ";
+function ldWinner(h){return compWinner("ld"+h,false);}
+function ntpWinner(h){return compWinner(String(h),true);}
 
 // ---------- render ----------
 function render(src){
@@ -807,7 +810,7 @@ function renderResults(){
   } else if(resTab==="R"){
     body.innerHTML=rulesHtml();
   } else {
-    body.innerHTML=awardsHtml();
+    body.innerHTML=dupBox()+awardsHtml();
 
   }
 }
@@ -866,16 +869,29 @@ function awardsData(){
   const ld=(c.ldHoles||[]).map(h=>({h,w:ldWinner(h)}));
   return {flights,teams,ntp,ld,indOn:c.indOn!==false,left:all.filter(r=>!r.done).length};
 }
+function awardHolders(){
+  const d=awardsData(),m={},add=(nm,a)=>{if(!nm)return;const k=cleanName(nm);(m[k]=m[k]||{name:nm,list:[]}).list.push(a);};
+  if(d.indOn)d.flights.forEach(F=>F.top.forEach((r,i)=>add(r.p.name,`${["ชนะเลิศ","รองฯ 1","รองฯ 2"][i]} เดี่ยว ${F.name}`)));
+  d.teams.forEach((x,i)=>x.mem.forEach(r=>add(r.p.name,`${i===0?"ชนะเลิศ":"อันดับ "+(i+1)} ทีม (ก๊วน ${grpLabel(x.t)})`)));
+  d.ld.forEach(x=>x.w&&add(x.w.name,`ตีไกล หลุม ${x.h}`));
+  d.ntp.forEach(x=>x.w&&add(x.w.name,`Near Pin หลุม ${x.h}`));
+  return Object.values(m).filter(x=>x.list.length>1);
+}
+function dupBadge(nm){const k=cleanName(nm||"");const d=awardHolders().find(x=>cleanName(x.name)===k);return d?` <span style="background:#fff3e0;color:#9a5b00;border-radius:6px;padding:1px 6px;font-size:11px;font-weight:700">รางวัลซ้ำ ${d.list.length}</span>`:"";}
+function dupBox(){const D=awardHolders();if(!D.length)return "";
+  return `<div class="card" style="border-color:#f3c98b;background:#fffaf0"><h2>⚠️ ผู้ได้รางวัลมากกว่า 1 รางวัล (${D.length} คน)</h2>
+  ${D.map(x=>`<div class="who" style="padding:6px 0;border-bottom:1px dashed var(--line)">${av(pByName(x.name))}<div><div class="nm">${esc(x.name)}</div><div class="meta">${x.list.map(esc).join(" · ")}</div></div></div>`).join("")}
+  <div class="foot">ระบบไม่ตัดสิทธิ์อัตโนมัติ ให้ผู้บริหารพิจารณา · ถ้าต้องการมอบ Near Pin / ตีไกล ให้คนถัดไป ไปที่แท็บนั้นแล้วแตะ 🏆 ที่ชื่อผู้รับคนใหม่</div></div>`;}
 function awardsHtml(){
   const d=awardsData(), medal=["🥇","🥈","🥉"];
   const pend=t=>`<div class="meta" style="padding:8px 0">${t}</div>`;
   const prow=(m,name,sub,val,unit,p)=>`<div class="row" style="padding:9px 0;border-bottom:1px solid var(--line);flex-wrap:nowrap"><div style="font-size:24px;width:34px">${m}</div>${p?av(p):""}<div class="grow"><div class="nm">${esc(p?cleanName(name):name)}</div><div class="meta">${p?lg(p):""}${sub}</div></div><div style="text-align:right"><span class="net">${val}</span><div class="meta">${unit}</div></div></div>`;
   return `${d.left?`<div class="banner">ผลชั่วคราว — ยังมีผู้เล่นกรอกไม่ครบ 18 หลุม ${d.left} คน</div>`:`<div class="banner ok">✅ กรอกสกอร์ครบทุกคนแล้ว — ผลอย่างเป็นทางการ</div>`}
   ${(()=>{let n=0;const sec=(t,k,body)=>`<div class="card"><h2>${++n}. ${t}</h2>${k?prizeBox(k):""}${body}</div>`;return [
-   d.indOn?sec("ประเภทเดี่ยว (Net · System 36)","ind",`${d.flights.map(F=>`<h3>${esc(F.name)}</h3>${F.top.length?F.top.map((r,i)=>prow(medal[i],r.p.name,`Gross ${r.gross} · HC ${r.hc}`,r.net,"Net",r.p)).join(""):pend("ยังไม่มีผู้เล่นครบ 18 หลุม")}`).join("")}`):"",
+   d.indOn?sec("ประเภทเดี่ยว (Net · System 36)","ind",`${d.flights.map(F=>`<h3>${esc(F.name)}</h3>${F.top.length?F.top.map((r,i)=>prow(medal[i],r.p.name,`Gross ${r.gross} · HC ${r.hc}${dupBadge(r.p.name)}`,r.net,"Net",r.p)).join(""):pend("ยังไม่มีผู้เล่นครบ 18 หลุม")}`).join("")}`):"",
    sec("ประเภททีม (ก๊วน)","team",`${d.teams.length?d.teams.map((x,i)=>prow(medal[i],x.t.name,`<span style="display:flex;gap:2px;margin:3px 0 4px">${x.mem.map(r=>av(r.p,"sm")).join("")}</span>`+x.counted.map(r=>`${esc(cleanName(r.p.name))} <b>${r.net}</b> <span style="opacity:.7">(G ${r.gross} · HC ${r.hc})</span>`).join("<br>"),x.total,"Net รวม")).join(""):pend("ยังไม่มีก๊วนที่ครบ")}`),
-   d.ld.length?sec("Longest Drive (ตีไกล)","ld",`${d.ld.map(n=>prow("🏌️",n.w?n.w.name:"—",`หลุม ${n.h} · Par ${S.config.pars[n.h-1]}`,n.w?esc(n.w.yds):"–","หลา",n.w?(pByName(n.w.name)||{name:n.w.name}):null)).join("")}`):"",
-   d.ntp.length?sec("Nearest to Pin","ntp",`${d.ntp.map(n=>prow("🎯",n.w?n.w.name:"—",`หลุม ${n.h} · Par ${S.config.pars[n.h-1]}`,n.w?esc(n.w.yds):"–","หลา",n.w?(pByName(n.w.name)||{name:n.w.name}):null)).join("")}`):""].join("");})()}
+   d.ld.length?sec("Longest Drive (ตีไกล)","ld",`${d.ld.map(n=>prow("🏌️",n.w?n.w.name:"—",`หลุม ${n.h} · Par ${S.config.pars[n.h-1]}${n.w?dupBadge(n.w.name):""}`,n.w&&hasYds(n.w)?esc(n.w.yds):"–",n.w&&!hasYds(n.w)?"ไม่ระบุระยะ":"หลา",n.w?(pByName(n.w.name)||{name:n.w.name}):null)).join("")}`):"",
+   d.ntp.length?sec("Nearest to Pin","ntp",`${d.ntp.map(n=>prow("🎯",n.w?n.w.name:"—",`หลุม ${n.h} · Par ${S.config.pars[n.h-1]}${n.w?dupBadge(n.w.name):""}`,n.w&&hasYds(n.w)?esc(n.w.yds):"–",n.w&&!hasYds(n.w)?"ไม่ระบุระยะ":"หลา",n.w?(pByName(n.w.name)||{name:n.w.name}):null)).join("")}`):""].join("");})()}
   </div>`;
 }
 const PHOTOS=new Set([...Array(28)].map((_,i)=>"p"+String(i+1).padStart(2,"0")));
@@ -958,8 +974,9 @@ $("resBody").addEventListener("change",e=>{if(e.target.id==="bdSel"){bdPid=e.tar
 $("resBody").addEventListener("click",e=>{
   const bdr=e.target.closest("[data-bd]"); if(bdr){bdPid=bdr.dataset.bd;resTab="R";renderResults();setTimeout(()=>{const x=$("bdSel");x&&x.scrollIntoView({behavior:"smooth",block:"start"});},50);return;}
   const a=e.target.closest("[data-na]"); if(a){const h=a.dataset.na;const n=document.querySelector(`[data-nn="${h}"]`),y=document.querySelector(`[data-ny="${h}"]`);
-    if(!n.value.trim()||y.value===""){toast("เลือกผู้เล่นและใส่ระยะ (หลา)");return;}
+    if(!n.value.trim()){toast("เลือกผู้เล่นก่อน");return;}
     (S.ntp[h]=S.ntp[h]||[]).push({name:n.value.trim(),yds:y.value});saveComp(h);renderResults();toast("บันทึก "+(String(h).startsWith("ld")?"ตีไกล หลุม "+h.slice(2):"Near Pin หลุม "+h));return;}
+  const dw=e.target.closest("[data-dw]"); if(dw){const k=dw.dataset.dw,i=+dw.dataset.i,arr=S.ntp[k]||[];const was=!!arr[i].win;arr.forEach(x=>delete x.win);if(!was)arr[i].win=true;saveComp(k);renderResults();toast(was?"กลับไปตัดสินตามระยะ":"เลือกผู้ชนะแล้ว");return;}
   const d=e.target.closest("[data-dn]"); if(d){const h=d.dataset.dn;confirmBox("ลบรายการนี้?").then(ok=>{if(!ok)return;S.ntp[h].splice(+d.dataset.i,1);saveComp(h);renderResults();});}
 });
 $("resBody").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.dataset.ny){document.querySelector(`[data-na="${e.target.dataset.ny}"]`).click();}});
@@ -1034,8 +1051,8 @@ $("copyRes").onclick=()=>{
   let n=0;const num=()=>["1️⃣","2️⃣","3️⃣","4️⃣"][n++];
   if(d.indOn){L.push(num()+" ประเภทเดี่ยว");d.flights.forEach(F=>{L.push(`【${F.name}】`);F.top.forEach((r,i)=>L.push(`${m[i]} ${r.p.name} — Net ${r.net} (Gross ${r.gross}, HC ${r.hc})`));});L.push("");}
   L.push(num()+" ประเภททีม (ก๊วน)");if(pz("team"))L.push(pz("team"));d.teams.forEach((x,i)=>{L.push(`${m[i]} ${x.t.name} — Net รวม ${x.total}`);x.mem.forEach(r=>L.push(`   • ${r.p.name} Net ${r.net} (G ${r.gross}, HC ${r.hc})`));});L.push("");
-  if(d.ld.length){L.push(num()+" Longest Drive (ตีไกล)");if(pz("ld"))L.push(pz("ld"));d.ld.forEach(x=>L.push(`🏌️ หลุม ${x.h}: ${x.w?x.w.name+" — "+x.w.yds+" หลา":"-"}`));L.push("");}
-  if(d.ntp.length){L.push(num()+" Nearest to Pin");if(pz("ntp"))L.push(pz("ntp"));d.ntp.forEach(x=>L.push(`🎯 หลุม ${x.h}: ${x.w?x.w.name+" — "+x.w.yds+" หลา":"-"}`));}
+  if(d.ld.length){L.push(num()+" Longest Drive (ตีไกล)");if(pz("ld"))L.push(pz("ld"));d.ld.forEach(x=>L.push(`🏌️ หลุม ${x.h}: ${x.w?x.w.name+(hasYds(x.w)?" — "+x.w.yds+" หลา":""):"-"}`));L.push("");}
+  if(d.ntp.length){L.push(num()+" Nearest to Pin");if(pz("ntp"))L.push(pz("ntp"));d.ntp.forEach(x=>L.push(`🎯 หลุม ${x.h}: ${x.w?x.w.name+(hasYds(x.w)?" — "+x.w.yds+" หลา":""):"-"}`));}
   copyText(L.join("\n"));
 };
 
@@ -1074,7 +1091,7 @@ function slideModel(s){
   if(s.kind==="t"&&s.x){Object.assign(m,{pending:false,name:"ก๊วน "+grpLabel(s.x.t),grid:s.x.mem.slice(0,4).map(r=>photoSrc(r.p)).filter(Boolean)});
     m.mem=[...s.x.mem].sort(cmp).map(r=>({n:cleanName(r.p.name),v:r.done?r.net:"–",d:r.done?`${r.gross} − ${r.hc}`:"",c:s.x.counted.includes(r)}));m.total=s.x.total;m.cnt=s.x.counted.length;}
   if((s.kind==="n"||s.kind==="l")&&s.w){const p=s.p;Object.assign(m,{pending:false,name:cleanName(s.w.name),sub:p&&p.title||"",org:p&&orgOf(p),photo:p&&photoSrc(p)});
-    m.nums=s.kind==="n"?[{v:s.w.yds,l:"หลา ห่างธง",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}]:[{v:s.w.yds,l:"หลา ระยะไดรฟ์",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}];}
+    m.nums=s.kind==="n"?[{v:hasYds(s.w)?s.w.yds:"—",l:"หลา ห่างธง",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}]:[{v:hasYds(s.w)?s.w.yds:"—",l:"หลา ระยะไดรฟ์",k:1},{v:s.h,l:`หลุม · Par ${c.pars[s.h-1]}`}];}
   const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const pz=prize(k);
   m.prize=pz&&!((s.kind==="t")&&s.rank>0)?{...pz,img:PRIZEIMG[k]}:null;
   m.big=s.kind==="n"||s.kind==="l"?String(s.h):String((s.rank||0)+1);
@@ -1157,7 +1174,7 @@ function portraitHTML(s){
   let card="";
   if(s.kind==="p"&&s.r)card=bcScorecard(s.r);
   if(s.kind==="t"&&s.x)card=bcTeam(s.x);
-  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${esc(s.w.yds)}</b></div></div></div>`;
+  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${!hasYds(s.w)?(s.kind==="n"?"ใกล้ธงที่สุด":"ไกลที่สุด"):s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${(hasYds(s.w)?esc(s.w.yds):"🏆")}</b></div></div></div>`;
   const foot="";
   return `<div class="sl th thD thP"><div class="bgp">${bg}<div class="dim"></div></div>
     <div class="brand2"><span class="lw2"><img src="img/logo_p1d1.png" alt=""></span><span class="bt"><b>P1D1 Golf Day 2026</b><small>At ${esc(c.course||"")}</small></span></div>
@@ -1175,7 +1192,7 @@ function broadcastHTML(s){
     else if(m.photo)bg+=`<div class="pc"><img src="${m.photo}" alt=""></div>`;}
   if(s.kind==="p"&&s.r)card=bcScorecard(s.r);
   if(s.kind==="t"&&s.x)card=bcTeam(s.x);
-  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${esc(s.w.yds)}</b></div></div></div>`;
+  if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${!hasYds(s.w)?(s.kind==="n"?"ใกล้ธงที่สุด":"ไกลที่สุด"):s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${(hasYds(s.w)?esc(s.w.yds):"🏆")}</b></div></div></div>`;
   const name=m.name;
   const foot="";
   return `<div class="sl th thD"><div class="bgp">${bg}</div>
@@ -1229,7 +1246,7 @@ function slideHTML(s){
   if((s.kind==="n"||s.kind==="l")&&s.w){const p=s.p;name=cleanName(s.w.name);const o=p&&orgOf(p);
     if(o)org=`<div class="org"><img src="img/logo_${o}.png" alt="${o}"></div>`;
     photo=up?`<div class="photo">${img(up)}</div>`:(p&&photoSrc(p)?`<div class="photo circ">${img(photoSrc(p))}</div>`:"");
-    stats=`<div class="stats"><div class="hl"><b>${esc(s.w.yds)}</b><span>${s.kind==="l"?"หลา ระยะไดรฟ์":"หลา จากหลุม"}</span></div><div><b>Par ${S.config.pars[s.h-1]}</b><span>หลุม ${s.h}</span></div></div>`;}
+    stats=`<div class="stats"><div class="hl"><b>${(hasYds(s.w)?esc(s.w.yds):"🏆")}</b><span>${!hasYds(s.w)?"ผู้ชนะ":s.kind==="l"?"หลา ระยะไดรฟ์":"หลา จากหลุม"}</span></div><div><b>Par ${S.config.pars[s.h-1]}</b><span>หลุม ${s.h}</span></div></div>`;}
   if(!photo)photo=`<div class="photo none">📷</div>`;
   return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
    <div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div></div><div class="cat">${esc(s.cat)}</div></div>
@@ -1447,15 +1464,15 @@ async function downloadExcel(btn,opt){
       const line=(arr,bold)=>{arr.forEach((v,i)=>{const cell=aw.getCell(ar,i+1);cell.value=v;cell.font={name:FB,size:14,bold:!!bold&&i<2};box(cell,thin);cell.alignment={horizontal:i<2?"left":"center",vertical:"middle",wrapText:true};});ar++;};
       if(d.indOn){sec("ประเภทเดี่ยว (Net · System 36)","ind");d.flights.forEach(F=>{hdr([F.name,"ชื่อ","บริษัท / ตำแหน่ง","Gross","HC","Net"]);F.top.forEach((x,i)=>line([place[i],x.p.name,[orgOf(x.p)?ORGNAME[orgOf(x.p)]:"",x.p.title].filter(Boolean).join(" · "),x.gross,x.hc,x.net],true));});ar++;}
       sec("ประเภททีม (ก๊วน)","team");d.teams.forEach((x,i)=>{hdr([place[i],`ก๊วน ${grpLabel(x.t)} · Net รวม ${x.total}`,"นับคะแนน","Gross","HC","Net"]);[...x.mem].sort(cmp).forEach(m=>line(["",m.p.name,x.counted.includes(m)?"✓":"",m.gross,m.hc,m.net],x.counted.includes(m)));});ar++;
-      if(d.ld.length){sec("Longest Drive (ตีไกล)","ld");hdr(["หลุม","ผู้ชนะ","บริษัท","ระยะ (หลา)","",""]);d.ld.forEach(x=>{const p=x.w&&pByName(x.w.name);line([`หลุม ${x.h}`,x.w?x.w.name:"-",p&&orgOf(p)?ORGNAME[orgOf(p)]:"",x.w?+x.w.yds:"","",""],true);});ar++;}
-      if(d.ntp.length){sec("Nearest to Pin","ntp");hdr(["หลุม","ผู้ชนะ","บริษัท","ระยะ (หลา)","",""]);d.ntp.forEach(x=>{const p=x.w&&pByName(x.w.name);line([`หลุม ${x.h}`,x.w?x.w.name:"-",p&&orgOf(p)?ORGNAME[orgOf(p)]:"",x.w?+x.w.yds:"","",""],true);});ar++;}
+      if(d.ld.length){sec("Longest Drive (ตีไกล)","ld");hdr(["หลุม","ผู้ชนะ","บริษัท","ระยะ (หลา)","",""]);d.ld.forEach(x=>{const p=x.w&&pByName(x.w.name);line([`หลุม ${x.h}`,x.w?x.w.name:"-",p&&orgOf(p)?ORGNAME[orgOf(p)]:"",x.w?(hasYds(x.w)?+x.w.yds:"ไม่ระบุ"):"","",""],true);});ar++;}
+      if(d.ntp.length){sec("Nearest to Pin","ntp");hdr(["หลุม","ผู้ชนะ","บริษัท","ระยะ (หลา)","",""]);d.ntp.forEach(x=>{const p=x.w&&pByName(x.w.name);line([`หลุม ${x.h}`,x.w?x.w.name:"-",p&&orgOf(p)?ORGNAME[orgOf(p)]:"",x.w?(hasYds(x.w)?+x.w.yds:"ไม่ระบุ"):"","",""],true);});ar++;}
       // --- NTP / LD log
       const lg2=wb.addWorksheet("บันทึก Near Pin-ตีไกล");lg2.columns=[{width:22},{width:10},{width:34},{width:14},{width:10}];
       let lr=1;[["Nearest to Pin",c.ntpHoles||[],h=>String(h),true],["Longest Drive (ตีไกล)",c.ldHoles||[],h=>"ld"+h,false]].forEach(([t,holes,key,asc])=>{
         holes.forEach(h=>{const list=[...(S.ntp[key(h)]||[])].sort((a,b)=>asc?(+a.yds)-(+b.yds):(+b.yds)-(+a.yds));
           lg2.mergeCells(lr,1,lr,5);const cell=lg2.getCell(lr,1);cell.value=`${t} · หลุม ${h} (Par ${c.pars[h-1]})`;cell.font={name:FT,size:16,bold:true,color:{argb:"FFFFFFFF"}};fill(cell,"FF1B2A6B");lr++;
           ["ประเภท","ลำดับ","ชื่อ","ระยะ (หลา)",""].forEach((v,i)=>{const cc=lg2.getCell(lr,i+1);cc.value=v;cc.font={name:FB,size:13,bold:true};fill(cc,"FFDCE8FF");});lr++;
-          list.forEach((e,i)=>{[t,i+1,e.name,+e.yds,i===0?"🏆":""].forEach((v,j)=>{const cc=lg2.getCell(lr,j+1);cc.value=v;cc.font={name:FB,size:13,bold:i===0};box(cc,thin);});lr++;});
+          list.forEach((e,i)=>{[t,i+1,e.name,hasYds(e)?+e.yds:"ไม่ระบุ",e.win?"🏆 (เลือกโดยทีมงาน)":i===0&&hasYds(e)?"🏆":""].forEach((v,j)=>{const cc=lg2.getCell(lr,j+1);cc.value=v;cc.font={name:FB,size:13,bold:i===0};box(cc,thin);});lr++;});
           if(!list.length){lg2.getCell(lr,3).value="(ยังไม่มีบันทึก)";lr++;}
           lr++;});});
     }
@@ -1554,7 +1571,7 @@ function mcScript(){
     p(`เริ่มกันที่รางวัลที่วัดกันด้วยพละกำลังล้วน ๆ <b>Longest Drive</b>${pz("ld").item?` ของรางวัลคือ ${esc(pz("ld").item)}${pz("ld").value?` มูลค่า ${esc(pz("ld").value)}`:""}`:""}${pz("ld").by?` ได้รับการสนับสนุนจาก ${esc(pz("ld").by)}`:""}`);
     d.ld.forEach(x=>{const pl=x.w&&pByName(x.w.name);cue(`ขึ้นสไลด์ผู้ชนะ Longest Drive หลุม ${x.h}`);
       p(`หลุม ${x.h} พาร์ ${c.pars[x.h-1]} ระยะจากทีขาว ${YARDS.W[x.h-1]} หลา ลูกต้องหยุดบนแฟร์เวย์เท่านั้น`);
-      p(x.w?`ลูกพุ่งกลางแฟร์เวย์ ไดรฟ์ที่ไกลที่สุดของวันนี้ ออกไปถึง <span class="hl">${esc(x.w.yds)} หลา</span>! <span class="pause">(เว้นจังหวะ)</span> เจ้าของลูกนั้นคือ ${who(pl||{name:x.w.name})}`:`<b>[ยังไม่มีผลบันทึก]</b>`);
+      p(x.w?(hasYds(x.w)?`ลูกพุ่งกลางแฟร์เวย์ ไดรฟ์ที่ไกลที่สุดของวันนี้ ออกไปถึง <span class="hl">${esc(x.w.yds)} หลา</span>! <span class="pause">(เว้นจังหวะ)</span> เจ้าของลูกนั้นคือ ${who(pl||{name:x.w.name})}`:`ไดรฟ์ที่ไกลที่สุดของหลุมนี้ <span class="pause">(เว้นจังหวะ)</span> เป็นของ ${who(pl||{name:x.w.name})}`):`<b>[ยังไม่มีผลบันทึก]</b>`);
       if(pl)p(`ในรอบนี้ ${card(pl)}`);
       if(x.w)p(`ขอเชิญ${pl?esc(cleanName(pl.name)):""}ขึ้นรับรางวัล${pz("ld").by?`จาก ${esc(pz("ld").by)} `:""}${K} ขอเสียงปรบมือ${K}`);});}
   // 4. Nearest to pin
@@ -1563,7 +1580,7 @@ function mcScript(){
     const lead=["หลุมแรกของรางวัลนี้","ไปต่อที่","และหลุมสุดท้ายของ Nearest to Pin"];
     d.ntp.forEach((x,i)=>{const pl=x.w&&pByName(x.w.name);cue(`ขึ้นสไลด์ผู้ชนะ Nearest to Pin หลุม ${x.h}`);
       p(`${i===0?lead[0]:i===d.ntp.length-1?lead[2]:lead[1]} หลุม ${x.h} พาร์ ${c.pars[x.h-1]} ระยะ ${YARDS.W[x.h-1]} หลา`);
-      p(x.w?`ทีช็อตเดียววางนิ่งข้างธง ห่างเพียง <span class="hl">${esc(x.w.yds)} หลา</span> ได้แก่ ${who(pl||{name:x.w.name})}`:`<b>[ยังไม่มีผลบันทึก]</b>`);
+      p(x.w?(hasYds(x.w)?`ทีช็อตเดียววางนิ่งข้างธง ห่างเพียง <span class="hl">${esc(x.w.yds)} หลา</span> ได้แก่ ${who(pl||{name:x.w.name})}`:`ทีช็อตที่ใกล้ธงที่สุดของหลุมนี้ ได้แก่ ${who(pl||{name:x.w.name})}`):`<b>[ยังไม่มีผลบันทึก]</b>`);
       if(pl)p(`ผลงานทั้งวัน ${card(pl)}`);
       if(x.w)p(`ขอเชิญขึ้นรับรางวัล${K}`);});}
   // 5. individual (optional)
