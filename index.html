@@ -460,7 +460,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 
 /* ===== alignment grid (Broadcast/Portrait): outer margin 60, content column x=360, shared top line y=48 ===== */
 .thD .lgp{right:60px;top:48px;height:66px;padding:0 24px}
-.thD .aw{left:360px;top:48px}
+.thD .aw{left:360px;top:56px}
 .thD .aw .k{font-family:"Chakra Petch","Anuphan",sans-serif;font-size:22px;line-height:1.5;padding:2px 14px}
 .thD .aw .t{margin-top:20px;line-height:1.2}
 .thD .nm3{margin-top:4px;line-height:1.15}
@@ -1106,9 +1106,10 @@ function slidePrize(s){const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const p
 
 // ---------- PR themes ----------
 const THEMES=[["d","แบบ Broadcast สกอร์การ์ด"],["p","แบบภาพผู้ชนะเต็มจอ"],["o","แบบเดิม"]];
+function shortTitle(s,t){return (s.kind==="n"||s.kind==="l")&&s.w?String(t).replace(/\s*หลุม\s*\d+\s*$/,""):t;}
 function slideModel(s){
   const pr=S.pr[s.id]||{},c=S.config;
-  const m={title:pr.title||s.def,up:pr.img||"",kind:s.kind,rank:s.rank,hole:s.h,name:"รอประกาศผล",sub:"",org:null,photo:null,grid:[],mem:null,nums:[],pending:true,
+  const m={title:shortTitle(s,pr.title||s.def),up:pr.img||"",kind:s.kind,rank:s.rank,hole:s.h,name:"รอประกาศผล",sub:"",org:null,photo:null,grid:[],mem:null,nums:[],pending:true,
     cat:{p:"ประเภทเดี่ยว · "+((s.cat||"").split("· ")[1]||""),t:"ประเภททีม",l:"ไดรฟ์ไกลที่สุด",n:"ใกล้ธงที่สุด"}[s.kind]};
   if(s.kind==="p"&&s.r){const p=s.r.p;Object.assign(m,{pending:false,name:cleanName(p.name),sub:p.title||"",org:orgOf(p),photo:photoSrc(p)});
     m.nums=[{v:s.r.net,l:"สกอร์สุทธิ",k:1},{v:s.r.gross,l:"Gross"},{v:s.r.hc,l:"แฮนดิแคป"}];}
@@ -1175,7 +1176,7 @@ function prizeSlideHTML(s,th){
   if(k==="ld")cnt=`${(c.ldHoles||[]).length>1?(c.ldHoles||[]).length+" รางวัล · ":""}หลุม ${(c.ldHoles||[]).join(", ")}`;
   if(k==="team")cnt=(+c.teamPlaces||1)===1?"สำหรับทีมชนะเลิศ":`อันดับ 1–${c.teamPlaces}`;
   if(k==="ind")cnt=`อันดับ 1–${c.indPlaces||3} ของแต่ละ Flight`;
-  const body=`<div class="zx"><span class="k">${esc(s.cat)}</span>
+  const body=`<div class="zx">
       <div class="zt" style="font-size:${fitFont(title,700,64,36)}px">${esc(title)}</div>
       <div class="zi" style="font-size:${fitFont(p.item||"",700,52,30)}px">${esc(p.item||"")}</div>
       ${p.value?`<div class="zv">มูลค่า ${esc(p.value)}</div>`:""}
@@ -1203,7 +1204,7 @@ function portraitHTML(s){
   return `<div class="sl th thD thP"><div class="bgp">${bg}<div class="dim"></div></div>
     <div class="brand2"><span class="lw2"><img src="img/logo_p1d1.png" alt=""></span><span class="bt"><b>P1D1 Golf Day 2026</b><small>At ${esc(c.course||"")}</small></span></div>
     <div class="lgp">${LOGOSTRIP}</div>
-    <div class="aw"><span class="k">${esc(m.cat)}</span><div class="t" style="font-size:${fitFont(m.title,720,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(m.name,760,112,60)}px">${esc(m.name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
+    <div class="aw"><div class="t" style="font-size:${fitFont(m.title,720,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(m.name,760,112,60)}px">${esc(m.name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
     ${card}${foot}</div>`;
 }
 
@@ -1223,7 +1224,7 @@ function broadcastHTML(s){
     <div class="band"><div class="lw"><img src="img/logo_p1d1.png" alt=""></div><div class="gl"></div>
       <div class="vt"><div class="e">P1D1 GOLF DAY 2026</div><div class="e2">AT ${esc((c.course||"").toUpperCase())}</div></div></div>
     <div class="lgp">${LOGOSTRIP}</div>
-    <div class="aw"><span class="k">${esc(flag)}</span><div class="t" style="font-size:${fitFont(m.title,640,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(name,660,104,56)}px">${esc(name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
+    <div class="aw"><div class="t" style="font-size:${fitFont(m.title,640,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(name,660,104,56)}px">${esc(name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
     ${card}${foot}</div>`;
 }
 
@@ -1255,7 +1256,7 @@ function slideThemeHTML(s,th){
 
 function slideHTML(s){
   const th=["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d";if(s.kind==="z")return prizeSlideHTML(s,th);if(s.kind==="open")return openingHTML(s,th);if(th==="p")return portraitHTML(s);if(th!=="o")return broadcastHTML(s);
-  const pr=S.pr[s.id]||{}, title=pr.title||s.def, up=pr.img;
+  const pr=S.pr[s.id]||{}, title=shortTitle(s,pr.title||s.def), up=pr.img;
   let photo="",name="รอประกาศผล",org="",stats="",medal="";
   medal=(s.kind==="n"||s.kind==="l")?`<div class="medal mn">หลุม<br>${s.h}</div>`:`<div class="medal m${s.rank+1}">${s.rank+1}</div>`;
   const img=src=>`<img src="${src}" alt="">`;
@@ -1270,10 +1271,10 @@ function slideHTML(s){
   if((s.kind==="n"||s.kind==="l")&&s.w){const p=s.p;name=cleanName(s.w.name);const o=p&&orgOf(p);
     if(o)org=`<div class="org"><img src="img/logo_${o}.png" alt="${o}"></div>`;
     photo=up?`<div class="photo">${img(up)}</div>`:(p&&photoSrc(p)?`<div class="photo circ">${img(photoSrc(p))}</div>`:"");
-    stats=`<div class="stats"><div class="hl"><b>${(hasYds(s.w)?esc(s.w.yds):"🏆")}</b><span>${!hasYds(s.w)?"ผู้ชนะ":s.kind==="l"?"หลา ระยะไดรฟ์":"หลา จากหลุม"}</span></div><div><b>Par ${S.config.pars[s.h-1]}</b><span>หลุม ${s.h}</span></div></div>`;}
+    stats=`<div class="stats"><div class="hl"><b>${(hasYds(s.w)?esc(s.w.yds):"🏆")}</b><span>${!hasYds(s.w)?"ผู้ชนะ":s.kind==="l"?"หลา ระยะไดรฟ์":"หลา จากหลุม"}</span></div><div><b>${S.config.pars[s.h-1]}</b><span>พาร์</span></div></div>`;}
   if(!photo)photo=`<div class="photo none">📷</div>`;
   return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
-   <div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div></div><div class="cat">${esc(s.cat)}</div></div>
+   <div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div></div></div>
    ${photo}
    <div class="info${s.kind==="t"?" tinfo":""}${s.kind==="n"||s.kind==="l"?" cmp":""}${s.kind==="t"&&up?" wide":""}">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}</div>
    <div class="logos2">LOGOS</div></div>`.replace("LOGOS",LOGOSTRIP);
