@@ -449,7 +449,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 /* MC script */
 .mc{font-size:16px;line-height:1.85;max-height:620px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fcfcfe}
 .mc.big{font-size:24px;line-height:1.9;max-height:none}
-.mc h4{margin:18px 0 6px;font-size:1.05em;color:var(--navy);border-bottom:2px solid #F2B705;display:inline-block;padding-bottom:2px}
+.mc h4{margin:18px 0 6px;font-size:1.05em;color:var(--navy);border-bottom:2px solid #F2B705;display:table;padding-bottom:2px}
 .mc h4:first-child{margin-top:0}
 .mc p{margin:0 0 10px}
 .mc .cue{color:#8a6a00;background:#fff6dd;border-radius:6px;padding:1px 8px;font-size:.85em;font-weight:600;display:inline-block;margin:4px 0 8px}
@@ -1525,7 +1525,7 @@ function renderReady(){
 let mcVoice="m";
 function mcScript(){
   const c=S.config,d=awardsData(),P=S.roster.players,G=gTeams(),par=c.pars.reduce((a,b)=>a+b,0);
-  const K=mcVoice==="f"?" ค่ะ":" ครับ", CN=/rajpruek/i.test(c.course||"")?"ราชพฤกษ์ คลับ":(c.course||""), ME=mcVoice==="f"?"ดิฉัน":"ผม";
+  const K=mcVoice==="f"?"ค่ะ":"ครับ", CN=/rajpruek/i.test(c.course||"")?"ราชพฤกษ์ คลับ":(c.course||""), ME=mcVoice==="f"?"ดิฉัน":"ผม";
   const L=[];const h=t=>L.push({h:t}),p=t=>L.push({p:t}),cue=t=>L.push({cue:t}),pause=()=>L.push({pause:1});
   const who=pl=>pl?`<b>${esc(pl.name)}</b>${pl.title?` ${esc(pl.title)}`:""}`:`<b>[รอผล]</b>`;
   const ovp=g=>{const x=g-par;return x>0?`โอเวอร์พาร์ ${x}`:x===0?"อีเวนพาร์":`อันเดอร์พาร์ ${-x}`;};
@@ -1556,7 +1556,7 @@ function mcScript(){
       p(`หลุม ${x.h} พาร์ ${c.pars[x.h-1]} ระยะจากทีขาว ${YARDS.W[x.h-1]} หลา ลูกต้องหยุดบนแฟร์เวย์เท่านั้น`);
       p(x.w?`ลูกพุ่งกลางแฟร์เวย์ ไดรฟ์ที่ไกลที่สุดของวันนี้ ออกไปถึง <span class="hl">${esc(x.w.yds)} หลา</span>! <span class="pause">(เว้นจังหวะ)</span> เจ้าของลูกนั้นคือ ${who(pl||{name:x.w.name})}`:`<b>[ยังไม่มีผลบันทึก]</b>`);
       if(pl)p(`ในรอบนี้ ${card(pl)}`);
-      if(x.w)p(`ขอเชิญ${pl?esc(cleanName(pl.name)):""}ขึ้นรับรางวัล${pz("ld").by?`จาก ${esc(pz("ld").by)}`:""}${K} ขอเสียงปรบมือ${K}`);});}
+      if(x.w)p(`ขอเชิญ${pl?esc(cleanName(pl.name)):""}ขึ้นรับรางวัล${pz("ld").by?`จาก ${esc(pz("ld").by)} `:""}${K} ขอเสียงปรบมือ${K}`);});}
   // 4. Nearest to pin
   if(ntH.length){h("Nearest to Pin");cue("ขึ้นสไลด์ของรางวัล Nearest to Pin");
     p(`ต่อกันที่รางวัลของมือแม่น <b>Nearest to Pin</b> ทั้ง ${ntH.length} หลุมพาร์ 3${pz("ntp").item?` รับ ${esc(pz("ntp").item)}${pz("ntp").value?` ${esc(pz("ntp").value)}`:""}`:""}${pz("ntp").by?` สนับสนุนโดย ${esc(pz("ntp").by)}`:""}`);
@@ -1579,7 +1579,7 @@ function mcScript(){
     p(`${ti===0?"ทีมชนะเลิศ":"อันดับ "+(ti+1)} ได้แก่ <b>ก๊วน ${esc(grpLabel(x.t))}</b> ด้วยสกอร์สุทธิรวม <span class="hl">${x.total}</span>!`);
     p(`ขอแนะนำสมาชิกทั้ง 4 ท่าน${K}`);
     [...x.mem].sort(cmp).forEach(r=>p(`• ${who(r.p)} — ${card(r.p)} แฮนดิแคป ${r.done?r.hc:"-"} สกอร์สุทธิ <b>${r.done?r.net:"-"}</b>${x.counted.includes(r)?"":" <span class=\"pause\">(ไม่ได้นับในสกอร์ทีม)</span>"}`));
-    p(`ขอเชิญทั้ง 4 ท่านขึ้นรับรางวัล${pz("team").by&&ti===0?`จาก ${esc(pz("team").by)}`:""}${K} ขอเสียงปรบมือดัง ๆ ให้ทีมแชมป์${K}`);});
+    p(`ขอเชิญทั้ง 4 ท่านขึ้นรับรางวัล${pz("team").by&&ti===0?`จาก ${esc(pz("team").by)} `:""}${K} ขอเสียงปรบมือดัง ๆ ให้ทีมแชมป์${K}`);});
   if(!d.teams.length)p(`<b>[รอผลประเภททีม]</b>`);
   // 7. closing
   h("ปิดพิธี");
