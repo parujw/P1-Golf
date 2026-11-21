@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ใส่อีเมล Google ของผู้จดสกอร์ / ผู้ดูแลระบบ
+    function isScorer() {
+      return request.auth != null && request.auth.token.email in [
+        'your.email@gmail.com'
+      ];
+    }
+    match /{document=**} {
+      allow read: if true;          // ทุกคนดูผลได้โดยไม่ต้องล็อกอิน
+      allow write: if isScorer();   // เฉพาะผู้จดสกอร์ที่อยู่ในรายชื่อ
+    }
+  }
+}
