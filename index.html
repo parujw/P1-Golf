@@ -70,7 +70,7 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .hole.b input{background:#e3f4ea;border-color:#9fd6b6;color:var(--good)}
 .hole.e input{background:#fff}
 .hole.o input{background:#fff3e0;border-color:#f3c98b}
-.hole.x input{background:#fdecee;border-color:#f0aab6;color:var(--red)}
+.hole.dx input{background:#fdecee;border-color:#f0aab6;color:var(--red)}
 .sumbar{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center}
 .sumbar div{background:#f6f8fc;border-radius:10px;padding:8px 2px}
 .sumbar b{display:block;font-size:20px;color:var(--navy)}
@@ -97,6 +97,17 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .team .mem span.c{background:#e3f4ea;color:var(--good);font-weight:600}
 .team .tot{margin-left:auto;text-align:right}
 .hidden{display:none!important}
+.who{display:flex;gap:10px;align-items:center;min-width:0}
+.av{width:42px;height:42px;border-radius:50%;object-fit:cover;flex:none;background:#e3e7f1;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.av.lgav{width:64px;height:64px}
+.av.sm{width:22px;height:22px;border-width:1px}
+.ini{display:inline-grid;place-items:center;font-weight:700;color:var(--navy);font-size:15px}
+.av.sm.ini{font-size:10px}
+.lg{height:15px;vertical-align:-3px;margin-right:6px}
+.logos{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#fff;border-radius:10px;padding:6px 12px;margin-top:12px;width:fit-content;max-width:100%}
+.logos img{height:20px}
+.logos img[alt=PTTEP],.logos img[alt=TOP]{height:30px}
+.lg[alt=PTTEP],.lg[alt=TOP]{height:22px;vertical-align:-6px}
 .modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;z-index:50;padding:16px}
 .modal .box{background:#fff;border-radius:16px;padding:18px;max-width:420px;width:100%}
 .roster td{padding:5px 4px}
@@ -112,6 +123,7 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
     <div class="logo"><b><span class="p">P</span><span class="d">1</span></b></div>
     <div class="ttl grow"><h1 id="evName">Golf Event</h1><small id="evSub">System 36 · Nearest to Pin</small></div>
   </div>
+  <div class="logos"><img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.png" alt="PTTEP"><img src="img/logo_GC.png" alt="GC"><img src="img/logo_TOP.png" alt="TOP"><img src="img/logo_IRPC.png" alt="IRPC"><img src="img/logo_OR.png" alt="OR"></div>
   <nav id="nav">
     <button data-v="results" class="on">🏆 ประกาศผล</button>
     <button data-v="score">✍️ กรอกสกอร์</button>
@@ -188,6 +200,7 @@ label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
         <button class="btn sec" id="expBtn">คัดลอกข้อมูลทั้งหมด (JSON)</button>
         <button class="btn sec" id="impBtn">นำเข้า JSON</button>
         <span class="grow"></span>
+        <button class="btn sec" id="testData">🧪 ใส่คะแนนทดสอบ</button>
         <button class="btn red" id="clrScores">ล้างสกอร์ทั้งหมด</button>
       </div>
       <textarea id="impTxt" class="hidden" style="margin-top:10px" placeholder="วาง JSON ที่นี่ แล้วกด นำเข้า อีกครั้ง"></textarea>
@@ -216,7 +229,7 @@ function defaultRoster(){return JSON.parse(JSON.stringify(TEEOFF));}
 
 // ---------- state ----------
 const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
-let db=null, view="results", resTab="A", curPid=null;
+let db=null, view="results", resTab="W", curPid=null;
 
 // ---------- utils ----------
 const $=id=>document.getElementById(id);
@@ -307,28 +320,28 @@ function render(src){
 }
 function rkCls(i){return i<3?" g"+(i+1):"";}
 function renderResults(){
-  const c=S.config, tabs=[["A",c.flightA||"Flight A"],["B",c.flightB||"Flight B"],["T","ก๊วน (ทีม)"],["N","Nearest to Pin"],["G","Best Gross"],["R","📖 กติกา & วิธีคิด"]];
+  const c=S.config, tabs=[["W","🏆 สรุปรางวัล"],["A",c.flightA||"Flight A"],["B",c.flightB||"Flight B"],["T","ประเภททีม (ก๊วน)"],["N","Nearest to Pin"],["R","📖 กติกา & วิธีคิด"]];
   $("resTabs").innerHTML=tabs.map(([k,l])=>`<button class="chip${resTab===k?" on":""}" data-r="${k}">${esc(l)}</button>`).join("");
   const body=$("resBody"); const all=allCalc();
   if(resTab==="A"||resTab==="B"){
     const {done,inc}=ranked(all.filter(r=>r.p.flight===resTab));
-    const row=(r,i)=>`<tr class="${r.done?"":"inc"}" data-bd="${r.p.id}" style="cursor:pointer"><td>${r.done?`<div class="rk${rkCls(i)}">${i+1}</div>`:`<div class="rk">–</div>`}</td><td><div class="nm">${esc(r.p.name)}</div><div class="meta">${esc(teamName(r.p.team))}${r.done?"":` · เล่นแล้ว ${r.thru}/18`}</div></td><td class="n">${r.thru?r.gross:"–"}</td><td class="n">${r.thru?r.pts:"–"}</td><td class="n">${r.done?r.hc:"–"}</td><td class="n"><span class="net">${r.done?r.net:"–"}</span></td></tr>`;
+    const row=(r,i)=>`<tr class="${r.done?"":"inc"}" data-bd="${r.p.id}" style="cursor:pointer"><td>${r.done?`<div class="rk${rkCls(i)}">${i+1}</div>`:`<div class="rk">–</div>`}</td><td><div class="who">${av(r.p)}<div><div class="nm">${esc(cleanName(r.p.name))}</div><div class="meta">${lg(r.p)}${esc(teamName(r.p.team))}${r.done?"":` · เล่นแล้ว ${r.thru}/18`}</div></div></div></td><td class="n">${r.thru?r.gross:"–"}</td><td class="n">${r.thru?r.pts:"–"}</td><td class="n">${r.done?r.hc:"–"}</td><td class="n"><span class="net">${r.done?r.net:"–"}</span></td></tr>`;
     body.innerHTML=`<div class="card"><h2>${esc(resTab==="A"?c.flightA:c.flightB)} · Net (System 36)</h2><div class="meta" style="margin:-4px 0 8px">แตะชื่อผู้เล่นเพื่อดูวิธีคำนวณรายหลุม</div><table><thead><tr><th></th><th>ผู้เล่น</th><th class="n">Gross</th><th class="n">แต้ม</th><th class="n">HC</th><th class="n">Net</th></tr></thead><tbody>${done.map(row).join("")}${inc.map(row).join("")}${!done.length&&!inc.length?`<tr><td colspan="6" class="meta">ยังไม่มีผู้เล่นใน Flight นี้</td></tr>`:""}</tbody></table></div>`;
   } else if(resTab==="T"){
     const tr=teamResults(), best=+c.teamBest||3;
-    body.innerHTML=`<div class="card"><h2>ประเภทก๊วน (4 คน) · รวม Net ดีที่สุด ${best} คน</h2>${tr.map((x,i)=>`<div class="team"><div class="rk${x.ok?rkCls(i):""}">${x.ok?i+1:"–"}</div><div><div class="nm">${esc(x.t.name)}</div><div class="mem">${x.mem.sort(cmp).map(r=>`<span class="${x.counted.includes(r)?"c":""}">${esc(r.p.name)} ${r.done?r.net:`(${r.thru}/18)`}</span>`).join("")}</div></div><div class="tot"><span class="net">${x.ok?x.total:"–"}</span><div class="meta">Net รวม</div></div></div>`).join("")||`<div class="meta">ยังไม่มีก๊วน</div>`}<div class="foot">ช่องสีเขียว = คะแนนที่นับรวม · Net รวมเท่ากัน ตัดสินที่ Net ดีที่สุดของก๊วน → Net รวมทุกคนในก๊วน</div></div>`;
+    body.innerHTML=`<div class="card"><h2>ประเภทก๊วน (4 คน) · รวม Net ดีที่สุด ${best} คน</h2>${tr.map((x,i)=>`<div class="team"><div class="rk${x.ok?rkCls(i):""}">${x.ok?i+1:"–"}</div><div><div class="nm">${esc(x.t.name)}</div><div class="mem">${x.mem.sort(cmp).map(r=>`<span class="${x.counted.includes(r)?"c":""}" style="display:inline-flex;align-items:center;gap:4px">${av(r.p,"sm")}${esc(cleanName(r.p.name))} ${r.done?r.net:`(${r.thru}/18)`}</span>`).join("")}</div></div><div class="tot"><span class="net">${x.ok?x.total:"–"}</span><div class="meta">Net รวม</div></div></div>`).join("")||`<div class="meta">ยังไม่มีก๊วน</div>`}<div class="foot">ช่องสีเขียว = คะแนนที่นับรวม · Net รวมเท่ากัน ตัดสินที่ Net ดีที่สุดของก๊วน → Net รวมทุกคนในก๊วน</div></div>`;
   } else if(resTab==="N"){
     const names=S.roster.players.map(p=>`<option value="${esc(p.name)}">`).join("");
     body.innerHTML=`<datalist id="pNames">${names}</datalist><div class="ntpgrid">${(c.ntpHoles||[]).map(h=>{const w=ntpWinner(h), list=(S.ntp[h]||[]).map((e,i)=>({...e,i})).sort((a,b)=>(+a.yds)-(+b.yds));
       return `<div class="ntp"><div class="top"><div class="t">NEAREST TO PIN<br><span class="meta">Par ${c.pars[h-1]}</span></div><div class="hn"><span class="meta" style="font-size:10px;letter-spacing:2px;display:block;text-align:right">HOLE</span>${h}</div></div>
-      <div class="win">${w?`🏆 <span class="w">${esc(w.name)}</span> <span class="y">${esc(w.yds)} หลา</span>`:`<span class="meta">ยังไม่มีผู้บันทึก</span>`}</div>
+      <div class="win">${w?`<div class="who">${av(pByName(w.name))}<div><div>🏆 <span class="w">${esc(cleanName(w.name))}</span></div><div>${lg(pByName(w.name))}<span class="y">${esc(w.yds)} หลา</span></div></div></div>`:`<span class="meta">ยังไม่มีผู้บันทึก</span>`}</div>
       <ul>${list.map(e=>`<li><span>${esc(e.name)}</span><span><b>${esc(e.yds)}</b> หลา ${S.canWrite?`<button class="x" data-dn="${h}" data-i="${e.i}">×</button>`:""}</span></li>`).join("")}</ul>
       ${S.canWrite?`<div class="add"><input type="text" list="pNames" placeholder="ชื่อ" data-nn="${h}"><input type="number" step="0.1" placeholder="หลา" style="width:80px" data-ny="${h}"><button class="btn sm" data-na="${h}">+</button></div>`:""}</div>`;}).join("")}</div>`;
   } else if(resTab==="R"){
     body.innerHTML=rulesHtml();
   } else {
-    const {done}=ranked(all); const g=done.slice().sort((a,b)=>a.gross-b.gross||a.b9-b.b9);
-    body.innerHTML=`<div class="card"><h2>Best Gross (รวมทุก Flight)</h2><table><thead><tr><th></th><th>ผู้เล่น</th><th class="n">Gross</th></tr></thead><tbody>${g.slice(0,10).map((r,i)=>`<tr><td><div class="rk${rkCls(i)}">${i+1}</div></td><td><div class="nm">${esc(r.p.name)}</div><div class="meta">${esc(r.p.flight==="A"?c.flightA:c.flightB)}</div></td><td class="n"><span class="net">${r.gross}</span></td></tr>`).join("")||`<tr><td colspan="3" class="meta">ยังไม่มีผู้เล่นครบ 18 หลุม</td></tr>`}</tbody></table></div>`;
+    body.innerHTML=awardsHtml();
+
   }
 }
 let bdPid=null;
@@ -357,9 +370,9 @@ function rulesHtml(){
   <ol style="margin:0;padding-left:20px;line-height:1.75">
    <li><b>รูปแบบ:</b> Stroke Play 18 หลุม (Par ${parT}) ผู้เล่น ${P.length} คน แบ่ง ${c.flightA} (${nA} คน) และ ${c.flightB} (${nB} คน) · ออกรอบ ${S.roster.teams.length} ก๊วน ก๊วนละ 4 คน</li>
    <li><b>Handicap:</b> ใช้ระบบ <b>System 36</b> คำนวณจากสกอร์ที่ตีได้จริงในวันแข่ง (ไม่ใช้ Handicap ที่แจ้งล่วงหน้า) · Handicap ${cap}</li>
-   <li><b>ประเภทบุคคล:</b> จัดอันดับแยกแต่ละ Flight ด้วย <b>Net Score ต่ำสุด</b></li>
-   <li><b>ประเภทก๊วน:</b> รวม Net ของสมาชิกที่ดีที่สุด ${best} ใน 4 คน · ผลรวมต่ำสุดชนะ</li>
-   <li><b>Best Gross:</b> Gross ต่ำสุดรวมทุก Flight</li>
+   <li><b>รางวัล 3 ประเภท:</b> ① ประเภทเดี่ยว อันดับ 1–3 ของแต่ละ Flight ② ประเภททีม (ก๊วน) อันดับ 1–3 ③ Nearest to Pin หลุมละ 1 รางวัล</li>
+   <li><b>ประเภทเดี่ยว:</b> จัดอันดับแยกแต่ละ Flight ด้วย <b>Net Score ต่ำสุด</b></li>
+   <li><b>ประเภททีม (ก๊วน):</b> รวม Net ของสมาชิกที่ดีที่สุด ${best} ใน 4 คน · ผลรวมต่ำสุดชนะ</li>
    <li><b>Nearest to Pin:</b> หลุม ${(c.ntpHoles||[]).join(", ")} · ลูกจากช็อตแรก (Tee Shot) ต้องหยุดอยู่บนกรีน · วัดระยะจากลูกถึงหลุมเป็นหลา · ผู้ที่ใกล้ที่สุดชนะ</li>
    <li><b>สกอร์:</b> ผู้จดสกอร์ของแต่ละก๊วนกรอกสโตรกจริงทุกหลุม (รวม Penalty) ผลอัปเดตบนระบบทันที · ผู้เล่นตรวจทานและเซ็นสกอร์การ์ดก่อนประกาศผล · คำตัดสินของคณะกรรมการถือเป็นที่สิ้นสุด</li>
   </ol></div>
@@ -377,6 +390,35 @@ function rulesHtml(){
   <div style="line-height:1.8">1) Net ดีที่สุดของสมาชิกในก๊วน → 2) Net รวมของทุกคนในก๊วน</div>
   </div>${bd}`;
 }
+function awardsData(){
+  const all=allCalc(), c=S.config;
+  const flights=["A","B"].map(f=>({f,name:f==="A"?c.flightA:c.flightB,top:ranked(all.filter(r=>r.p.flight===f)).done.slice(0,3),left:all.filter(r=>r.p.flight===f&&!r.done).length}));
+  const teams=teamResults().filter(x=>x.ok).slice(0,3);
+  const ntp=(c.ntpHoles||[]).map(h=>({h,w:ntpWinner(h)}));
+  return {flights,teams,ntp,left:all.filter(r=>!r.done).length};
+}
+function awardsHtml(){
+  const d=awardsData(), medal=["🥇","🥈","🥉"];
+  const pend=t=>`<div class="meta" style="padding:8px 0">${t}</div>`;
+  const prow=(m,name,sub,val,unit,p)=>`<div class="row" style="padding:9px 0;border-bottom:1px solid var(--line);flex-wrap:nowrap"><div style="font-size:24px;width:34px">${m}</div>${p?av(p):""}<div class="grow"><div class="nm">${esc(p?cleanName(name):name)}</div><div class="meta">${p?lg(p):""}${sub}</div></div><div style="text-align:right"><span class="net">${val}</span><div class="meta">${unit}</div></div></div>`;
+  return `${d.left?`<div class="banner">ผลชั่วคราว — ยังมีผู้เล่นกรอกไม่ครบ 18 หลุม ${d.left} คน</div>`:`<div class="banner ok">✅ กรอกสกอร์ครบทุกคนแล้ว — ผลอย่างเป็นทางการ</div>`}
+  <div class="card"><h2>1. ประเภทเดี่ยว (Net · System 36)</h2>
+   ${d.flights.map(F=>`<h3>${esc(F.name)}</h3>${F.top.length?F.top.map((r,i)=>prow(medal[i],r.p.name,`Gross ${r.gross} · HC ${r.hc}`,r.net,"Net",r.p)).join(""):pend("ยังไม่มีผู้เล่นครบ 18 หลุม")}`).join("")}
+  </div>
+  <div class="card"><h2>2. ประเภททีม (ก๊วน)</h2>
+   ${d.teams.length?d.teams.map((x,i)=>prow(medal[i],x.t.name,`<span style="display:inline-flex;gap:2px;vertical-align:middle;margin-right:4px">${x.mem.map(r=>av(r.p,"sm")).join("")}</span>`+x.counted.map(r=>esc(cleanName(r.p.name))+" "+r.net).join(" · "),x.total,"Net รวม")).join(""):pend("ยังไม่มีก๊วนที่ครบ")}
+  </div>
+  <div class="card"><h2>3. Nearest to Pin</h2>
+   ${d.ntp.map(n=>prow("🎯",n.w?n.w.name:"—",`หลุม ${n.h} · Par ${S.config.pars[n.h-1]}`,n.w?esc(n.w.yds):"–","หลา",n.w?(pByName(n.w.name)||{name:n.w.name}):null)).join("")}
+  </div>`;
+}
+const PHOTOS=new Set([...Array(28)].map((_,i)=>"p"+String(i+1).padStart(2,"0")));
+const ORGS=["PTTEP","PTT","GC","TOP","IRPC","OR"];
+function orgOf(p){const m=String(p.name||"").match(/\(([A-Za-z]+)/);if(!m)return null;const o=m[1].toUpperCase();return ORGS.includes(o)?o:(o==="THAIOIL"?"TOP":null);}
+function cleanName(n){return String(n||"").replace(/\s*\(.*?\)\s*/g,"").trim();}
+function av(p,cls){cls=cls||"";if(p&&PHOTOS.has(p.id))return `<img class="av ${cls}" src="img/${p.id}.jpg" alt="" loading="lazy">`;const n=cleanName(p&&p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.)\s*/,"");return `<span class="av ini ${cls}">${esc(n.slice(0,1)||"?")}</span>`;}
+function lg(p){const o=p&&orgOf(p);return o?`<img class="lg" src="img/logo_${o}.png" alt="${o}">`:"";}
+function pByName(n){return S.roster.players.find(p=>p.name===n)||S.roster.players.find(p=>cleanName(p.name)===cleanName(n));}
 function teamName(id){const t=S.roster.teams.find(t=>String(t.id)===String(id));return t?t.name:"";}
 
 function renderScore(remote){
@@ -387,7 +429,7 @@ function renderScore(remote){
   const orphan=ps.filter(p=>!S.roster.teams.find(t=>String(t.id)===String(p.team)));
   $("pSel").innerHTML=grp+orphan.map(opt).join("");
   const p=ps.find(p=>p.id===curPid);
-  $("pMeta").textContent=`${p.flight==="A"?S.config.flightA:S.config.flightB} · ${teamName(p.team)}`;
+  $("pMeta").innerHTML=`<div class="who">${av(p,"lgav")}<div><div class="nm" style="font-size:16px">${esc(cleanName(p.name))}</div><div class="meta">${lg(p)}${esc(p.flight==="A"?S.config.flightA:S.config.flightB)} · ${esc(teamName(p.team))}</div></div></div>`;
   const focused=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.h!=null;
   if(!(remote&&focused)){
     const s=S.scores[curPid]||[];
@@ -397,7 +439,7 @@ function renderScore(remote){
   }
   renderSum();
 }
-function hcls(i,v){v=+v;if(!(v>0))return "";const d=v-S.config.pars[i];return d<=0?"b":d===1?"o":"x";}
+function hcls(i,v){v=+v;if(!(v>0))return "";const d=v-S.config.pars[i];return d<=0?"b":d===1?"o":"dx";}
 function renderSum(){
   const p=S.roster.players.find(p=>p.id===curPid); if(!p) return; const r=calc(p);
   $("sumbar").innerHTML=`<div><b>${r.thru}</b><span>หลุม</span></div><div><b>${r.gross||"–"}</b><span>Gross</span></div><div><b>${r.pts}</b><span>แต้ม</span></div><div><b>${r.done?r.hc:"–"}</b><span>HC</span></div><div class="hl"><b>${r.done?r.net:"–"}</b><span>Net</span></div>`;
@@ -501,12 +543,16 @@ $("clrScores").onclick=async()=>{if(!(await confirmBox("ล้างสกอร
   for(const k of Object.keys(S.scores)){S.scores[k]=Array(18).fill(null);saveScore(k);}
   for(const h of Object.keys(S.ntp)){S.ntp[h]=[];saveNtp(h);} render();toast("ล้างแล้ว");};
 
+$("testData").onclick=async()=>{if(!(await confirmBox("สุ่มคะแนนทดสอบให้ผู้เล่นทุกคนและ Near Pin? (ทับสกอร์เดิม — กด ล้างสกอร์ทั้งหมด ก่อนวันงาน)")))return;
+  const pick=()=>{const r=Math.random();return r<.05?-1:r<.30?0:r<.65?1:r<.87?2:3;};
+  S.roster.players.forEach(p=>{S.scores[p.id]=S.config.pars.map(par=>Math.max(2,par+pick()));saveScore(p.id);});
+  (S.config.ntpHoles||[]).forEach(h=>{const ps=[...S.roster.players].sort(()=>Math.random()-.5).slice(0,3);S.ntp[h]=ps.map(p=>({name:p.name,yds:(Math.random()*12+1).toFixed(1)}));saveNtp(h);});
+  render();toast("ใส่คะแนนทดสอบแล้ว");show("results");};
 $("copyRes").onclick=()=>{
-  const c=S.config,all=allCalc(),L=[`🏌️ ${c.name}${c.date?" ("+c.date+")":""}`,"สรุปผล System 36",""];
-  ["A","B"].forEach(f=>{const {done}=ranked(all.filter(r=>r.p.flight===f));L.push(`🏆 ${f==="A"?c.flightA:c.flightB}`);done.slice(0,3).forEach((r,i)=>L.push(`${i+1}. ${r.p.name} — Net ${r.net} (Gross ${r.gross}, HC ${r.hc})`));L.push("");});
-  const tr=teamResults().filter(x=>x.ok);L.push("👥 ประเภทก๊วน");tr.slice(0,3).forEach((x,i)=>L.push(`${i+1}. ${x.t.name} — Net รวม ${x.total}`));L.push("");
-  L.push("🎯 Nearest to Pin");(c.ntpHoles||[]).forEach(h=>{const w=ntpWinner(h);L.push(`หลุม ${h}: ${w?w.name+" "+w.yds+" หลา":"-"}`);});
-  const g=ranked(all).done.sort((a,b)=>a.gross-b.gross||a.b9-b.b9)[0]; if(g){L.push("");L.push(`⛳ Best Gross: ${g.p.name} — ${g.gross}`);}
+  const c=S.config,d=awardsData(),m=["🥇","🥈","🥉"],L=[`🏌️ ${c.name}${c.date?" ("+c.date+")":""}`,"สรุปผลรางวัล (System 36)"+(d.left?" — ผลชั่วคราว":""),""];
+  L.push("1️⃣ ประเภทเดี่ยว");d.flights.forEach(F=>{L.push(`【${F.name}】`);F.top.forEach((r,i)=>L.push(`${m[i]} ${r.p.name} — Net ${r.net} (Gross ${r.gross}, HC ${r.hc})`));});L.push("");
+  L.push("2️⃣ ประเภททีม (ก๊วน)");d.teams.forEach((x,i)=>L.push(`${m[i]} ${x.t.name} — Net รวม ${x.total}`));L.push("");
+  L.push("3️⃣ Nearest to Pin");d.ntp.forEach(n=>L.push(`🎯 หลุม ${n.h}: ${n.w?n.w.name+" — "+n.w.yds+" หลา":"-"}`));
   copyText(L.join("\n"));
 };
 

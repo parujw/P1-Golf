@@ -1,7 +1,8 @@
 // Vercel build: copy static files to dist/ and write config.js from env FIREBASE_CONFIG (JSON)
-import { mkdirSync, copyFileSync, writeFileSync, readFileSync } from "node:fs";
+import { mkdirSync, copyFileSync, writeFileSync, cpSync } from "node:fs";
 mkdirSync("dist", { recursive: true });
 copyFileSync("index.html", "dist/index.html");
+cpSync("img", "dist/img", { recursive: true });
 const raw = (process.env.FIREBASE_CONFIG || "").trim();
 if (raw) {
   let cfg;
