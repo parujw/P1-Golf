@@ -481,7 +481,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .thP .bcard{left:60px;right:auto;bottom:60px}
 .sl .zx{top:250px}
 .sl .zimg{top:150px;height:600px;right:60px}
-.thZ .zx{left:360px}
+.thZ .zx{left:360px;width:620px}
 .sl .zx .zi{margin-top:30px}
 .sl .zx .zrows{margin-top:18px}
 .sl .zx .zrows div{display:flex;gap:18px;font-size:34px;line-height:1.5;font-family:"Anuphan",sans-serif;color:#ffffffd8}
@@ -677,12 +677,12 @@ const DEFAULT_CONFIG = {
   flightA:"Flight A", flightB:"Flight B",
   pars:[4,5,4,3,4,4,5,3,4, 4,3,5,3,5,4,3,5,4], course:"Rajpruek Club",
   ntpHoles:[4,11,16], ldHoles:[7,14,17], hcCap:null, teamCount:8, teamBest:3,
-  indOn:true, indPlaces:3, teamPlaces:1, cv:4, prTheme:"d",
+  indOn:true, indPlaces:3, teamPlaces:1, cv:5, prTheme:"d",
   prizes:{
     ind:{item:"",value:"",by:""},
     team:{item:"กระเป๋ากอล์ฟ Titleist",qty:"4 ใบ",value:"18,432 บาท",by:"ปธบ./กผญ."},
     ld:{item:"กระเป๋า Duffle Bag",qty:"1 ใบ",value:"7,225 บาท",by:"ปธป."},
-    ntp:{item:"OR Gift Card",qty:"3 ใบ (หลุมละ 1 ใบ)",value:"6,000 บาท (ใบละ 2,000 บาท)",by:"ปธม."}
+    ntp:{item:"OR Gift Card",qty:"3 ใบ",value:"6,000 บาท",by:"ปธม."}
   }
 };
 const TEEOFF={"players": [{"id": "p01", "no": 1, "name": "คุณคงกระพัน", "flight": "A", "team": "1", "title": "CEO PTT", "org": "PTT"}, {"id": "p02", "no": 2, "name": "ร.ต.อ. ปิยะ", "flight": "A", "team": "1", "title": "PTT BOARD", "org": "PTT"}, {"id": "p03", "no": 3, "name": "พลเอก นิมิตต์", "flight": "A", "team": "1", "title": "GC BOARD", "org": "GC"}, {"id": "p04", "no": 4, "name": "คุณชาญศิลป์", "flight": "A", "team": "1", "title": "", "org": ""}, {"id": "p05", "no": 5, "name": "พลอากาศเอก ชานนท์", "flight": "A", "team": "2", "title": "TOP BOARD", "org": "TOP"}, {"id": "p06", "no": 6, "name": "คุณดิษทัต", "flight": "A", "team": "2", "title": "", "org": ""}, {"id": "p07", "no": 7, "name": "พลเอก นิธิ", "flight": "A", "team": "2", "title": "", "org": ""}, {"id": "p08", "no": 8, "name": "คุณไกรพัท", "flight": "A", "team": "2", "title": "OR", "org": "OR"}, {"id": "p09", "no": 9, "name": "คุณสุรชัย", "flight": "A", "team": "3", "title": "PTT", "org": "PTT"}, {"id": "p10", "no": 10, "name": "คุณนิสิต", "flight": "A", "team": "3", "title": "OR", "org": "OR"}, {"id": "p11", "no": 11, "name": "คุณณัฏฐะวุฒิ", "flight": "A", "team": "3", "title": "PTT", "org": "PTT"}, {"id": "p12", "no": 12, "name": "คุณกฤษณ์", "flight": "A", "team": "3", "title": "PTTEP", "org": "PTTEP"}, {"id": "p13", "no": 13, "name": "คุณรชา", "flight": "A", "team": "4", "title": "OR", "org": "OR"}, {"id": "p14", "no": 14, "name": "คุณปิยะวัฒน์", "flight": "A", "team": "4", "title": "PTT", "org": "PTT"}, {"id": "p15", "no": 15, "name": "คุณไวรยางค์", "flight": "A", "team": "4", "title": "PTT", "org": "PTT"}, {"id": "p16", "no": 16, "name": "คุณณัฐพงษ์", "flight": "A", "team": "4", "title": "TOP", "org": "TOP"}, {"id": "p17", "no": 17, "name": "คุณพงศธร", "flight": "B", "team": "5", "title": "PTTEP BOARD", "org": "PTTEP"}, {"id": "p18", "no": 18, "name": "คุณประสงค์", "flight": "B", "team": "5", "title": "PTT", "org": "PTT"}, {"id": "p19", "no": 19, "name": "คุณปิกทอง", "flight": "B", "team": "5", "title": "OR", "org": "OR"}, {"id": "p20", "no": 20, "name": "คุณพงษ์พันธ์", "flight": "B", "team": "5", "title": "TOP", "org": "TOP"}, {"id": "p21", "no": 21, "name": "คุณชญาน์", "flight": "B", "team": "6", "title": "PTT", "org": "PTT"}, {"id": "p22", "no": 22, "name": "คุณพิลาสพรรณ", "flight": "B", "team": "6", "title": "", "org": ""}, {"id": "p23", "no": 23, "name": "คุณศุภศจี", "flight": "B", "team": "6", "title": "PTT", "org": "PTT"}, {"id": "p24", "no": 24, "name": "คุณสุชีลา", "flight": "B", "team": "6", "title": "PTT", "org": "PTT"}, {"id": "p25", "no": 25, "name": "คุณพรรคพงษ์", "flight": "B", "team": "7", "title": "GC", "org": "GC"}, {"id": "p26", "no": 26, "name": "คุณทรงพล", "flight": "B", "team": "7", "title": "OR", "org": "OR"}, {"id": "p27", "no": 27, "name": "คุณไพศาล", "flight": "B", "team": "7", "title": "OR", "org": "OR"}, {"id": "p28", "no": 28, "name": "คุณอธิวัฒน์", "flight": "B", "team": "7", "title": "OR", "org": "OR"}, {"id": "p29", "no": 29, "name": "รอยืนยัน 1", "flight": "B", "team": "8", "title": "", "org": ""}, {"id": "p30", "no": 30, "name": "รอยืนยัน 2", "flight": "B", "team": "8", "title": "", "org": ""}, {"id": "p31", "no": 31, "name": "รอยืนยัน 3", "flight": "B", "team": "8", "title": "", "org": ""}, {"id": "p32", "no": 32, "name": "รอยืนยัน 4", "flight": "B", "team": "8", "title": "", "org": ""}], "teams": [{"id": "1", "name": "1/1 · 13:02", "start": "1", "time": "13:02"}, {"id": "2", "name": "1/2 · 13:10", "start": "1", "time": "13:10"}, {"id": "3", "name": "1/3 · 13:18", "start": "1", "time": "13:18"}, {"id": "4", "name": "1/4 · 13:26", "start": "1", "time": "13:26"}, {"id": "5", "name": "10/1 · 13:02", "start": "10", "time": "13:02"}, {"id": "6", "name": "10/2 · 13:10", "start": "10", "time": "13:10"}, {"id": "7", "name": "10/3 · 13:18", "start": "10", "time": "13:18"}, {"id": "8", "name": "10/4 · (รอยืนยัน)", "start": "10", "time": ""}]};
@@ -700,6 +700,7 @@ function migrateConfig(c){
     if(P.ld&&P.ld.item==="กระเป๋า Duffle Bag"&&!P.ld.qty)P.ld={...P.ld,qty:D.ld.qty};
     c.prizes=P;c.cv=3;ch=true;}
   if((c.cv||0)<4){const t=(c.prizes||{}).team;if(t&&t.qty)t.qty=t.qty.replace(/\s*\(คนละ\s*1\s*ใบ\)/,"");c.cv=4;ch=true;}
+  if((c.cv||0)<5){const P=c.prizes||{};Object.values(P).forEach(x=>{if(!x)return;["qty","value"].forEach(f=>{if(x[f])x[f]=String(x[f]).replace(/\s*\([^)]*\)/g,"").trim();});});c.cv=5;ch=true;}
   if(JSON.stringify(c.pars)===OLD_PARS){c.pars=[...DEFAULT_CONFIG.pars];ch=true;}
   if(!c.course){c.course=DEFAULT_CONFIG.course;ch=true;}
   return ch;
@@ -1192,17 +1193,18 @@ function openingHTML(s,th){
     <div class="ologos">${LOGOSTRIP}</div></div>`;
 }
 
+function noParen(t){return String(t||"").replace(/\s*\([^)]*\)/g,"").trim();}
 function prizeSlideHTML(s,th){
   const k=s.pk,p=prize(k)||{},c=S.config,pr=S.pr[s.id]||{},title=pr.title||s.def,img=pr.img||PRIZEIMG[k]||"";
   let cnt="";
-  if(k==="ntp")cnt=`${(c.ntpHoles||[]).length} รางวัล · หลุม ${(c.ntpHoles||[]).join(", ")}`;
-  if(k==="ld")cnt=`${(c.ldHoles||[]).length>1?(c.ldHoles||[]).length+" รางวัล · ":""}หลุม ${(c.ldHoles||[]).join(", ")}`;
-  if(k==="team")cnt=(+c.teamPlaces||1)===1?"สำหรับทีมชนะเลิศ":`อันดับ 1–${c.teamPlaces}`;
+  if(k==="ntp")cnt=`หลุม ${(c.ntpHoles||[]).join(", ")}`;
+  if(k==="ld")cnt=`หลุม ${(c.ldHoles||[]).join(", ")}`;
+  if(k==="team")cnt=(+c.teamPlaces||1)===1?"":`อันดับ 1–${c.teamPlaces}`;
   if(k==="ind")cnt=`อันดับ 1–${c.indPlaces||3} ของแต่ละ Flight`;
   const body=`<div class="zx">
-      <div class="zt" style="font-size:${fitFont(title,700,64,36)}px">${esc(title)}</div>
-      <div class="zi" style="font-size:${fitFont(p.item||"",700,56,32)}px">${esc(p.item||"")}</div>
-      <div class="zrows">${p.qty?`<div><span>จำนวน</span><b>${esc(p.qty)}</b></div>`:""}${p.value?`<div><span>มูลค่ารวม</span><b>${esc(p.value)}</b></div>`:""}</div>
+      <div class="zt" style="font-size:${fitFont(title,600,64,34)}px">${esc(title)}</div>
+      <div class="zi" style="font-size:${fitFont(p.item||"",600,56,30)}px">${esc(p.item||"")}</div>
+      <div class="zrows">${p.qty?`<div><span>จำนวน</span><b>${esc(noParen(p.qty))}</b></div>`:""}${p.value?`<div><span>มูลค่ารวม</span><b>${esc(noParen(p.value))}</b></div>`:""}</div>
       ${cnt?`<div class="zc">${esc(cnt)}</div>`:""}
       ${p.by?`<div class="zb">มอบโดย <b>${esc(p.by)}</b></div>`:""}</div>
     <div class="zimg">${img?`<img src="${img}" alt="">`:`<span>🎁</span>`}</div>`;
