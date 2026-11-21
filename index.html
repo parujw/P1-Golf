@@ -21,7 +21,7 @@ header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;pa
 .brand{display:flex;align-items:center;gap:12px}
 .logo{width:46px;height:46px;border-radius:10px;background:#fff;display:grid;place-items:center;flex:none}
 .logo b{font-weight:800;font-size:20px;font-style:italic;letter-spacing:-1px}
-.logo .p{color:var(--red)} .logo .d{color:var(--navy)}
+.logo img{width:40px;height:40px;object-fit:contain}
 .ttl{line-height:1.25}
 .ttl h1{margin:0;font-size:18px;font-weight:700}
 .ttl small{opacity:.8;font-size:13px}
@@ -135,7 +135,9 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .sl .stripe2{position:absolute;right:-60px;top:-120px;width:90px;height:1200px;transform:rotate(18deg);background:#f4c542;opacity:.95}
 .sl .top{position:absolute;left:70px;top:54px;right:70px;display:flex;align-items:center;justify-content:space-between}
 .sl .brand{font-weight:800;font-size:40px;letter-spacing:1px}
-.sl .brand b{color:#ff3b54;font-style:italic}
+.sl .brand{display:flex;align-items:center;gap:18px}
+.sl .brand .lgw{background:#fff;border-radius:18px;padding:8px 12px;display:flex;box-shadow:0 6px 16px #0004}
+.sl .brand .lgw img{height:64px;display:block}
 .sl .brand small{display:block;font-weight:500;font-size:20px;opacity:.75;letter-spacing:0}
 .sl .cat{font-size:26px;font-weight:700;background:#ffffff1f;border:2px solid #ffffff55;border-radius:999px;padding:10px 30px;position:relative;z-index:2}
 .sl .photo{position:absolute;left:70px;top:190px;width:600px;height:560px;border-radius:28px;overflow:hidden;background:#ffffff14;box-shadow:0 30px 60px #0007;border:6px solid #fff}
@@ -240,7 +242,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 <body>
 <header><div class="hd">
   <div class="brand">
-    <div class="logo"><b><span class="p">P</span><span class="d">1</span></b></div>
+    <div class="logo"><img src="img/logo_p1d1.png" alt="P1D1"></div>
     <div class="ttl grow"><h1 id="evName">Golf Event</h1><small id="evSub">System 36 · Nearest to Pin</small></div>
   </div>
   <div class="logos"><img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.png" alt="PTTEP"><img src="img/logo_GC.png" alt="GC"><img src="img/logo_TOP.png" alt="TOP"><img src="img/logo_IRPC.png" alt="IRPC"><img src="img/logo_OR.png" alt="OR"></div>
@@ -260,7 +262,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
   <section id="v-results">
     <div class="sub" id="resTabs"></div>
     <div id="resBody"></div>
-    <div class="row" style="margin-top:6px"><button class="btn sec" id="copyRes">📋 คัดลอกผลส่ง LINE</button></div>
+    <div class="row" style="margin-top:6px"><button class="btn sec" id="copyRes">📋 คัดลอกผลส่ง LINE</button><button class="btn sec" id="xlsRes">📊 ดาวน์โหลด Excel</button></div>
   </section>
 
   <!-- SCORE -->
@@ -287,7 +289,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
       <h2>📋 Pairing · Tee Off</h2>
       <div class="meta" style="margin-bottom:10px">สร้างจากรายชื่อ / ก๊วน / เวลา ในแท็บตั้งค่า · แก้รูปและตำแหน่งผู้บริหารได้ที่ ⚙️ ผู้เล่น / ตั้งค่า</div>
       <div class="slwrap" id="pairSlide"></div>
-      <div class="row" style="margin-top:10px"><button class="btn" id="pairPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="pairDl">⬇️ ดาวน์โหลด PNG</button><button class="btn sec" id="pairPptx">📊 PowerPoint</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="pairPlay">▶ นำเสนอเต็มจอ</button><button class="btn sec" id="pairDl">⬇️ ดาวน์โหลด PNG</button><button class="btn sec" id="pairPptx">📊 PowerPoint</button><button class="btn sec" id="pairXls">📗 Excel Pairing</button></div>
     </div>
     <div id="pairList"></div>
   </section>
@@ -808,7 +810,7 @@ function slideHTML(s){
     stats=`<div class="stats"><div class="hl"><b>${esc(s.w.yds)}</b><span>${s.kind==="l"?"หลา ระยะไดรฟ์":"หลา จากหลุม"}</span></div><div><b>Par ${S.config.pars[s.h-1]}</b><span>หลุม ${s.h}</span></div></div>`;}
   if(!photo)photo=`<div class="photo none">📷</div>`;
   return `<div class="sl"><div class="stripe"></div><div class="stripe2"></div>
-   <div class="top"><div class="brand"><b>P1D1</b> GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div><div class="cat">${esc(s.cat)}</div></div>
+   <div class="top"><div class="brand"><span class="lgw"><img src="img/logo_p1d1.png" alt=""></span><div>GOLF DAY 2026<small>${esc(S.config.course||"")}</small></div></div><div class="cat">${esc(s.cat)}</div></div>
    ${photo}
    <div class="info${s.kind==="t"?" tinfo":""}${s.kind==="n"||s.kind==="l"?" cmp":""}${s.kind==="t"&&up?" wide":""}">${medal}<div class="award" style="font-size:${fitFont(title,760,46,26)}px">${esc(title)}</div><div class="name${name.length>16?" sm":""}">${esc(name)}</div>${org}${stats}${slidePrize(s)}</div>
    <div class="logos2">LOGOS</div></div>`.replace("LOGOS",LOGOSTRIP);
@@ -917,7 +919,7 @@ function pairingHTML(){
   const side=groupsBySide(), rows=Math.max(4,side.L.length,side.R.length), sc=Math.min(1,4/rows);
   const col=(arr,left)=>`<div class="col" style="left:${left}px;transform:scale(${sc});transform-origin:0 0">${arr.map(g=>`<div class="grp"><div class="pill">${esc(grpLabel(g.t))} TEE OFF ${esc(fmtTime(g.t.time))}</div>
     <div class="mem">${g.mem.slice(0,4).map(p=>{const src=photoSrc(p);return `<div class="m">${src?`<img src="${src}" alt="">`:`<span class="ph">${esc(cleanName(p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ร้อยตำรวจเอก)\s*/,"").slice(0,1))}</span>`}<div class="tx">${esc(p.name)}${p.title?`<small>${esc(p.title)}</small>`:""}</div></div>`;}).join("")}</div></div>`).join("")}</div>`;
-  return `<div class="pg"><div class="hdr"><div class="t"><span class="p1">P<span>1</span>D<span>1</span></span><span class="gd">GOLF DAY <b>2026</b></span></div><div class="lg2">${LOGOSTRIP}</div></div>${col(side.L,30)}${col(side.R,810)}</div>`;
+  return `<div class="pg"><div class="hdr"><div class="t"><img src="img/logo_p1d1.png" alt="" style="height:86px"><span class="gd">GOLF DAY <b>2026</b></span></div><div class="lg2">${LOGOSTRIP}</div></div>${col(side.L,30)}${col(side.R,810)}</div>`;
 }
 function renderPair(){
   const w=$("pairSlide");w.innerHTML=pairingHTML();fitSlides(w.parentElement);
@@ -935,6 +937,105 @@ $("phFile").addEventListener("change",async e=>{const f=e.target.files[0];if(!f|
 function shrinkSquare(file,size){return new Promise((ok,no)=>{const fr=new FileReader();fr.onerror=no;fr.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{
   const s0=Math.min(im.width,im.height),c=document.createElement("canvas");c.width=c.height=size;
   c.getContext("2d").drawImage(im,(im.width-s0)/2,Math.max(0,(im.height-s0)/2-s0*0.08),s0,s0,0,0,size,size);ok(c.toDataURL("image/jpeg",.85));};im.src=fr.result;};fr.readAsDataURL(file);});}
+
+// ---------- Excel export ----------
+async function fetchDataURL(u){const r=await fetch(u);const b=await r.blob();return await new Promise((ok,no)=>{const fr=new FileReader();fr.onload=()=>ok(fr.result);fr.onerror=no;fr.readAsDataURL(b);});}
+async function downloadExcel(btn,opt){
+  opt=opt||{};
+  const label=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="กำลังสร้าง Excel…";}
+  try{
+    if(!window.ExcelJS)await loadScript("vendor/exceljs.min.js");
+    const c=S.config,wb=new ExcelJS.Workbook();wb.creator="P1D1 Golf Day";wb.created=new Date();
+    const logo=wb.addImage({base64:await fetchDataURL("img/logo_p1d1.png"),extension:"png"});
+    const FT="Angsana New",FB="Browallia New";
+    const thin={style:"thin",color:{argb:"FF8A94A6"}},med={style:"medium",color:{argb:"FF1B2A6B"}};
+    const box=(cell,b)=>{cell.border={top:b,left:b,bottom:b,right:b};};
+    const fill=(cell,argb)=>{cell.fill={type:"pattern",pattern:"solid",fgColor:{argb}};};
+    const times=(c.date?`วันที่ ${c.date}  `:"");
+    // --- Pairing sheet (same layout as the draft pairing file)
+    const ws=wb.addWorksheet("Pairing",{pageSetup:{paperSize:9,orientation:"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:.4,right:.4,top:.4,bottom:.4,header:.2,footer:.2}}});
+    ws.columns=[{width:6},{width:14},{width:11},{width:52},{width:11},{width:24}];
+    const side=groupsBySide();let r=1,gno=0;
+    [side.L,side.R].forEach((arr,si)=>{
+      if(!arr.length)return;
+      if(r>1){ws.getRow(r-1).addPageBreak();}
+      ws.getRow(r).height=72;ws.addImage(logo,{tl:{col:2.6,row:r-1+0.08},ext:{width:84,height:78}});r++;
+      ws.mergeCells(r,1,r,6);const t=ws.getCell(r,1);t.value=c.name||"P1D1 Golf Day";t.font={name:FT,size:30,bold:true};ws.getRow(r).height=40;r++;
+      const first=arr.map(g=>g.t.time).filter(Boolean).sort()[0];
+      ws.mergeCells(r,1,r,6);const d=ws.getCell(r,1);d.value=`${times}${first?`เวลา ${first.replace(":",".")} น. `:""}ณ ${c.course||""}  ·  ออกหลุม ${si===0?1:10}`;d.font={name:FT,size:16,bold:true};ws.getRow(r).height=24;r++;
+      arr.forEach(g=>{gno++;
+        const hdr=["NO.","TEAM","HOLE","NAME","Locker","Signature"];
+        hdr.forEach((h,i)=>{const cell=ws.getCell(r,i+1);cell.value=h;cell.font={name:FT,size:15,bold:true};cell.alignment={horizontal:i===3?"left":"center",vertical:"middle"};box(cell,med);fill(cell,"FFDCE8FF");});
+        ws.getRow(r).height=24;r++;
+        const top=r;
+        for(let k=0;k<4;k++){const p=g.mem[k];const row=ws.getRow(r);row.height=30;
+          const cells=[k+1,"","",p?(p.name+(p.title?`  (${p.title})`:"")):"","",""];
+          cells.forEach((v,i)=>{const cell=ws.getCell(r,i+1);if(i!==1&&i!==2)cell.value=v;cell.font={name:FB,size:i===3?18:15};cell.alignment={horizontal:i===3?"left":"center",vertical:"middle",wrapText:i!==3,shrinkToFit:i===3,indent:i===3?1:0};box(cell,thin);});
+          r++;}
+        ws.mergeCells(top,2,r-1,2);ws.mergeCells(top,3,r-1,3);
+        const gc=ws.getCell(top,2);gc.value=`Group ${gno}\n${grpLabel(g.t)}`;gc.font={name:FT,size:18,bold:true};gc.alignment={horizontal:"center",vertical:"middle",wrapText:true};
+        const hc=ws.getCell(top,3);hc.value=`H #${g.t.start||"-"}\n${g.t.time||"TBC"}`;hc.font={name:FB,size:16,bold:true};hc.alignment={horizontal:"center",vertical:"middle",wrapText:true};
+      });
+      r+=1;
+    });
+    ws.pageSetup.printArea=`A1:F${r}`;
+    if(!opt.pairingOnly){
+      // --- Scores sheet
+      const sc=wb.addWorksheet("คะแนน System 36",{views:[{state:"frozen",xSplit:2,ySplit:4}],pageSetup:{paperSize:9,orientation:"landscape",fitToPage:true,fitToWidth:1,fitToHeight:0}});
+      const cols=["อันดับ","ชื่อ","ตำแหน่ง","บริษัท","Flight","ก๊วน",...[1,2,3,4,5,6,7,8,9].map(String),"OUT",...[10,11,12,13,14,15,16,17,18].map(String),"IN","Gross","แต้ม S36","HC","Net"];
+      sc.columns=cols.map((h,i)=>({width:i===1?26:i===2?16:i<6?9:i>=6&&i<27?5.2:9}));
+      sc.mergeCells(1,1,1,cols.length);sc.getCell(1,1).value=`${c.name||""} — คะแนน System 36`;sc.getCell(1,1).font={name:FT,size:22,bold:true};sc.getRow(1).height=30;
+      sc.mergeCells(2,1,2,cols.length);sc.getCell(2,1).value=`${c.course||""} · แต้ม: Par หรือดีกว่า = 2, Bogey = 1, Double Bogey ขึ้นไป = 0 · HC = 36 − แต้มรวม · Net = Gross − HC`;sc.getCell(2,1).font={name:FB,size:13};
+      const hr=sc.getRow(3);cols.forEach((h,i)=>{const cell=hr.getCell(i+1);cell.value=h;cell.font={name:FB,size:13,bold:true,color:{argb:"FFFFFFFF"}};cell.alignment={horizontal:"center",vertical:"middle"};fill(cell,"FF1B2A6B");box(cell,thin);});
+      const pr=sc.getRow(4);const par=c.pars,po=par.slice(0,9).reduce((a,b)=>a+b,0),pi=par.slice(9).reduce((a,b)=>a+b,0);
+      ["","Par","","","","",...par.slice(0,9),po,...par.slice(9),pi,po+pi,"","",""].forEach((v,i)=>{const cell=pr.getCell(i+1);cell.value=v===""?null:v;cell.font={name:FB,size:12,bold:true,color:{argb:"FF8E3B46"}};cell.alignment={horizontal:"center"};fill(cell,"FFF6F8FC");box(cell,thin);});
+      let rr=5;const all=allCalc();
+      ["A","B"].forEach(f=>{
+        sc.mergeCells(rr,1,rr,cols.length);const fc=sc.getCell(rr,1);fc.value=f==="A"?c.flightA:c.flightB;fc.font={name:FT,size:16,bold:true,color:{argb:"FF1B2A6B"}};fill(fc,"FFE9EEF9");rr++;
+        const {done,inc}=ranked(all.filter(x=>x.p.flight===f));
+        [...done,...inc].forEach((x,i)=>{const s=S.scores[x.p.id]||[],row=sc.getRow(rr);
+          const out=s.slice(0,9).reduce((a,b)=>a+(+b||0),0),inn=s.slice(9).reduce((a,b)=>a+(+b||0),0);
+          const vals=[x.done?i+1:"",x.p.name,x.p.title||"",orgOf(x.p)?ORGNAME[orgOf(x.p)]:"",f,grpLabel(S.roster.teams.find(t=>String(t.id)===String(x.p.team))||{name:""}),...s.slice(0,9).concat(Array(9).fill(null)).slice(0,9).map(v=>+v||null),out||null,...s.slice(9,18).concat(Array(9).fill(null)).slice(0,9).map(v=>+v||null),inn||null,x.thru?x.gross:null,x.thru?x.pts:null,x.done?x.hc:null,x.done?x.net:null];
+          vals.forEach((v,j)=>{const cell=row.getCell(j+1);cell.value=v===""?null:v;cell.font={name:FB,size:13,bold:j===1||j===cols.length-1};cell.alignment={horizontal:j===1||j===2?"left":"center",vertical:"middle"};box(cell,thin);
+            const hi=j>=6&&j<=14?j-6:j>=16&&j<=24?j-7:-1;
+            if(hi>=0&&v){const dd=v-par[hi];fill(cell,dd<=0?"FFE3F4EA":dd===1?"FFFFF3E0":"FFFDECEE");}});
+          if(x.done&&i<3)fill(row.getCell(1),["FFF4C542","FFCFD6E3","FFE2B48A"][i]);
+          row.getCell(cols.length).font={name:FB,size:14,bold:true,color:{argb:"FFC8102E"}};
+          rr++;});
+        rr++;});
+      // --- Awards sheet
+      const aw=wb.addWorksheet("ผลรางวัล",{pageSetup:{paperSize:9,orientation:"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0}});
+      aw.columns=[{width:16},{width:34},{width:26},{width:12},{width:12},{width:12}];
+      aw.getRow(1).height=60;aw.addImage(logo,{tl:{col:0.2,row:0.1},ext:{width:64,height:60}});
+      aw.mergeCells(1,2,1,6);aw.getCell(1,2).value=`${c.name||""} — สรุปผลรางวัล`;aw.getCell(1,2).font={name:FT,size:24,bold:true};aw.getCell(1,2).alignment={vertical:"middle"};
+      let ar=3;const d=awardsData(),place=["ชนะเลิศ","รองชนะเลิศอันดับ 1","รองชนะเลิศอันดับ 2"];
+      const sec=(title,k)=>{aw.mergeCells(ar,1,ar,6);const cell=aw.getCell(ar,1);cell.value=title;cell.font={name:FT,size:18,bold:true,color:{argb:"FFFFFFFF"}};fill(cell,"FF1B2A6B");ar++;
+        const p=k&&prize(k);if(p){aw.mergeCells(ar,1,ar,6);const pc=aw.getCell(ar,1);pc.value=`🎁 ${p.item||""}${p.value?"  ·  "+p.value:""}${p.by?"  ·  มอบโดย "+p.by:""}`;pc.font={name:FB,size:14,italic:true};fill(pc,"FFFFFAF0");ar++;}};
+      const hdr=(arr)=>{arr.forEach((h,i)=>{const cell=aw.getCell(ar,i+1);cell.value=h;cell.font={name:FB,size:13,bold:true};fill(cell,"FFDCE8FF");box(cell,thin);cell.alignment={horizontal:i<2?"left":"center"};});ar++;};
+      const line=(arr,bold)=>{arr.forEach((v,i)=>{const cell=aw.getCell(ar,i+1);cell.value=v;cell.font={name:FB,size:14,bold:!!bold&&i<2};box(cell,thin);cell.alignment={horizontal:i<2?"left":"center",vertical:"middle",wrapText:true};});ar++;};
+      if(d.indOn){sec("ประเภทเดี่ยว (Net · System 36)","ind");d.flights.forEach(F=>{hdr([F.name,"ชื่อ","บริษัท / ตำแหน่ง","Gross","HC","Net"]);F.top.forEach((x,i)=>line([place[i],x.p.name,[orgOf(x.p)?ORGNAME[orgOf(x.p)]:"",x.p.title].filter(Boolean).join(" · "),x.gross,x.hc,x.net],true));});ar++;}
+      sec("ประเภททีม (ก๊วน)","team");d.teams.forEach((x,i)=>{hdr([place[i],`ก๊วน ${grpLabel(x.t)} · Net รวม ${x.total}`,"นับคะแนน","Gross","HC","Net"]);[...x.mem].sort(cmp).forEach(m=>line(["",m.p.name,x.counted.includes(m)?"✓":"",m.gross,m.hc,m.net],x.counted.includes(m)));});ar++;
+      if(d.ld.length){sec("Longest Drive (ตีไกล)","ld");hdr(["หลุม","ผู้ชนะ","บริษัท","ระยะ (หลา)","",""]);d.ld.forEach(x=>{const p=x.w&&pByName(x.w.name);line([`หลุม ${x.h}`,x.w?x.w.name:"-",p&&orgOf(p)?ORGNAME[orgOf(p)]:"",x.w?+x.w.yds:"","",""],true);});ar++;}
+      if(d.ntp.length){sec("Nearest to Pin","ntp");hdr(["หลุม","ผู้ชนะ","บริษัท","ระยะ (หลา)","",""]);d.ntp.forEach(x=>{const p=x.w&&pByName(x.w.name);line([`หลุม ${x.h}`,x.w?x.w.name:"-",p&&orgOf(p)?ORGNAME[orgOf(p)]:"",x.w?+x.w.yds:"","",""],true);});ar++;}
+      // --- NTP / LD log
+      const lg2=wb.addWorksheet("บันทึก Near Pin-ตีไกล");lg2.columns=[{width:22},{width:10},{width:34},{width:14},{width:10}];
+      let lr=1;[["Nearest to Pin",c.ntpHoles||[],h=>String(h),true],["Longest Drive (ตีไกล)",c.ldHoles||[],h=>"ld"+h,false]].forEach(([t,holes,key,asc])=>{
+        holes.forEach(h=>{const list=[...(S.ntp[key(h)]||[])].sort((a,b)=>asc?(+a.yds)-(+b.yds):(+b.yds)-(+a.yds));
+          lg2.mergeCells(lr,1,lr,5);const cell=lg2.getCell(lr,1);cell.value=`${t} · หลุม ${h} (Par ${c.pars[h-1]})`;cell.font={name:FT,size:16,bold:true,color:{argb:"FFFFFFFF"}};fill(cell,"FF1B2A6B");lr++;
+          ["ประเภท","ลำดับ","ชื่อ","ระยะ (หลา)",""].forEach((v,i)=>{const cc=lg2.getCell(lr,i+1);cc.value=v;cc.font={name:FB,size:13,bold:true};fill(cc,"FFDCE8FF");});lr++;
+          list.forEach((e,i)=>{[t,i+1,e.name,+e.yds,i===0?"🏆":""].forEach((v,j)=>{const cc=lg2.getCell(lr,j+1);cc.value=v;cc.font={name:FB,size:13,bold:i===0};box(cc,thin);});lr++;});
+          if(!list.length){lg2.getCell(lr,3).value="(ยังไม่มีบันทึก)";lr++;}
+          lr++;});});
+    }
+    const buf=await wb.xlsx.writeBuffer();
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+    a.download=opt.pairingOnly?"P1D1-Pairing-2026.xlsx":"P1D1-Golf-Day-2026.xlsx";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    toast("ดาวน์โหลด Excel แล้ว");
+  }catch(err){console.error(err);toast("สร้าง Excel ไม่สำเร็จ");}
+  if(btn){btn.disabled=false;btn.textContent=label;}
+}
+$("xlsRes").onclick=e=>downloadExcel(e.target);
+$("pairXls").onclick=e=>downloadExcel(e.target,{pairingOnly:true});
 
 const h0=(location.hash||"").slice(1); if(["results","score","pair","pr","setup"].includes(h0)) view=h0;
 show(view);
