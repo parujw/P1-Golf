@@ -675,10 +675,10 @@ const DEFAULT_CONFIG = {
   flightA:"Flight A", flightB:"Flight B",
   pars:[4,5,4,3,4,4,5,3,4, 4,3,5,3,5,4,3,5,4], course:"Rajpruek Club",
   ntpHoles:[4,11,16], ldHoles:[7,14,17], hcCap:null, teamCount:8, teamBest:3,
-  indOn:true, indPlaces:3, teamPlaces:1, cv:3, prTheme:"d",
+  indOn:true, indPlaces:3, teamPlaces:1, cv:4, prTheme:"d",
   prizes:{
     ind:{item:"",value:"",by:""},
-    team:{item:"กระเป๋ากอล์ฟ Titleist",qty:"4 ใบ (คนละ 1 ใบ)",value:"18,432 บาท",by:"ปธบ./กผญ."},
+    team:{item:"กระเป๋ากอล์ฟ Titleist",qty:"4 ใบ",value:"18,432 บาท",by:"ปธบ./กผญ."},
     ld:{item:"กระเป๋า Duffle Bag",qty:"1 ใบ",value:"7,225 บาท",by:"ปธป."},
     ntp:{item:"OR Gift Card",qty:"3 ใบ (หลุมละ 1 ใบ)",value:"6,000 บาท (ใบละ 2,000 บาท)",by:"ปธม."}
   }
@@ -697,6 +697,7 @@ function migrateConfig(c){
     if(P.ntp&&P.ntp.item==="OR Gift Card"&&/ต่อรางวัล/.test(P.ntp.value||""))P.ntp={...D.ntp,by:P.ntp.by||D.ntp.by};
     if(P.ld&&P.ld.item==="กระเป๋า Duffle Bag"&&!P.ld.qty)P.ld={...P.ld,qty:D.ld.qty};
     c.prizes=P;c.cv=3;ch=true;}
+  if((c.cv||0)<4){const t=(c.prizes||{}).team;if(t&&t.qty)t.qty=t.qty.replace(/\s*\(คนละ\s*1\s*ใบ\)/,"");c.cv=4;ch=true;}
   if(JSON.stringify(c.pars)===OLD_PARS){c.pars=[...DEFAULT_CONFIG.pars];ch=true;}
   if(!c.course){c.course=DEFAULT_CONFIG.course;ch=true;}
   return ch;
