@@ -319,9 +319,13 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .thD .band .lw{position:absolute;left:35px;top:44px;width:180px;height:180px;background:#fff;border-radius:50%;display:grid;place-items:center;box-shadow:0 10px 24px #0005}
 .thD .band .lw img{width:128px}
 .thD .band .gl{position:absolute;left:28px;right:28px;top:262px;height:4px;background:#F2B705}
-.thD .vt{position:absolute;left:44px;top:860px;width:540px;transform:rotate(-90deg);transform-origin:0 0;white-space:nowrap}
+.thD .vt{position:absolute;left:100px;top:868px;width:580px;transform:rotate(-90deg);transform-origin:0 0;white-space:nowrap}
 .thD .vt .n{font-family:"Chakra Petch",sans-serif;font-weight:700;line-height:1.05;color:#fff}
-.thD .vt .e{font-family:"Chakra Petch",sans-serif;font-weight:500;font-size:30px;color:#ffffffd0;margin-top:2px}
+.thD .vt .e{font-family:"Barlow Condensed","Chakra Petch",sans-serif;font-weight:600;font-size:40px;letter-spacing:5px;color:#ffffffb0}
+.thD .aw .t{color:#F2B705!important}
+.thD .nm3{font-family:"Chakra Petch",sans-serif;font-weight:700;line-height:1.1;color:#fff;margin-top:6px;white-space:nowrap;text-shadow:0 4px 18px #000d}
+.thD .sb3{display:inline-flex;align-items:center;gap:12px;margin-top:10px;background:#000000a0;border-radius:999px;padding:6px 18px 6px 8px;font-family:"Chakra Petch";font-size:24px;color:#fff}
+.thD .sb3 img{height:34px;background:#fff;border-radius:999px;padding:3px 10px}
 .thD .lgp{position:absolute;right:36px;top:30px;background:#fff;border-radius:14px;padding:10px 22px;display:flex;gap:22px;align-items:center}
 .thD .lgp img{height:26px}.thD .lgp img[alt=PTTEP],.thD .lgp img[alt=TOP]{height:36px}
 .thD .aw{position:absolute;left:300px;top:60px;max-width:640px}
@@ -999,13 +1003,13 @@ function broadcastHTML(s){
   if(s.kind==="p"&&s.r)card=bcScorecard(s.r);
   if(s.kind==="t"&&s.x)card=bcTeam(s.x);
   if((s.kind==="n"||s.kind==="l")&&s.w)card=`<div class="bcard"><div class="stat"><div>HOLE<b>${s.h}</b></div><div>PAR<b>${c.pars[s.h-1]}</b></div><div class="g">${s.kind==="n"?"ห่างธง (หลา)":"ระยะไดรฟ์ (หลา)"}<b>${esc(s.w.yds)}</b></div></div></div>`;
-  const name=m.name, nsz=fitFont(name,520,96,52);
+  const name=m.name;
   const foot=m.prize?`<div class="foot">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}รับ ${esc(m.prize.item||"")}${m.prize.by?` · มอบโดย ${esc(m.prize.by)}`:""}</div>`:`<div class="foot">${esc(c.course||"")} · P1D1 Golf Day 2026</div>`;
   return `<div class="sl th thD"><div class="bgp">${bg}</div>
     <div class="band"><div class="lw"><img src="img/logo_p1d1.png" alt=""></div><div class="gl"></div>
-      <div class="vt"><div class="n" style="font-size:${nsz}px">${esc(name)}</div><div class="e">P1D1 GOLF DAY 2026 · ${esc(c.course||"")}</div></div></div>
+      <div class="vt"><div class="e">P1D1 GOLF DAY 2026</div></div></div>
     <div class="lgp">${LOGOSTRIP}</div>
-    <div class="aw"><span class="k">${esc(flag)}</span><div class="t" style="font-size:${fitFont(m.title,640,58,34)}px">${esc(m.title)}</div></div>
+    <div class="aw"><span class="k">${esc(flag)}</span><div class="t" style="font-size:${fitFont(m.title,640,46,30)}px">${esc(m.title)}</div><div class="nm3" style="font-size:${fitFont(name,660,104,56)}px">${esc(name)}</div>${(m.org||m.sub)?`<div class="sb3">${m.org?`<img src="img/logo_${m.org}.png" alt="">`:""}<span>${esc(m.sub||"")}</span></div>`:""}</div>
     ${card}${foot}</div>`;
 }
 
