@@ -942,7 +942,7 @@ function slidePrize(s){const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const p
   return `<div class="prize">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:""}<div><b>🎁 ${esc(p.item||"")}</b><small>${p.value?esc(p.value):""}${p.by?` · มอบโดย ${esc(p.by)}`:""}</small></div></div>`;}
 
 // ---------- PR themes ----------
-const THEMES=[["d","แบบ 4 · Broadcast สกอร์การ์ด"],["a","แบบ 1 · Prestige กรมท่า-ทอง"],["b","แบบ 2 · Corporate ขาว-ฟ้า"],["c","แบบ 3 · Night Fairway"],["o","แบบเดิม"]];
+const THEMES=[["d","แบบ Broadcast สกอร์การ์ด"],["o","แบบเดิม"]];
 function slideModel(s){
   const pr=S.pr[s.id]||{},c=S.config;
   const m={title:pr.title||s.def,up:pr.img||"",kind:s.kind,rank:s.rank,hole:s.h,name:"รอประกาศผล",sub:"",org:null,photo:null,grid:[],mem:null,nums:[],pending:true,
@@ -1036,7 +1036,7 @@ function slideThemeHTML(s,th){
 }
 
 function slideHTML(s){
-  const th=S.config.prTheme||"d";if(th!=="o")return slideThemeHTML(s,th);
+  const th=S.config.prTheme==="o"?"o":"d";if(th!=="o")return broadcastHTML(s);
   const pr=S.pr[s.id]||{}, title=pr.title||s.def, up=pr.img;
   let photo="",name="รอประกาศผล",org="",stats="",medal="";
   medal=(s.kind==="n"||s.kind==="l")?`<div class="medal mn">หลุม<br>${s.h}</div>`:`<div class="medal m${s.rank+1}">${s.rank+1}</div>`;
@@ -1064,7 +1064,7 @@ function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=
 window.addEventListener("resize",()=>{fitSlides();if(presIdx!=null)drawPresenter();});
 function renderPR(){
   const L=slideList();
-  $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(S.config.prTheme||"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
+  $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(S.config.prTheme==="o"?"o":"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
   $("prList").innerHTML=L.map(s=>{const pr=S.pr[s.id]||{};return `<div class="prcard"><div class="slwrap">${slideHTML(s)}</div>
    <div class="ctl">${S.canWrite?`<input type="text" value="${esc(pr.title||s.def)}" data-prt="${s.id}" placeholder="${esc(s.def)}">
    <button class="btn sm" data-pru="${s.id}">📷 ${pr.img?"เปลี่ยนรูป":(s.kind==="t"?"อัปโหลดรูปทีม":"อัปโหลดรูป")}</button>${pr.img?`<button class="btn sm sec" data-prd="${s.id}">ลบรูป</button>`:""}`:""}
