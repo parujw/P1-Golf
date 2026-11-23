@@ -38,8 +38,8 @@ nav button i{font-style:normal;margin-right:6px}
   main{padding-bottom:96px}
   header .logos{display:none!important}
   header{padding-top:12px}
-  .logos img{height:15px}
-  .logos img[alt=PTTEP],.logos img[alt=TOP]{height:22px}
+  .logos img{height:calc(15px*var(--k,1))}
+
   .toast{bottom:84px}
 }
 main{max-width:980px;margin:0 auto;padding:16px 12px 60px}
@@ -191,8 +191,8 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .sl .stats span{font-size:20px;opacity:.8}
 .sl .stats .hl{background:#f4c542;color:#16257a;border-color:#f4c542}
 .sl .logos2{position:absolute;left:0;right:0;bottom:0;height:86px;background:#fff;display:flex;align-items:center;justify-content:center;gap:56px;z-index:3}
-.sl .logos2 img{height:40px}
-.sl .logos2 img[alt=PTTEP],.sl .logos2 img[alt=TOP]{height:56px}
+.sl .logos2 img{height:calc(40px*var(--k,1))}
+
 .pg{width:1600px;height:900px;position:relative;overflow:hidden;font-family:"Anuphan",sans-serif;color:#0b1440;
   background:radial-gradient(900px 500px at 70% 20%,#e9f3d8 0%,#a9c97a 35%,#4f7f34 70%,#23461c 100%)}
 .pg .pgbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -204,7 +204,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .pg .hdr .t .gd{font-size:60px;font-weight:800;letter-spacing:2px;color:#1a1a1a}
 .pg .hdr .t .gd b{color:#b8901f}
 .pg .hdr .lg2{position:absolute;right:30px;top:22px;display:flex;gap:18px;align-items:center;background:#ffffffe6;border-radius:16px;padding:12px 20px}
-.pg .hdr .lg2 img{height:34px}.pg .hdr .lg2 img[alt=PTTEP],.pg .hdr .lg2 img[alt=TOP]{height:46px}
+.pg .hdr .lg2 img{height:calc(34px*var(--k,1))}
 .pg .col{position:absolute;top:130px;width:760px}
 .pg .grp{margin-bottom:8px}
 .pg .pill{display:inline-flex;align-items:center;gap:14px;background:linear-gradient(90deg,#d9f0ff,#8fc2ff);border-radius:999px;padding:4px 34px;font-weight:800;font-size:38px;color:#0b1440;box-shadow:0 4px 12px #0003}
@@ -219,7 +219,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 /* ===== PR themes ===== */
 .sl.th .stripe,.sl.th .stripe2{display:none}
 .th .lgbar{position:absolute;display:flex;align-items:center;justify-content:center;gap:40px}
-.th .lgbar img{height:34px}.th .lgbar img[alt=PTTEP],.th .lgbar img[alt=TOP]{height:46px}
+.th .lgbar img{height:calc(34px*var(--k,1))}
 .th .ph{position:absolute;overflow:hidden}
 .th .ph img{width:100%;height:100%;object-fit:cover;display:block}
 .th .ph.empty{display:grid;place-items:center;font-size:20px}
@@ -303,7 +303,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .thC .pz img{width:58px;height:58px;border-radius:14px;object-fit:cover;background:#fff}
 .thC .pz b{display:block;color:#9FE3BE;font-size:23px;font-weight:600}
 .thC .lgbar{left:50%;transform:translateX(-50%);bottom:22px;height:66px;background:#fff;border-radius:999px;padding:0 44px;gap:34px}
-.thC .lgbar img{height:30px}.thC .lgbar img[alt=PTTEP],.thC .lgbar img[alt=TOP]{height:40px}
+.thC .lgbar img{height:calc(30px*var(--k,1))}
 
 .th .shd{max-width:none;margin:0}
 .th .pz.inl{position:static;margin-top:16px}
@@ -332,7 +332,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .thD .sb3{display:inline-flex;align-items:center;gap:12px;margin-top:10px;background:#000000a0;border-radius:999px;padding:6px 18px 6px 8px;font-family:"Chakra Petch";font-size:24px;color:#fff}
 .thD .sb3 img{height:34px;background:#fff;border-radius:999px;padding:3px 10px}
 .thD .lgp{position:absolute;right:36px;top:30px;background:#fff;border-radius:14px;padding:10px 22px;display:flex;gap:22px;align-items:center}
-.thD .lgp img{height:26px}.thD .lgp img[alt=PTTEP],.thD .lgp img[alt=TOP]{height:36px}
+.thD .lgp img{height:calc(26px*var(--k,1))}
 .thD .aw{position:absolute;left:300px;top:60px;max-width:640px}
 .thD .aw .k{display:inline-block;background:#F2B705;color:#0b1a12;font-family:"Chakra Petch";font-weight:700;font-size:24px;padding:4px 16px;border-radius:4px}
 .thD .aw .t{font-family:"Chakra Petch";font-weight:700;color:#fff;line-height:1.15;margin-top:14px;text-shadow:0 3px 14px #000c;white-space:nowrap}
@@ -445,7 +445,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .thO .o2{display:inline-block;margin-top:22px;font-family:"Chakra Petch","Anuphan",sans-serif;font-weight:700;font-size:48px;color:#0b1a12;background:#F2B705;padding:6px 34px;border-radius:6px}
 .thO .o3{margin-top:22px;font-family:"Barlow Condensed","Chakra Petch",sans-serif;font-weight:600;font-size:36px;letter-spacing:4px;color:#ffffffd8;text-shadow:0 3px 14px #000}
 .thO .ologos{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);background:#fff;border-radius:999px;padding:14px 46px;display:flex;gap:40px;align-items:center}
-.thO .ologos img{height:36px}.thO .ologos img[alt=PTTEP],.thO .ologos img[alt=TOP]{height:48px}
+.thO .ologos img{height:calc(36px*var(--k,1))}
 
 
 /* MC script */
@@ -506,11 +506,11 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .av.sm{width:22px;height:22px;border-width:1px}
 .ini{display:inline-grid;place-items:center;font-weight:700;color:var(--navy);font-size:15px}
 .av.sm.ini{font-size:10px}
-.lg{height:15px;vertical-align:-3px;margin-right:6px}
+.lg{height:calc(15px*var(--k,1));vertical-align:-3px;margin-right:6px}
 .logos{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#fff;border-radius:10px;padding:6px 12px;margin-top:12px;width:fit-content;max-width:100%}
-.logos img{height:20px}
-.logos img[alt=PTTEP],.logos img[alt=TOP]{height:30px}
-.lg[alt=PTTEP],.lg[alt=TOP]{height:22px;vertical-align:-6px}
+.logos img{height:calc(20px*var(--k,1))}
+
+
 .modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;z-index:50;padding:16px}
 .modal .box{background:#fff;border-radius:16px;padding:18px;max-width:420px;width:100%}
 .roster td{padding:5px 4px}
@@ -519,6 +519,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:999px;font-size:13px;z-index:60;opacity:0;transition:.2s;pointer-events:none}
 .toast.on{opacity:1}
 .psl{display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer}.psl input{width:20px;height:20px}
+img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1.12}img[alt=IRPC]{--k:.76}img[alt=OR]{--k:1.04}
 </style>
 </head>
 <body>
@@ -1489,7 +1490,7 @@ async function downloadExcel(btn,opt){
     [side.L,side.R].forEach((arr,si)=>{
       if(!arr.length)return;
       if(r>1){ws.getRow(r-1).addPageBreak();}
-      ws.getRow(r).height=72;ws.addImage(logo,{tl:{col:2.6,row:r-1+0.08},ext:{width:84,height:78}});r++;
+      ws.getRow(r).height=72;ws.addImage(logo,{tl:{col:2.6,row:r-1+0.08},ext:{width:70,height:78}});r++;
       ws.mergeCells(r,1,r,6);const t=ws.getCell(r,1);t.value=c.name||"P1D1 Golf Day";t.font={name:FT,size:30,bold:true};ws.getRow(r).height=40;r++;
       const first=arr.map(g=>g.t.time).filter(Boolean).sort()[0];
       ws.mergeCells(r,1,r,6);const d=ws.getCell(r,1);d.value=`${times}${first?`เวลา ${first.replace(":",".")} น. `:""}ณ ${c.course||""}  ·  ออกหลุม ${si===0?1:10}`;d.font={name:FT,size:16,bold:true};ws.getRow(r).height=24;r++;
@@ -1536,7 +1537,7 @@ async function downloadExcel(btn,opt){
       // --- Awards sheet
       const aw=wb.addWorksheet("ผลรางวัล",{pageSetup:{paperSize:9,orientation:"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0}});
       aw.columns=[{width:16},{width:34},{width:26},{width:12},{width:12},{width:12}];
-      aw.getRow(1).height=60;aw.addImage(logo,{tl:{col:0.2,row:0.1},ext:{width:64,height:60}});
+      aw.getRow(1).height=60;aw.addImage(logo,{tl:{col:0.2,row:0.1},ext:{width:54,height:60}});
       aw.mergeCells(1,2,1,6);aw.getCell(1,2).value=`${c.name||""} — สรุปผลรางวัล`;aw.getCell(1,2).font={name:FT,size:24,bold:true};aw.getCell(1,2).alignment={vertical:"middle"};
       let ar=3;const d=awardsData(),place=["ชนะเลิศ","รองชนะเลิศอันดับ 1","รองชนะเลิศอันดับ 2"];
       const sec=(title,k)=>{aw.mergeCells(ar,1,ar,6);const cell=aw.getCell(ar,1);cell.value=title;cell.font={name:FT,size:18,bold:true,color:{argb:"FFFFFFFF"}};fill(cell,"FF1B2A6B");ar++;
