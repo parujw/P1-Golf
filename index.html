@@ -518,6 +518,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .foot{font-size:12px;color:var(--mute);margin-top:6px;line-height:1.6}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:999px;font-size:13px;z-index:60;opacity:0;transition:.2s;pointer-events:none}
 .toast.on{opacity:1}
+.psl{display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer}.psl input{width:20px;height:20px}
 </style>
 </head>
 <body>
@@ -856,7 +857,8 @@ function renderResults(){
   } else if(resTab==="R"){
     body.innerHTML=rulesHtml();
   } else {
-    body.innerHTML=dupBox()+awardsHtml();
+    body.innerHTML=`<div class="card row" id="homeShow" style="gap:14px;padding:12px 16px">${showBoxHtml("แสดงรางวัล:")}</div>`+dupBox()+awardsHtml();
+    $("homeShow").onchange=onShowChange;
 
   }
 }
@@ -909,11 +911,11 @@ function rulesHtml(){
 }
 function awardsData(){
   const all=allCalc(), c=S.config;
-  const flights=["A","B"].map(f=>({f,name:f==="A"?c.flightA:c.flightB,top:ranked(all.filter(r=>r.p.flight===f)).done.slice(0,Math.max(1,+c.indPlaces||3)),left:all.filter(r=>r.p.flight===f&&!r.done).length}));
-  const teams=teamResults().filter(x=>x.ok).slice(0,Math.max(1,+c.teamPlaces||1));
-  const ntp=(c.ntpHoles||[]).map(h=>({h,w:ntpWinner(h)}));
-  const ld=(c.ldHoles||[]).map(h=>({h,w:ldWinner(h)}));
-  return {flights,teams,ntp,ld,indOn:c.indOn!==false,left:all.filter(r=>!r.done).length};
+  const flights=["A","B"].filter(f=>prShow("f"+f)).map(f=>({f,name:f==="A"?c.flightA:c.flightB,top:ranked(all.filter(r=>r.p.flight===f)).done.slice(0,Math.max(1,+c.indPlaces||3)),left:all.filter(r=>r.p.flight===f&&!r.done).length}));
+  const teams=prShow("team")?teamResults().filter(x=>x.ok).slice(0,Math.max(1,+c.teamPlaces||1)):[];
+  const ntp=prShow("ntp")?(c.ntpHoles||[]).map(h=>({h,w:ntpWinner(h)})):[];
+  const ld=prShow("ld")?(c.ldHoles||[]).map(h=>({h,w:ldWinner(h)})):[];
+  return {flights,teams,ntp,ld,teamOn:prShow("team"),indOn:c.indOn!==false&&prShow("ind")&&flights.length>0,left:all.filter(r=>!r.done).length};
 }
 function awardHolders(){
   const d=awardsData(),m={},add=(nm,a)=>{if(!nm)return;const k=cleanName(nm);(m[k]=m[k]||{name:nm,list:[]}).list.push(a);};
@@ -935,7 +937,7 @@ function awardsHtml(){
   return `${d.left?`<div class="banner">ผลชั่วคราว — ยังมีผู้เล่นกรอกไม่ครบ 18 หลุม ${d.left} คน</div>`:`<div class="banner ok">✅ กรอกสกอร์ครบทุกคนแล้ว — ผลอย่างเป็นทางการ</div>`}
   ${(()=>{let n=0;const sec=(t,k,body)=>`<div class="card"><h2>${++n}. ${t}</h2>${k?prizeBox(k):""}${body}</div>`;return [
    d.indOn?sec("ประเภทเดี่ยว (Net · System 36)","ind",`${d.flights.map(F=>`<h3>${esc(F.name)}</h3>${F.top.length?F.top.map((r,i)=>prow(medal[i],r.p.name,`Gross ${r.gross} · HC ${r.hc}${dupBadge(r.p.name)}`,r.net,"Net",r.p)).join(""):pend("ยังไม่มีผู้เล่นครบ 18 หลุม")}`).join("")}`):"",
-   sec("ประเภททีม (ก๊วน)","team",`${d.teams.length?d.teams.map((x,i)=>prow(medal[i],x.t.name,`<span style="display:flex;gap:2px;margin:3px 0 4px">${x.mem.map(r=>av(r.p,"sm")).join("")}</span>`+x.counted.map(r=>`${esc(cleanName(r.p.name))} <b>${r.net}</b> <span style="opacity:.7">(G ${r.gross} · HC ${r.hc})</span>`).join("<br>"),x.total,"Net รวม")).join(""):pend("ยังไม่มีก๊วนที่ครบ")}`),
+   d.teamOn&&sec("ประเภททีม (ก๊วน)","team",`${d.teams.length?d.teams.map((x,i)=>prow(medal[i],x.t.name,`<span style="display:flex;gap:2px;margin:3px 0 4px">${x.mem.map(r=>av(r.p,"sm")).join("")}</span>`+x.counted.map(r=>`${esc(cleanName(r.p.name))} <b>${r.net}</b> <span style="opacity:.7">(G ${r.gross} · HC ${r.hc})</span>`).join("<br>"),x.total,"Net รวม")).join(""):pend("ยังไม่มีก๊วนที่ครบ")}`)||"",
    d.ld.length?sec("Longest Drive (ตีไกล)","ld",`${d.ld.map(n=>prow("🏌️",n.w?n.w.name:"—",`หลุม ${n.h} · Par ${S.config.pars[n.h-1]}${n.w?dupBadge(n.w.name):""}`,n.w&&hasYds(n.w)?esc(n.w.yds):"–",n.w&&!hasYds(n.w)?"ไม่ระบุระยะ":"หลา",n.w?(pByName(n.w.name)||{name:n.w.name}):null)).join("")}`):"",
    d.ntp.length?sec("Nearest to Pin","ntp",`${d.ntp.map(n=>prow("🎯",n.w?n.w.name:"—",`หลุม ${n.h} · Par ${S.config.pars[n.h-1]}${n.w?dupBadge(n.w.name):""}`,n.w&&hasYds(n.w)?esc(n.w.yds):"–",n.w&&!hasYds(n.w)?"ไม่ระบุระยะ":"หลา",n.w?(pByName(n.w.name)||{name:n.w.name}):null)).join("")}`):""].join("");})()}
   </div>`;
@@ -1108,8 +1110,10 @@ const LOGOSTRIP=`<img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.
 const PLACE=["ชนะเลิศ","รองชนะเลิศอันดับ 1","รองชนะเลิศอันดับ 2"];
 const PZDEF={ntp:["Nearest to Pin","รางวัล Nearest to Pin"],ld:["Longest Drive (ตีไกล)","รางวัล Longest Drive"],ind:["ประเภทเดี่ยว","รางวัลประเภทเดี่ยว"],team:["ประเภททีม (ก๊วน)","รางวัลประเภททีม"]};
 function prizeSlide(k){const p=prize(k);if(!p)return null;return {id:`prize-${k}`,kind:"z",pk:k,cat:PZDEF[k][0],def:PZDEF[k][1]};}
-const PRSHOW=[["ind","ประเภทเดี่ยว"],["team","ประเภททีม"],["ntp","Nearest to Pin"],["ld","Longest Drive"]];
+function PRSHOW(){const c=S.config;return [["ind","ประเภทเดี่ยว"],["fA",c.flightA||"Flight A"],["fB",c.flightB||"Flight B"],["team","ประเภททีม"],["ntp","Near Pin"],["ld","Long Drive"]];}
 function prShow(k){return ((S.config.prShow||{})[k])!==false;}
+function showBoxHtml(lbl){const off=!prShow("ind");return `<span class="meta">${lbl}</span>`+PRSHOW().map(([k,l])=>{const sub=k==="fA"||k==="fB",dis=!S.canWrite||(sub&&off);return `<label class="psl" style="${sub?"margin-left:-4px;":""}${sub&&off?"opacity:.4;":""}"><input type="checkbox" data-ps="${k}" ${prShow(k)?"checked":""} ${dis?"disabled":""}>${esc(l)}</label>`;}).join("");}
+function onShowChange(e){const k=e.target.dataset&&e.target.dataset.ps;if(!k)return;S.config={...S.config,prShow:{...(S.config.prShow||{}),[k]:e.target.checked}};saveConfig();renderResults();renderPR();toast(e.target.checked?"แสดงแล้ว":"ซ่อนแล้ว");}
 function slideList(){
   const d=awardsData();if(!prShow("ind"))d.indOn=false;if(!prShow("ld"))d.ld=[];if(!prShow("ntp"))d.ntp=[];if(!prShow("team"))d.teams=[];
   const out=[{id:"opening",kind:"open",cat:"สไลด์เปิด",def:""}];const pz=k=>{const z=prizeSlide(k);if(z)out.push(z);};
@@ -1311,7 +1315,7 @@ function slideHTML(s){
 function fitSlides(root){(root||document).querySelectorAll(".slwrap").forEach(w=>{const sl=w.firstElementChild;if(sl)sl.style.transform=`scale(${w.clientWidth/1600})`;});}
 window.addEventListener("resize",()=>{fitSlides();if(presIdx!=null)drawPresenter();});
 function renderPR(){
-  $("prShowBox").innerHTML=`<span class="meta">แสดงในสไลด์:</span>`+PRSHOW.map(([k,l])=>`<label style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer"><input type="checkbox" data-ps="${k}" ${prShow(k)?"checked":""} ${S.canWrite?"":"disabled"} style="width:20px;height:20px">${l}</label>`).join("");
+  $("prShowBox").innerHTML=showBoxHtml("แสดงในสไลด์:");
   renderMC();
   const L=slideList();
   $("prThemes").innerHTML=THEMES.map(([k,l])=>`<button class="chip${(["o","p"].includes(S.config.prTheme)?S.config.prTheme:"d")===k?" on":""}" data-th="${k}">${l}</button>`).join("");
@@ -1419,7 +1423,7 @@ function drawPresenter(){const el=$("presenter");if(!el)return;const f=presOrder
   const sc=Math.min(innerWidth/1600,innerHeight/900),st=el.querySelector(".stage");st.style.width=1600*sc+"px";st.style.height=900*sc+"px";
   st.innerHTML=f();st.firstElementChild.style.transform=`scale(${sc})`;}
 document.addEventListener("keydown",e=>{if(presIdx==null)return;if(["ArrowRight","PageDown"," ","Enter"].includes(e.key)){e.preventDefault();step(1);}else if(["ArrowLeft","PageUp"].includes(e.key))step(-1);else if(e.key==="Escape")closePresenter();});
-$("prShowBox").onchange=e=>{const k=e.target.dataset.ps;if(!k)return;S.config={...S.config,prShow:{...(S.config.prShow||{}),[k]:e.target.checked}};saveConfig();renderPR();toast(e.target.checked?"แสดงในสไลด์แล้ว":"ซ่อนจากสไลด์แล้ว");};
+$("prShowBox").onchange=onShowChange;
 $("prThemes").onclick=e=>{const b=e.target.closest("[data-th]");if(!b)return;S.config={...S.config,prTheme:b.dataset.th};saveConfig();renderPR();toast("เปลี่ยนแบบสไลด์แล้ว");};
 $("prPlay").onclick=()=>openPresenter(false);$("prPlayRev").onclick=()=>openPresenter(true);
 
