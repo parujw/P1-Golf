@@ -1490,7 +1490,7 @@ async function downloadExcel(btn,opt){
     [side.L,side.R].forEach((arr,si)=>{
       if(!arr.length)return;
       if(r>1){ws.getRow(r-1).addPageBreak();}
-      ws.getRow(r).height=72;ws.addImage(logo,{tl:{col:2.6,row:r-1+0.08},ext:{width:70,height:78}});r++;
+      ws.getRow(r).height=72;ws.addImage(logo,{tl:{nativeCol:3,nativeColOff:1530000,nativeRow:r-1,nativeRowOff:60000},ext:{width:70,height:78},editAs:"oneCell"});r++;
       ws.mergeCells(r,1,r,6);const t=ws.getCell(r,1);t.value=c.name||"P1D1 Golf Day";t.font={name:FT,size:30,bold:true};ws.getRow(r).height=40;r++;
       const first=arr.map(g=>g.t.time).filter(Boolean).sort()[0];
       ws.mergeCells(r,1,r,6);const d=ws.getCell(r,1);d.value=`${times}${first?`เวลา ${first.replace(":",".")} น. `:""}ณ ${c.course||""}  ·  ออกหลุม ${si===0?1:10}`;d.font={name:FT,size:16,bold:true};ws.getRow(r).height=24;r++;
@@ -1500,7 +1500,7 @@ async function downloadExcel(btn,opt){
         ws.getRow(r).height=24;r++;
         const top=r;
         for(let k=0;k<4;k++){const p=g.mem[k];const row=ws.getRow(r);row.height=30;
-          const cells=[k+1,"","",p?(p.name+(p.title?`  (${p.title})`:"")):"","",""];
+          const cells=[k+1,"","",p?cleanName(p.name):"","",""];
           cells.forEach((v,i)=>{const cell=ws.getCell(r,i+1);if(i!==1&&i!==2)cell.value=v;cell.font={name:FB,size:i===3?18:15};cell.alignment={horizontal:i===3?"left":"center",vertical:"middle",wrapText:i!==3,shrinkToFit:i===3,indent:i===3?1:0};box(cell,thin);});
           r++;}
         ws.mergeCells(top,2,r-1,2);ws.mergeCells(top,3,r-1,3);
