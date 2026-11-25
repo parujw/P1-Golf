@@ -550,10 +550,10 @@ body.dinner nav [data-g]{display:none!important}body:not(.dinner) nav [data-d]{d
 .dgr{display:flex;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.dgr:last-child{border-bottom:0}
 .dph{border:0;background:none;padding:0;cursor:pointer;flex:none}.dph .av{width:44px;height:44px}
 .dgn{flex:1;min-width:0}.dgn b{font-size:15px}.dgn .meta{display:flex;align-items:center;gap:5px;margin-top:1px}.dgn .lg,.dtl .lg{height:calc(13px*var(--k,1))}
-.dgolf{display:inline-block;margin-left:6px;font-size:11px;font-weight:600;color:var(--good);background:#e9f7ef;border-radius:6px;padding:1px 6px;vertical-align:2px}
+.dgolf.play{color:#9a6b00;background:#fff4d6}.dgolf{display:inline-block;margin-left:6px;font-size:11px;font-weight:600;color:var(--good);background:#e9f7ef;border-radius:6px;padding:1px 6px;vertical-align:2px}
 .dgc{display:flex;gap:6px;align-items:center;flex:none}
 .dsel{width:auto!important;padding:8px 8px!important;font-size:14px;max-width:190px}
-.dck{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-weight:600;cursor:pointer;min-width:92px;font-size:14px;color:var(--mute)}
+.dck{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-weight:600;cursor:pointer;min-width:150px;font-size:14px;color:var(--mute)}
 .dck.on{background:var(--good);border-color:var(--good);color:#fff}.dck small{font-weight:500;opacity:.9}
 .dmore{border:0;background:none;color:var(--navy);font-weight:600;cursor:pointer;padding:8px 4px;font-size:14px}
 .dpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px}
@@ -577,7 +577,7 @@ body.dinner nav [data-g]{display:none!important}body:not(.dinner) nav [data-d]{d
 .dtl li button{border:0;background:none;color:var(--mute);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}.dtl .okd{font-style:normal;color:var(--good);font-weight:700}
 #dtUn{margin-top:14px}.dtl .av,.dun .av,.dpick .av{width:24px;height:24px;min-width:24px;flex:0 0 24px;font-size:11px}
 .dun{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:8px}.dun>div{display:flex;align-items:center;gap:8px;font-size:14px}.dun span{flex:1;min-width:0}
-@media(max-width:700px){.dsum{grid-template-columns:repeat(2,1fr)}.dgr{flex-wrap:wrap}.dgc{width:100%;padding-left:56px}.dgc .dsel{flex:1;max-width:none}}
+@media(max-width:700px){.dsum{grid-template-columns:repeat(2,1fr)}.dgr{flex-wrap:wrap}.dgc{width:100%;padding-left:56px}.dgc .dsel{flex:1;max-width:none;min-width:0}.dgc .dck{flex:1.3;min-width:0;padding:8px 6px}.dgc .dmore{flex:none}}
 </style>
 </head>
 <body>
@@ -1157,7 +1157,7 @@ $("dgBody").onclick=e=>{const b=e.target.closest("button");if(!b)return;
   else if(b.dataset.ded){dgPick=false;dgEdit=b.dataset.ded;renderDG();window.scrollTo({top:$("dgForm").offsetTop-80,behavior:"smooth"});}
   else if(b.dataset.dck){const x=gv(b.dataset.dck);if(!x)return;const on=!x.in;
     if(x.golf)setStage([x.pid],"dinner",on);else{S.dg[x.gid]={...S.dg[x.gid],in:on?nowHM():""};saveDG(x.gid);}
-    toast(`${x.name} · ${on?"มาแล้ว":"ยกเลิก"}`);renderDG();}};
+    toast(`${x.name} · ${on?"ร่วมดินเนอร์แล้ว":"ยกเลิก"}`);renderDG();}};
 const onTbSel=e=>{const sel=e.target;if(sel.dataset.dtb){setTable(sel.dataset.dtb,sel.value);render();toast(sel.value?`จัดลง ${tbName(sel.value)} แล้ว`:"ย้ายออกจากโต๊ะแล้ว");}
   else if(sel.dataset.dta&&sel.value){setTable(sel.value,sel.dataset.dta);renderDT();toast(`จัดลง ${tbName(sel.dataset.dta)} แล้ว`);}
   else if(sel.dataset.dts){const t=S.dt.find(x=>x.id===sel.dataset.dts);if(t){t.seats=Math.max(2,Math.min(20,+sel.value||10));saveDT();renderDT();}}
@@ -1594,7 +1594,7 @@ function groupsBySide(){
   return side;
 }
 // ---------- สถานะผู้บริหาร ----------
-const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปกลุ่ม"],["fin","ตีจบ"],["dinner","ร่วม Dinner"]];
+const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปกลุ่ม"],["fin","ตีกอล์ฟเสร็จ"],["dinner","ร่วมดินเนอร์"]];
 let stFilter=null;
 function stOf(p,k){const m=S.status[p.id]||{};if(m[k]!=null)return m[k];if(k==="fin"&&calc(p).done)return "18 หลุม";return null;}
 function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
@@ -1621,7 +1621,7 @@ const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const ORGORDER=["PTT","PTTEP","GC","TOP","IRPC","OR"],ORGLBL={PTT:"PTT",PTTEP:"PTTEP",GC:"GC",TOP:"Thaioil",IRPC:"IRPC",OR:"OR"};
 function ensureDG(pid){if(Object.values(S.dg).some(g=>String(g.pid)===String(pid)))return;const id=uid();S.dg[id]={pid:String(pid),n:"",t:"",o:"",tb:"",in:"",ts:Date.now()};saveDG(id);}
 function gv(gid){const g=S.dg[gid];if(!g)return null;const p=g.pid?S.roster.players.find(x=>String(x.id)===String(g.pid)):null;
-  if(p)return {gid,g,golf:true,pid:p.id,name:cleanName(p.name),title:p.title||"",org:orgOf(p),ph:p,tb:g.tb||"",in:(S.status[p.id]||{}).dinner||""};
+  if(p)return {gid,g,golf:true,pid:p.id,name:cleanName(p.name),title:p.title||"",org:orgOf(p),ph:p,tb:g.tb||"",in:(S.status[p.id]||{}).dinner||"",fin:stOf(p,"fin"),thru:calc(p).thru};
   return {gid,g,golf:false,name:g.n||"",title:g.t||"",org:g.o||null,ph:{id:"d"+gid,name:g.n||"",org:g.o||null},tb:g.tb||"",in:g.in||""};}
 function allGuests(){return Object.keys(S.dg).map(gv).filter(x=>x&&x.name);}
 function orgLine(x){const t=x.title&&x.title!==x.org?x.title:"",o=x.org?ORGLBL[x.org]:"";return t&&o&&(t.toUpperCase().includes(x.org)||t.includes(o))?t:[t,o].filter(Boolean).join(" · ");}
@@ -1631,9 +1631,9 @@ function byName(a,b){return a.name.replace(/^(คุณ|พลเอก|พล�
 function guestMeta(x){const t=x.title&&x.title!==x.org?x.title:"";return `${x.org?`<img class="lg" src="img/logo_${x.org}.png" alt="${x.org}">`:""}${esc(t)}`;}
 function tbSelect(x){return `<select data-dtb="${x.gid}" class="dsel"><option value="">— ยังไม่มีโต๊ะ —</option>${S.dt.map(t=>{const n=allGuests().filter(y=>y.tb===t.id).length;return `<option value="${t.id}"${x.tb===t.id?" selected":""}>${esc(t.name)} (${n}/${t.seats})</option>`;}).join("")}</select>`;}
 function renderDG(){
-  const G=allGuests(),n=G.length,inN=G.filter(x=>x.in).length,tbN=G.filter(x=>x.tb).length,golfN=G.filter(x=>x.golf).length;
-  $("dgSum").innerHTML=`<div><b>${n}</b><span>แขกทั้งหมด</span></div><div><b>${golfN}</b><span>มาจากกอล์ฟ</span></div><div><b>${tbN}<small>/${n}</small></b><span>จัดโต๊ะแล้ว</span></div><div class="ok"><b>${inN}<small>/${n}</small></b><span>มาแล้ว</span></div>`;
-  $("dgFil").innerHTML=[["all","ทั้งหมด"],["notin","ยังไม่มา"],["in","มาแล้ว"],["notb","ยังไม่มีโต๊ะ"]].map(([k,l])=>`<button class="chip${dgFilter===k?" on":""}" data-dgf="${k}">${l}</button>`).join("");
+  const G=allGuests(),n=G.length,inN=G.filter(x=>x.in).length,tbN=G.filter(x=>x.tb).length,golfN=G.filter(x=>x.golf).length,finN=G.filter(x=>x.golf&&x.fin).length;
+  $("dgSum").innerHTML=`<div><b>${n}</b><span>แขกทั้งหมด</span></div><div><b>${tbN}<small>/${n}</small></b><span>จัดโต๊ะแล้ว</span></div><div><b>${finN}<small>/${golfN}</small></b><span>ตีกอล์ฟเสร็จแล้ว</span></div><div class="ok"><b>${inN}<small>/${n}</small></b><span>ร่วมดินเนอร์แล้ว</span></div>`;
+  $("dgFil").innerHTML=[["all","ทั้งหมด"],["notin","ยังไม่ร่วมดินเนอร์"],["in","ร่วมดินเนอร์แล้ว"],["fin","ตีกอล์ฟเสร็จแล้ว"],["play","ยังตีกอล์ฟอยู่"],["notb","ยังไม่มีโต๊ะ"]].map(([k,l])=>`<button class="chip${dgFilter===k?" on":""}" data-dgf="${k}">${l}</button>`).join("");
   // form
   if(dgPick){const have=new Set(G.filter(x=>x.golf).map(x=>String(x.pid)));const cand=S.roster.players.filter(p=>!have.has(String(p.id)));
     $("dgForm").innerHTML=`<div class="card"><h2>เลือกผู้เล่นกอล์ฟที่ร่วม Dinner</h2>${cand.length?`<div class="row" style="margin-bottom:8px"><button class="btn sec sm" id="dgPAll">เลือกทั้งหมด</button><span class="meta">${cand.length} คนที่ยังไม่อยู่ในรายชื่อ Dinner</span></div>
@@ -1649,12 +1649,12 @@ function renderDG(){
     const f=$("dfN");if(f&&dgEdit==="new")setTimeout(()=>f.focus(),0);}
   else $("dgForm").innerHTML="";
   const q=($("dgQ").value||"").trim().toLowerCase();
-  let L=G.filter(x=>(!q||(x.name+" "+x.title+" "+(x.org?ORGLBL[x.org]:"")+" "+tbName(x.tb)).toLowerCase().includes(q))&&(dgFilter==="all"||(dgFilter==="in"&&x.in)||(dgFilter==="notin"&&!x.in)||(dgFilter==="notb"&&!x.tb)));
+  let L=G.filter(x=>(!q||(x.name+" "+x.title+" "+(x.org?ORGLBL[x.org]:"")+" "+tbName(x.tb)).toLowerCase().includes(q))&&(dgFilter==="all"||(dgFilter==="in"&&x.in)||(dgFilter==="notin"&&!x.in)||(dgFilter==="notb"&&!x.tb)||(dgFilter==="fin"&&x.golf&&x.fin)||(dgFilter==="play"&&x.golf&&!x.fin)));
   L.sort(byName);
   $("dgBody").innerHTML=L.length?`<div class="card" style="padding:0">${L.map(x=>`<div class="dgr">
     <button class="dph" data-dph="${x.gid}" title="เปลี่ยนรูป">${av(x.ph)}</button>
-    <div class="dgn"><b>${esc(x.name)}</b>${x.golf?`<span class="dgolf">กอล์ฟ</span>`:""}<div class="meta">${guestMeta(x)}</div></div>
-    <div class="dgc">${tbSelect(x)}<button class="dck${x.in?" on":""}" data-dck="${x.gid}">${x.in?`มาแล้ว <small>${esc(x.in)}</small>`:"ยังไม่มา"}</button><button class="dmore" data-ded="${x.gid}" title="แก้ไข">แก้ไข</button></div></div>`).join("")}</div>`
+    <div class="dgn"><b>${esc(x.name)}</b>${x.golf?(x.fin!=null?`<span class="dgolf">ตีกอล์ฟเสร็จแล้ว${/^\d/.test(x.fin)?" "+esc(x.fin):""}</span>`:`<span class="dgolf play">กำลังตีกอล์ฟ${x.thru?` · ${x.thru} หลุม`:""}</span>`):""}<div class="meta">${guestMeta(x)}</div></div>
+    <div class="dgc">${tbSelect(x)}<button class="dck${x.in?" on":""}" data-dck="${x.gid}">${x.in?`ร่วมดินเนอร์แล้ว <small>${esc(x.in)}</small>`:"ยังไม่ร่วมดินเนอร์"}</button><button class="dmore" data-ded="${x.gid}" title="แก้ไข">แก้ไข</button></div></div>`).join("")}</div>`
     :`<div class="card meta">${n?"ไม่พบรายชื่อตามที่เลือก":"ยังไม่มีแขก เริ่มจากปุ่ม เพิ่มแขก หรือ เพิ่มจากรายชื่อกอล์ฟ"}</div>`;
 }
 function seatDots(t,mem){const N=Math.max(+t.seats||10,mem.length),R=104,c=130;let h="";
@@ -1667,7 +1667,7 @@ function renderDT(){
   const un=G.filter(x=>!x.tb||!S.dt.some(t=>t.id===x.tb)).sort(byName);
   $("dtBody").innerHTML=S.dt.length?S.dt.map(t=>{const mem=G.filter(x=>x.tb===t.id).sort(byName),full=mem.length>=(+t.seats||10);
     return `<div class="card dtc"><div class="dtr"><div class="ring">${seatDots(t,mem)}<div class="top${mem.length>(+t.seats||10)?" bad":""}"><input type="text" value="${esc(t.name)}" data-dtn="${t.id}" aria-label="ชื่อโต๊ะ"><small>${mem.length}/${t.seats} ที่นั่ง</small></div></div></div>
-      <ol class="dtl">${mem.map(x=>`<li>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${x.in?`<i class="okd" title="มาแล้ว">✓</i>`:""}<button data-dtx="${x.gid}" title="ย้ายออกจากโต๊ะ">×</button></li>`).join("")||`<li class="meta">ยังไม่มีแขก</li>`}</ol>
+      <ol class="dtl">${mem.map(x=>`<li>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${x.in?`<i class="okd" title="ร่วมดินเนอร์แล้ว">✓</i>`:""}<button data-dtx="${x.gid}" title="ย้ายออกจากโต๊ะ">×</button></li>`).join("")||`<li class="meta">ยังไม่มีแขก</li>`}</ol>
       <div class="row" style="gap:6px">${un.length&&!full?`<select data-dta="${t.id}" class="dsel grow"><option value="">＋ เพิ่มแขกเข้าโต๊ะนี้</option>${un.map(x=>`<option value="${x.gid}">${esc(x.name)}</option>`).join("")}</select>`:`<span class="grow"></span>`}
       <label class="meta" style="display:flex;align-items:center;gap:4px">ที่นั่ง <input type="number" min="2" max="20" value="${t.seats}" data-dts="${t.id}" style="width:58px;padding:6px"></label><button class="btn sec sm" data-dtd="${t.id}" title="ลบโต๊ะ">ลบ</button></div></div>`;}).join("")
     :`<div class="card meta">ยังไม่มีโต๊ะ กด เพิ่มโต๊ะ ได้เลย จำนวนโต๊ะเพิ่มหรือลดได้ตลอด</div>`;
