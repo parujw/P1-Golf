@@ -592,6 +592,9 @@ body.dinner nav [data-g]{display:none!important}body:not(.dinner) nav [data-d]{d
 .dtest{display:inline-block;margin-left:6px;font-size:11px;font-weight:600;color:#7a4fb3;background:#f1e9fb;border-radius:6px;padding:1px 6px;vertical-align:2px}
 button.seat{border:0;padding:0;cursor:pointer}.seat i{position:absolute;right:-4px;bottom:-4px;width:16px;height:16px;border-radius:50%;background:var(--good);color:#fff;font-style:normal;font-size:10px;line-height:16px;text-align:center;font-weight:700}
 .dck.sm{min-width:96px;padding:4px 8px;font-size:12.5px;border-radius:8px}.dtl li{min-height:30px}
+nav .dsk{font-weight:inherit}nav button.navlink{margin-left:auto;color:#fff;background:#ffffff1f;border-radius:10px;margin-bottom:6px;padding:8px 14px}
+body.dinner nav button.navlink{order:9}
+@media (max-width:700px){nav .dsk{display:none}nav button.navlink{margin:0;background:transparent;color:var(--navy);padding:6px 2px;border-radius:10px}}
 </style>
 </head>
 <body>
@@ -608,6 +611,8 @@ button.seat{border:0;padding:0;cursor:pointer}.seat i{position:absolute;right:-4
     <button data-g data-v="pair"><i>📋</i><span>Pairing</span></button>
     <button data-g data-v="pr"><i>🖼️</i><span>สไลด์ PR</span></button>
     <button data-g data-v="setup"><i>⚙️</i><span>ตั้งค่า</span></button>
+    <button data-g data-href="/dinner" class="navlink"><i>🍽️</i><span><b class="dsk">ไปงาน </b>Dinner</span></button>
+    <button data-d data-href="/" class="navlink"><i>⛳</i><span>เว็บกอล์ฟ</span></button>
     <button data-v="dguests" data-d><i>✅</i><span>สถานะ</span></button>
     <button data-v="dtables" data-d><i>⭕</i><span>ผังโต๊ะ</span></button>
     <button data-v="dsetup" data-d><i>⚙️</i><span>ตั้งค่า</span></button>
@@ -1221,7 +1226,7 @@ $("dtAuto").onclick=()=>{const G=allGuests(),un=G.filter(x=>!x.tb||!S.dt.some(t=
   renderDS();toast(k<un.length?`จัดได้ ${k} คน ยังเหลือ ${un.length-k} คน ให้เพิ่มโต๊ะ`:`จัดลงที่ว่างครบ ${k} คน`);};
 $("dgFile").addEventListener("change",async e=>{const f=e.target.files[0];const x=dgPhoto&&gv(dgPhoto);if(!f||!x)return;toast("กำลังย่อรูป…");
   try{const key=x.golf?x.pid:"d"+x.gid;S.photos[key]=await shrinkSquare(f,560);savePhoto(key);render();toast("อัปเดตรูปแล้ว");}catch(err){toast("อ่านรูปไม่สำเร็จ");}});
-$("nav").onclick=e=>{const b=e.target.closest("button");if(b)show(b.dataset.v);};
+$("nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.href){const u=b.dataset.href+(location.hostname==="localhost"&&b.dataset.href==="/dinner"?"?dinner":"");window.open(u,"_blank");return;}show(b.dataset.v);};
 $("resTabs").onclick=e=>{const b=e.target.closest("[data-r]");if(b){resTab=b.dataset.r;renderResults();}};
 $("resBody").addEventListener("change",e=>{if(e.target.dataset&&e.target.dataset.hy){const k=e.target.dataset.hy;S.config={...S.config,hideYds:{...(S.config.hideYds||{}),[k]:e.target.checked}};saveConfig();toast(e.target.checked?"ซ่อนระยะใน PR แล้ว":"แสดงระยะใน PR แล้ว");return;}if(e.target.id==="bdSel"){bdPid=e.target.value;renderResults();}});
 $("resBody").addEventListener("click",e=>{
