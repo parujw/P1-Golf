@@ -574,7 +574,7 @@ body.dinner nav [data-g]{display:none!important}body:not(.dinner) nav [data-d]{d
 .seat .av{width:38px;height:38px;border:0;box-shadow:none}.seat.e{background:#f3f5fa;box-shadow:0 0 0 1.5px #c9cfdf;border:2px dashed transparent}.seat.over{box-shadow:0 0 0 2px var(--red)}
 .dtl{margin:0;padding:0;list-style:none;display:grid;gap:4px;counter-reset:n}
 .dtl li{display:flex;align-items:center;gap:8px;font-size:14px;padding:2px 0}.dtl li span{flex:1;min-width:0}
-.dtl li button{border:0;background:none;color:var(--mute);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}.dtl .okd{font-style:normal;color:var(--good);font-weight:700}
+.dtl li .dck{flex:none}.dtl .okd{font-style:normal;color:var(--good);font-weight:700}
 #dtUn{margin-top:14px}.dtl .av,.dun .av,.dpick .av{width:24px;height:24px;min-width:24px;flex:0 0 24px;font-size:11px}
 .dun{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:8px}.dun>div{display:flex;align-items:center;gap:8px;font-size:14px}.dun span{flex:1;min-width:0}
 @media(max-width:700px){.dsum{grid-template-columns:repeat(2,1fr)}.dgr{flex-wrap:wrap}.dgc{width:100%;padding-left:56px}.dgc .dsel{flex:1;max-width:none;min-width:0}.dgc .dck{flex:1.3;min-width:0;padding:8px 6px}.dgc .dmore{flex:none}}
@@ -590,6 +590,8 @@ body.dinner nav [data-g]{display:none!important}body:not(.dinner) nav [data-d]{d
 .dph{position:relative}.dph i{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-style:normal;font-size:9px;background:var(--navy);color:#fff;border-radius:6px;padding:0 4px;white-space:nowrap}
 .dnoh{font-size:14px;color:var(--mute);margin:16px 0 8px}.dgr.no{opacity:.7}
 .dtest{display:inline-block;margin-left:6px;font-size:11px;font-weight:600;color:#7a4fb3;background:#f1e9fb;border-radius:6px;padding:1px 6px;vertical-align:2px}
+button.seat{border:0;padding:0;cursor:pointer}.seat i{position:absolute;right:-4px;bottom:-4px;width:16px;height:16px;border-radius:50%;background:var(--good);color:#fff;font-style:normal;font-size:10px;line-height:16px;text-align:center;font-weight:700}
+.dck.sm{min-width:96px;padding:4px 8px;font-size:12.5px;border-radius:8px}.dtl li{min-height:30px}
 </style>
 </head>
 <body>
@@ -1181,9 +1183,11 @@ $("dgForm").onclick=e=>{const id=e.target.id;
     const o=($("dgForm").querySelector("input[name=dfO]:checked")||{}).value||"";
     S.dg[gid]={...old,n,t:($("dfT").value||"").trim(),o};saveDG(gid);dgEdit=null;renderDS();toast(isNew?`เพิ่ม ${n} แล้ว`:"บันทึกแล้ว");}};
 $("dgForm").onkeydown=e=>{if(e.key==="Enter"&&e.target.matches("#dfN,#dfT")){e.preventDefault();$("dfOk").click();}};
-$("dgBody").onclick=e=>{const b=e.target.closest("button[data-dck]");if(!b)return;const x=gv(b.dataset.dck);if(!x)return;const on=!x.in;
+function toggleIn(gid){const x=gv(gid);if(!x)return;const on=!x.in;
   if(x.golf)setStage([x.pid],"dinner",on);else dgSet(x.gid,{in:on?nowHM():""});
-  toast(`${x.name} · ${on?"ร่วมดินเนอร์แล้ว":"ยกเลิก"}`);renderDG();};
+  toast(`${x.name} · ${on?"ร่วมดินเนอร์แล้ว":"ยกเลิกร่วมดินเนอร์"}`);render();}
+$("dgBody").onclick=e=>{const b=e.target.closest("[data-dck]");if(b)toggleIn(b.dataset.dck);};
+$("dtBody").onclick=e=>{const b=e.target.closest("[data-dck]");if(b)toggleIn(b.dataset.dck);};
 $("dsGuests").onclick=e=>{const b=e.target.closest("button");if(!b)return;
   if(b.dataset.dback){dgSet(b.dataset.dback,{no:false});const x=gv(b.dataset.dback);toast(`${x.name} · กลับมาร่วม Dinner`);renderDS();}
   else if(b.dataset.dph){dgPhoto=b.dataset.dph;$("dgFile").value="";$("dgFile").click();}
@@ -1693,7 +1697,7 @@ function renderDG(){
 }
 function seatDots(t,mem){const N=Math.max(+t.seats||10,mem.length),R=104,c=130;let h="";
   for(let i=0;i<N;i++){const a=-Math.PI/2+i*2*Math.PI/N,x=c+R*Math.cos(a),y=c+R*Math.sin(a),m=mem[i];
-    h+=`<span class="seat${m?"":" e"}${m&&m.in?" in":""}${i>=(+t.seats||10)?" over":""}" style="left:${x}px;top:${y}px" title="${m?esc(m.name):"ว่าง"}">${m?av(m.ph):""}</span>`;}
+    h+=m?`<button class="seat${m.in?" in":""}${i>=(+t.seats||10)?" over":""}" data-dck="${m.gid}" style="left:${x}px;top:${y}px" title="${esc(m.name)} · แตะเพื่อ${m.in?"ยกเลิก":"บันทึก"}ร่วมดินเนอร์">${av(m.ph)}${m.in?"<i>✓</i>":""}</button>`:`<span class="seat e" style="left:${x}px;top:${y}px" title="ว่าง"></span>`;}
   return h;}
 // ผังโต๊ะ (ดูอย่างเดียว)
 function renderDT(){
@@ -1702,7 +1706,7 @@ function renderDT(){
   const un=G.filter(x=>!x.tb||!S.dt.some(t=>t.id===x.tb)).sort(byName);
   $("dtBody").innerHTML=S.dt.length?S.dt.map(t=>{const mem=G.filter(x=>x.tb===t.id).sort(byName),inT=mem.filter(x=>x.in).length;
     return `<div class="card dtc"><div class="dtr"><div class="ring">${seatDots(t,mem)}<div class="top${mem.length>(+t.seats||10)?" bad":""}"><b>${esc(t.name)}</b><small>${mem.length}/${t.seats} ที่นั่ง</small>${mem.length?`<small>มาแล้ว ${inT}</small>`:""}</div></div></div>
-      <ol class="dtl">${mem.map(x=>`<li>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${x.in?`<i class="okd" title="ร่วมดินเนอร์แล้ว">✓ ${esc(x.in)}</i>`:""}</li>`).join("")||`<li class="meta">ยังไม่มีแขก</li>`}</ol></div>`;}).join("")
+      <ol class="dtl">${mem.map(x=>`<li>${av(x.ph,"sm")}<span>${esc(x.name)}</span><button class="dck sm${x.in?" on":""}" data-dck="${x.gid}">${x.in?`ร่วมแล้ว <small>${esc(x.in)}</small>`:"ยังไม่ร่วม"}</button></li>`).join("")||`<li class="meta">ยังไม่มีแขก</li>`}</ol></div>`;}).join("")
     :`<div class="card meta">ยังไม่มีโต๊ะ เพิ่มโต๊ะได้ที่หน้า ตั้งค่า</div>`;
   $("dtUn").innerHTML=un.length?`<div class="card"><h2>ยังไม่มีโต๊ะ (${un.length})</h2><div class="dun ro">${un.map(x=>`<div>${av(x.ph,"sm")}<span>${esc(x.name)}</span></div>`).join("")}</div></div>`:"";
 }
