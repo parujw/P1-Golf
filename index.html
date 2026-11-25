@@ -30,7 +30,7 @@ nav button.on{background:var(--bg);color:var(--navy)}
 nav button i{font-style:normal;margin-right:6px}
 @media (max-width:700px){
   header{padding-bottom:14px}
-  nav{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;display:grid;grid-template-columns:repeat(6,1fr);gap:0;
       background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 16px #0001;padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
   nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:10px;color:var(--mute);font-size:11px}
   nav button i{font-size:20px;margin:0;line-height:1.1}
@@ -69,7 +69,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 .btn:disabled{opacity:.5;cursor:default}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .grow{flex:1}
-input[type=text],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:#fff;width:100%}
+input[type=text],input[type=search],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:#fff;width:100%}
 textarea{min-height:120px;font-family:ui-monospace,monospace;font-size:12px}
 label.f{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -520,6 +520,27 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .toast.on{opacity:1}
 .psl{display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer}.psl input{width:20px;height:20px}
 img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1.12}img[alt=IRPC]{--k:.76}img[alt=OR]{--k:1.04}
+.stsum{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px}
+.stt{position:relative;overflow:hidden;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px 12px;cursor:pointer}
+.stt .l{display:block;font-size:13px;color:var(--mute);font-weight:600}
+.stt b{font-size:24px;color:var(--navy);font-weight:700}.stt b small{font-size:13px;color:var(--mute);font-weight:500}
+.stt i{position:absolute;left:0;bottom:0;height:4px;background:var(--good)}
+.stt.on{border-color:var(--navy);box-shadow:0 0 0 2px var(--navy) inset}.stt.all b{color:var(--good)}
+.stg{padding:0;overflow:hidden}
+.sgh{padding:12px 14px 6px}.sgh b{font-size:16px;color:var(--navy);margin-right:8px}
+.sgrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:0 14px 12px;border-bottom:1px solid var(--line)}
+.sgb{border:1px dashed #b9c2da;background:#f7f9fd;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:600;cursor:pointer;color:var(--navy)}
+.sgb span{color:var(--mute);font-weight:500;margin-left:2px}.sgb.on{background:#e9f7ef;border:1px solid #9fd8b8;color:var(--good)}
+.spr{display:flex;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.spr:last-child{border-bottom:0}
+.spn{display:flex;gap:10px;align-items:center;width:230px;flex:none;min-width:0}.spn b{font-size:15px}.spn .av{width:40px;height:40px;flex:none}
+.spn .meta{display:flex;align-items:center;gap:5px}.spn .lg{height:calc(13px*var(--k,1))}
+.sbs{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;flex:1}
+.sb6{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 4px;cursor:pointer;line-height:1.2;min-height:46px}
+.sb6 span{display:block;font-size:12.5px;font-weight:600;color:var(--ink)}.sb6 small{font-size:12px;color:#b3b9cc}
+.sb6.on{background:var(--good);border-color:var(--good)}.sb6.on span,.sb6.on small{color:#fff}
+.sb6:disabled{cursor:default}
+@media(max-width:700px){.stsum{grid-template-columns:repeat(3,1fr)}.stt b{font-size:20px}
+ .spr{flex-direction:column;align-items:stretch;gap:8px}.spn{width:auto}.sbs{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
@@ -531,6 +552,7 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
   <div class="logos"><img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.png" alt="PTTEP"><img src="img/logo_GC.png" alt="GC"><img src="img/logo_TOP.png" alt="TOP"><img src="img/logo_IRPC.png" alt="IRPC"><img src="img/logo_OR.png" alt="OR"></div>
   <nav id="nav">
     <button data-v="results" class="on"><i>🏆</i><span>ประกาศผล</span></button>
+    <button data-v="status"><i>✅</i><span>สถานะ</span></button>
     <button data-v="score"><i>✍️</i><span>กรอกสกอร์</span></button>
     <button data-v="pair"><i>📋</i><span>Pairing</span></button>
     <button data-v="pr"><i>🖼️</i><span>สไลด์ PR</span></button>
@@ -546,6 +568,16 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
     <div class="sub" id="resTabs"></div>
     <div id="resBody"></div>
     <div class="row" style="margin-top:6px"><button class="btn sec" id="copyRes">📋 คัดลอกผลส่ง LINE</button><button class="btn sec" id="xlsRes">📊 ดาวน์โหลด Excel</button></div>
+  </section>
+
+  <!-- STATUS -->
+  <section id="v-status" class="hidden">
+    <div id="stSum" class="stsum"></div>
+    <div class="row" style="margin:-2px 0 12px;gap:8px">
+      <input type="search" id="stQ" class="grow" placeholder="ค้นหาชื่อ หรือบริษัท" style="min-width:0">
+      <span class="meta" id="stNote"></span>
+    </div>
+    <div id="stBody"></div>
   </section>
 
   <!-- SCORE -->
@@ -720,7 +752,7 @@ function normRoster(R){
 function defaultRoster(){return JSON.parse(JSON.stringify(TEEOFF));}
 
 // ---------- state ----------
-const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
+const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
 let db=null, view="results", resTab="W", curPid=null;
 
 // ---------- utils ----------
@@ -733,8 +765,8 @@ function setBanner(t,cls){const b=$("banner");if(!t){b.classList.add("hidden");r
 
 // ---------- storage ----------
 const LKEY="p1golf_v1";
-function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
-function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};}}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};}}catch(e){}}
 
 const queues={};
 function write(path,data){
@@ -756,6 +788,8 @@ const saveRoster=()=>write("event/roster",S.roster);
 const saveScore=pid=>write("scores/"+pid,{s:S.scores[pid]||[],t:Date.now()});
 const saveNtp=h=>write("ntp/h"+h,{entries:S.ntp[h]||[]});
 const saveComp=k=>String(k).startsWith("ld")?write("ntp/"+k,{entries:S.ntp[k]||[]}):saveNtp(k);
+// สถานะผู้บริหาร เก็บใน collection ntp เอกสาร st_<id> (ใช้ Rules เดิมได้ ไม่ต้องแก้)
+const saveStatus=pid=>write("ntp/st_"+pid,{entries:Object.entries(S.status[pid]||{}).map(([k,t])=>({k,t})),u:Date.now()});
 const savePhoto=id=>write("photos/"+id,{img:S.photos[id]||"",t:Date.now()});
 const savePR=id=>write("pr/"+id,{img:(S.pr[id]||{}).img||"",title:(S.pr[id]||{}).title||"",t:Date.now()});
 
@@ -780,7 +814,7 @@ async function init(){
   db.collection("scores").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id]=[...(d.data().s||[])]);S.scores=o;render("remote");}),onErr);
   db.collection("photos").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();if(x.img)o[d.id]=x.img;});S.photos=o;render("remote");},onErr);
   db.collection("pr").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();o[d.id]={img:x.img||"",title:x.title||""};});S.pr=o;render("remote");},onErr);
-  db.collection("ntp").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id.replace(/^h/,"")]=JSON.parse(JSON.stringify(d.data().entries||[])));S.ntp=o;render("remote");}),onErr);
+  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={};e.forEach(x=>{if(x&&x.k)m[x.k]=x.t||"";});st[d.id.slice(3)]=m;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;render("remote");}),onErr);
 }
 function goLocal(msg){S.mode="local";loadLocal();setBanner(msg);applyPerm();render();}
 
@@ -837,6 +871,7 @@ function render(src){
   if(view==="score"){if(scMode==="g"){if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#scGroup")))renderGroup();}else renderScore(src==="remote");}
   if(view==="pr"&&!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#v-pr input"))) renderPR();
   if(view==="pair") renderPair();
+  if(view==="status") renderStatus();
   if(presIdx!=null) drawPresenter();
   if(view==="setup"&&src!=="remote") renderSetup();
   if(view==="setup"&&src==="remote"&&!document.activeElement.closest("#v-setup")) renderSetup();
@@ -1007,16 +1042,23 @@ function drawRoster(){
 
 // ---------- permissions / nav ----------
 function applyPerm(){
-  document.querySelectorAll('#nav [data-v="score"],#nav [data-v="setup"]').forEach(b=>b.classList.toggle("hidden",!S.canWrite));
+  document.querySelectorAll('#nav [data-v="score"],#nav [data-v="setup"],#nav [data-v="status"]').forEach(b=>b.classList.toggle("hidden",!S.canWrite));
   if(!S.canWrite&&view!=="results") show("results");
 }
 function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
-  ["results","score","pair","pr","setup"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
-  if(v==="score"){if(scMode==="g")renderGroup();else renderScore();}if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();
+  ["results","status","score","pair","pr","setup"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
+  if(v==="score"){if(scMode==="g")renderGroup();else renderScore();}if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();if(v==="status")renderStatus();
   try{history.replaceState(null,"","#"+v);}catch(e){}
 }
 
 // ---------- events ----------
+$("stSum").onclick=e=>{const b=e.target.closest("[data-stf]");if(!b)return;stFilter=stFilter===b.dataset.stf?null:b.dataset.stf;renderStatus();};
+$("stQ").oninput=()=>renderStatus();
+$("stBody").onclick=e=>{const b=e.target.closest("button");if(!b||b.disabled||!S.canWrite)return;const k=b.dataset.k,l=STAGES.find(x=>x[0]===k)[1];
+  if(b.dataset.sp){const id=b.dataset.sp,on=(S.status[id]||{})[k]==null;setStage([id],k,on);const p=S.roster.players.find(x=>String(x.id)===String(id));toast(`${cleanName(p&&p.name)} · ${on?l+" แล้ว":"ยกเลิก"+l}`);}
+  else if(b.dataset.sg){const ids=S.roster.players.filter(p=>String(p.team)===String(b.dataset.sg)).map(p=>p.id);const on=!ids.every(id=>(S.status[id]||{})[k]!=null);
+    if(!on&&!confirm(`ยกเลิก "${l}" ของทั้งก๊วน?`))return;setStage(ids,k,on);toast(`ทั้งก๊วน · ${on?l+" แล้ว":"ยกเลิก"+l}`);}
+  renderStatus();};
 $("nav").onclick=e=>{const b=e.target.closest("button");if(b)show(b.dataset.v);};
 $("resTabs").onclick=e=>{const b=e.target.closest("[data-r]");if(b){resTab=b.dataset.r;renderResults();}};
 $("resBody").addEventListener("change",e=>{if(e.target.dataset&&e.target.dataset.hy){const k=e.target.dataset.hy;S.config={...S.config,hideYds:{...(S.config.hideYds||{}),[k]:e.target.checked}};saveConfig();toast(e.target.checked?"ซ่อนระยะใน PR แล้ว":"แสดงระยะใน PR แล้ว");return;}if(e.target.id==="bdSel"){bdPid=e.target.value;renderResults();}});
@@ -1435,6 +1477,27 @@ function groupsBySide(){
   R.teams.forEach(t=>{const mem=R.players.filter(p=>String(p.team)===String(t.id));if(!mem.length)return;(String(t.start)==="10"?side.R:side.L).push({t,mem});});
   const key=g=>(g.t.time||"99:99")+String(g.t.name);side.L.sort((a,b)=>key(a)<key(b)?-1:1);side.R.sort((a,b)=>key(a)<key(b)?-1:1);
   return side;
+}
+// ---------- สถานะผู้บริหาร ----------
+const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปกลุ่ม"],["fin","ตีจบ"]];
+let stFilter=null;
+function stOf(p,k){const m=S.status[p.id]||{};if(m[k]!=null)return m[k];if(k==="fin"&&calc(p).done)return "18 หลุม";return null;}
+function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
+function setStage(ids,k,on){const t=nowHM();ids.forEach(id=>{const m={...(S.status[id]||{})};if(on)m[k]=m[k]||t;else delete m[k];S.status[id]=m;saveStatus(id);});}
+function renderStatus(){
+  const P=S.roster.players,n=P.length,q=($("stQ").value||"").trim().toLowerCase();
+  $("stSum").innerHTML=STAGES.map(([k,l])=>{const c=P.filter(p=>stOf(p,k)!=null).length,pc=n?Math.round(c*100/n):0;
+    return `<button class="stt${stFilter===k?" on":""}${c===n&&n?" all":""}" data-stf="${k}"><span class="l">${l}</span><b>${c}<small>/${n}</small></b><i style="width:${pc}%"></i></button>`;}).join("");
+  $("stNote").textContent=stFilter?`แสดงเฉพาะคนที่ยังไม่${STAGES.find(x=>x[0]===stFilter)[1]}`:"";
+  const side=groupsBySide(),groups=[...side.L,...side.R];
+  const match=p=>(!q||(cleanName(p.name)+" "+(orgOf(p)||"")+" "+(p.title||"")).toLowerCase().includes(q))&&(!stFilter||stOf(p,stFilter)==null);
+  const html=groups.map(g=>{const mem=g.mem.filter(match);if(!mem.length)return "";
+    const gbtn=STAGES.map(([k,l])=>{const c=g.mem.filter(p=>stOf(p,k)!=null).length;return `<button class="sgb${c===g.mem.length?" on":""}" data-sg="${g.t.id}" data-k="${k}">${l} <span>${c}/${g.mem.length}</span></button>`;}).join("");
+    return `<div class="card stg"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
+      <div class="sgrow"><span class="meta">ทั้งก๊วน</span>${gbtn}</div>
+      ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div></div></div>
+        <div class="sbs">${STAGES.map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"}><span>${l}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div></div>`).join("")}</div>`;}).join("");
+  $("stBody").innerHTML=html||`<div class="card meta">${stFilter?"ทุกคนผ่านขั้นนี้แล้ว":"ไม่พบชื่อที่ค้นหา"}</div>`;
 }
 function grpLabel(t){const m=String(t.name).match(/^\s*(\d+\/\d+)/);return m?m[1]:t.name;}
 function pairingHTML(){
