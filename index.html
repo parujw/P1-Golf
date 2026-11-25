@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+<base href="/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>P1D1 Golf Day 2026 – ผลการแข่งขัน</title>
@@ -30,7 +31,7 @@ nav button.on{background:var(--bg);color:var(--navy)}
 nav button i{font-style:normal;margin-right:6px}
 @media (max-width:700px){
   header{padding-bottom:14px}
-  nav{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;display:grid;grid-template-columns:repeat(6,1fr);gap:0;
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;
       background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 16px #0001;padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
   nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:10px;color:var(--mute);font-size:11px}
   nav button i{font-size:20px;margin:0;line-height:1.1}
@@ -520,7 +521,7 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .toast.on{opacity:1}
 .psl{display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer}.psl input{width:20px;height:20px}
 img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1.12}img[alt=IRPC]{--k:.76}img[alt=OR]{--k:1.04}
-.stsum{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px}
+.stsum{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:12px}
 .stt{position:relative;overflow:hidden;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px 12px;cursor:pointer}
 .stt .l{display:block;font-size:13px;color:var(--mute);font-weight:600}
 .stt b{font-size:24px;color:var(--navy);font-weight:700}.stt b small{font-size:13px;color:var(--mute);font-weight:500}
@@ -534,13 +535,49 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
 .spr{display:flex;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.spr:last-child{border-bottom:0}
 .spn{display:flex;gap:10px;align-items:center;width:230px;flex:none;min-width:0}.spn b{font-size:15px}.spn .av{width:40px;height:40px;flex:none}
 .spn .meta{display:flex;align-items:center;gap:5px}.spn .lg{height:calc(13px*var(--k,1))}
-.sbs{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;flex:1}
+.sbs{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;flex:1}
 .sb6{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 4px;cursor:pointer;line-height:1.2;min-height:46px}
 .sb6 span{display:block;font-size:12.5px;font-weight:600;color:var(--ink)}.sb6 small{font-size:12px;color:#b3b9cc}
 .sb6.on{background:var(--good);border-color:var(--good)}.sb6.on span,.sb6.on small{color:#fff}
 .sb6:disabled{cursor:default}
-@media(max-width:700px){.stsum{grid-template-columns:repeat(3,1fr)}.stt b{font-size:20px}
- .spr{flex-direction:column;align-items:stretch;gap:8px}.spn{width:auto}.sbs{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.stsum{grid-template-columns:repeat(4,1fr)}.stt b{font-size:20px}
+ .spr{flex-direction:column;align-items:stretch;gap:8px}.spn{width:auto}.sbs{grid-template-columns:repeat(4,1fr)}}
+body.dinner nav [data-g]{display:none!important}body:not(.dinner) nav [data-d]{display:none!important}
+.dsum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.dsum>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.dsum b{display:block;font-size:24px;color:var(--navy);font-weight:700;line-height:1.2}.dsum b small{font-size:13px;color:var(--mute);font-weight:500}
+.dsum span{font-size:13px;color:var(--mute);font-weight:600}.dsum .ok b{color:var(--good)}.dsum .bad b{color:var(--red)}
+.dgr{display:flex;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.dgr:last-child{border-bottom:0}
+.dph{border:0;background:none;padding:0;cursor:pointer;flex:none}.dph .av{width:44px;height:44px}
+.dgn{flex:1;min-width:0}.dgn b{font-size:15px}.dgn .meta{display:flex;align-items:center;gap:5px;margin-top:1px}.dgn .lg,.dtl .lg{height:calc(13px*var(--k,1))}
+.dgolf{display:inline-block;margin-left:6px;font-size:11px;font-weight:600;color:var(--good);background:#e9f7ef;border-radius:6px;padding:1px 6px;vertical-align:2px}
+.dgc{display:flex;gap:6px;align-items:center;flex:none}
+.dsel{width:auto!important;padding:8px 8px!important;font-size:14px;max-width:190px}
+.dck{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-weight:600;cursor:pointer;min-width:92px;font-size:14px;color:var(--mute)}
+.dck.on{background:var(--good);border-color:var(--good);color:#fff}.dck small{font-weight:500;opacity:.9}
+.dmore{border:0;background:none;color:var(--navy);font-weight:600;cursor:pointer;padding:8px 4px;font-size:14px}
+.dpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px}
+.dpick label{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:6px 8px;cursor:pointer;font-size:14px}
+.dpick input{width:18px;height:18px}
+.dorg{display:flex;flex-wrap:wrap;gap:6px}.dorg label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer;background:#fff}
+.dorg label:has(input:checked){border-color:var(--navy);box-shadow:0 0 0 1px var(--navy) inset}
+.dorg img{height:calc(18px*var(--k,1))}.dorg span{font-size:13px;font-weight:600}.dorg input{margin:0}
+.dtgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}.dtgrid>.card{margin:0}.dtgrid>.card.meta{grid-column:1/-1}
+.dtc{display:flex;flex-direction:column;gap:10px}
+.dtr{display:flex;justify-content:center}
+.ring{position:relative;width:260px;height:260px}
+.ring .top{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#2c3f96,var(--navy));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 6px 18px #1b2a6b40}
+.ring .top.bad{background:var(--red)}
+.ring .top input{width:120px;background:transparent;border:0;border-bottom:1px dashed #ffffff60;color:#fff;text-align:center;font-weight:700;font-size:20px;padding:2px;border-radius:0}
+.ring .top input:focus{outline:none;border-bottom-color:#fff}.ring .top small{font-size:13px;opacity:.85;margin-top:4px}
+.seat{position:absolute;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--navy)}
+.seat .av{width:38px;height:38px;border:0;box-shadow:none}.seat.e{background:#f3f5fa;box-shadow:0 0 0 1.5px #c9cfdf;border:2px dashed transparent}.seat.over{box-shadow:0 0 0 2px var(--red)}
+.dtl{margin:0;padding:0;list-style:none;display:grid;gap:4px;counter-reset:n}
+.dtl li{display:flex;align-items:center;gap:8px;font-size:14px;padding:2px 0}.dtl li span{flex:1;min-width:0}
+.dtl li button{border:0;background:none;color:var(--mute);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}.dtl .okd{font-style:normal;color:var(--good);font-weight:700}
+#dtUn{margin-top:14px}.dtl .av,.dun .av,.dpick .av{width:24px;height:24px;min-width:24px;flex:0 0 24px;font-size:11px}
+.dun{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:8px}.dun>div{display:flex;align-items:center;gap:8px;font-size:14px}.dun span{flex:1;min-width:0}
+@media(max-width:700px){.dsum{grid-template-columns:repeat(2,1fr)}.dgr{flex-wrap:wrap}.dgc{width:100%;padding-left:56px}.dgc .dsel{flex:1;max-width:none}}
 </style>
 </head>
 <body>
@@ -551,12 +588,14 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
   </div>
   <div class="logos"><img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.png" alt="PTTEP"><img src="img/logo_GC.png" alt="GC"><img src="img/logo_TOP.png" alt="TOP"><img src="img/logo_IRPC.png" alt="IRPC"><img src="img/logo_OR.png" alt="OR"></div>
   <nav id="nav">
-    <button data-v="results" class="on"><i>🏆</i><span>ประกาศผล</span></button>
-    <button data-v="status"><i>✅</i><span>สถานะ</span></button>
-    <button data-v="score"><i>✍️</i><span>กรอกสกอร์</span></button>
-    <button data-v="pair"><i>📋</i><span>Pairing</span></button>
-    <button data-v="pr"><i>🖼️</i><span>สไลด์ PR</span></button>
-    <button data-v="setup"><i>⚙️</i><span>ตั้งค่า</span></button>
+    <button data-g data-v="results" class="on"><i>🏆</i><span>ประกาศผล</span></button>
+    <button data-g data-v="status"><i>✅</i><span>สถานะ</span></button>
+    <button data-g data-v="score"><i>✍️</i><span>กรอกสกอร์</span></button>
+    <button data-g data-v="pair"><i>📋</i><span>Pairing</span></button>
+    <button data-g data-v="pr"><i>🖼️</i><span>สไลด์ PR</span></button>
+    <button data-g data-v="setup"><i>⚙️</i><span>ตั้งค่า</span></button>
+    <button data-v="dguests" data-d><i>🍽️</i><span>แขก Dinner</span></button>
+    <button data-v="dtables" data-d><i>⭕</i><span>ผังโต๊ะ</span></button>
   </nav>
 </div></header>
 
@@ -578,6 +617,36 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
       <span class="meta" id="stNote"></span>
     </div>
     <div id="stBody"></div>
+    <p class="meta" style="text-align:center">จัดการแขกและผังโต๊ะ Dinner ที่ <a href="/dinner" target="_blank" style="color:var(--navy);font-weight:600">p1golf.vercel.app/dinner</a></p>
+  </section>
+
+  <!-- DINNER: guests -->
+  <section id="v-dguests" class="hidden">
+    <div id="dgSum" class="dsum"></div>
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn" id="dgAdd">＋ เพิ่มแขก</button>
+      <button class="btn sec" id="dgFromGolf">⛳ เพิ่มจากรายชื่อกอล์ฟ</button>
+      <button class="btn sec" id="dgXls">📊 Excel ใบลงชื่อ</button>
+    </div>
+    <div id="dgForm"></div>
+    <div class="row" style="margin-bottom:10px;gap:8px">
+      <input type="search" id="dgQ" class="grow" placeholder="ค้นหาชื่อ หน่วยงาน หรือโต๊ะ" style="min-width:0">
+    </div>
+    <div class="sub" id="dgFil"></div>
+    <div id="dgBody"></div>
+  </section>
+
+  <!-- DINNER: tables -->
+  <section id="v-dtables" class="hidden">
+    <div id="dtSum" class="dsum"></div>
+    <div class="row" style="margin-bottom:12px">
+      <button class="btn" id="dtAdd">＋ เพิ่มโต๊ะ</button>
+      <label class="meta" style="display:flex;align-items:center;gap:6px">ที่นั่งต่อโต๊ะ <input type="number" id="dtSeats" value="10" min="2" max="20" style="width:70px"></label>
+      <button class="btn sec" id="dtAuto">จัดคนที่ยังไม่มีโต๊ะลงที่ว่าง</button>
+      <button class="btn sec" id="dtXls">📊 Excel ใบลงชื่อ</button>
+    </div>
+    <div id="dtBody" class="dtgrid"></div>
+    <div id="dtUn"></div>
   </section>
 
   <!-- SCORE -->
@@ -632,7 +701,7 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
       <div id="mcBox" class="mc"></div>
     </div>
     <div id="prList"></div>
-    <input type="file" id="prFile" accept="image/*" class="hidden"><input type="file" id="phFile" accept="image/*" class="hidden">
+    <input type="file" id="prFile" accept="image/*" class="hidden"><input type="file" id="phFile" accept="image/*" class="hidden"><input type="file" id="dgFile" accept="image/*" class="hidden">
   </section>
 
   <!-- SETUP -->
@@ -752,7 +821,7 @@ function normRoster(R){
 function defaultRoster(){return JSON.parse(JSON.stringify(TEEOFF));}
 
 // ---------- state ----------
-const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
+const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, dg:{}, dt:[], mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
 let db=null, view="results", resTab="W", curPid=null;
 
 // ---------- utils ----------
@@ -765,8 +834,8 @@ function setBanner(t,cls){const b=$("banner");if(!t){b.classList.add("hidden");r
 
 // ---------- storage ----------
 const LKEY="p1golf_v1";
-function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
-function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};}}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status,dg:S.dg,dt:S.dt}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};S.dg=d.dg||{};S.dt=d.dt||[];}}catch(e){}}
 
 const queues={};
 function write(path,data){
@@ -790,6 +859,9 @@ const saveNtp=h=>write("ntp/h"+h,{entries:S.ntp[h]||[]});
 const saveComp=k=>String(k).startsWith("ld")?write("ntp/"+k,{entries:S.ntp[k]||[]}):saveNtp(k);
 // สถานะผู้บริหาร เก็บใน collection ntp เอกสาร st_<id> (ใช้ Rules เดิมได้ ไม่ต้องแก้)
 const saveStatus=pid=>write("ntp/st_"+pid,{entries:Object.entries(S.status[pid]||{}).map(([k,t])=>({k,t})),u:Date.now()});
+// Dinner: แขก 1 คน = เอกสาร dg_<id>, ผังโต๊ะ = dn_tables (อยู่ใน collection ntp เพื่อใช้ Rules เดิม)
+const saveDG=gid=>write("ntp/dg_"+gid,{entries:S.dg[gid]?[S.dg[gid]]:[],u:Date.now()});
+const saveDT=()=>write("ntp/dn_tables",{entries:S.dt,u:Date.now()});
 const savePhoto=id=>write("photos/"+id,{img:S.photos[id]||"",t:Date.now()});
 const savePR=id=>write("pr/"+id,{img:(S.pr[id]||{}).img||"",title:(S.pr[id]||{}).title||"",t:Date.now()});
 
@@ -814,7 +886,7 @@ async function init(){
   db.collection("scores").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id]=[...(d.data().s||[])]);S.scores=o;render("remote");}),onErr);
   db.collection("photos").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();if(x.img)o[d.id]=x.img;});S.photos=o;render("remote");},onErr);
   db.collection("pr").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();o[d.id]={img:x.img||"",title:x.title||""};});S.pr=o;render("remote");},onErr);
-  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={};e.forEach(x=>{if(x&&x.k)m[x.k]=x.t||"";});st[d.id.slice(3)]=m;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;render("remote");}),onErr);
+  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};let dg={},dt=[];q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={};e.forEach(x=>{if(x&&x.k)m[x.k]=x.t||"";});st[d.id.slice(3)]=m;}else if(d.id.startsWith("dg_")){if(e[0])dg[d.id.slice(3)]=e[0];}else if(d.id==="dn_tables"){dt=e;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;S.dg=dg;S.dt=dt;render("remote");}),onErr);
 }
 function goLocal(msg){S.mode="local";loadLocal();setBanner(msg);applyPerm();render();}
 
@@ -872,6 +944,10 @@ function render(src){
   if(view==="pr"&&!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#v-pr input"))) renderPR();
   if(view==="pair") renderPair();
   if(view==="status") renderStatus();
+  const typing=document.activeElement&&document.activeElement.matches&&document.activeElement.matches("#v-dguests input[type=text],#v-dtables input");
+  if(view==="dguests"&&!typing) renderDG();
+  if(view==="dtables"&&!typing) renderDT();
+  if(DINNER){$("evName").textContent=(S.config.name||"P1D1 Golf Day")+" · Dinner";$("evSub").textContent=(S.config.course||"")+(S.config.date?" · "+S.config.date:"");}
   if(presIdx!=null) drawPresenter();
   if(view==="setup"&&src!=="remote") renderSetup();
   if(view==="setup"&&src==="remote"&&!document.activeElement.closest("#v-setup")) renderSetup();
@@ -1043,12 +1119,12 @@ function drawRoster(){
 // ---------- permissions / nav ----------
 function applyPerm(){
   document.querySelectorAll('#nav [data-v="score"],#nav [data-v="setup"],#nav [data-v="status"]').forEach(b=>b.classList.toggle("hidden",!S.canWrite));
-  if(!S.canWrite&&view!=="results") show("results");
+  if(!S.canWrite&&view!=="results"&&!DINNER) show("results");
 }
 function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
-  ["results","status","score","pair","pr","setup"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
-  if(v==="score"){if(scMode==="g")renderGroup();else renderScore();}if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();if(v==="status")renderStatus();
-  try{history.replaceState(null,"","#"+v);}catch(e){}
+  ["results","status","score","pair","pr","setup","dguests","dtables"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
+  if(v==="score"){if(scMode==="g")renderGroup();else renderScore();}if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();if(v==="status")renderStatus();if(v==="dguests")renderDG();if(v==="dtables")renderDT();
+  try{history.replaceState(null,"",location.pathname+location.search+"#"+v);}catch(e){}
 }
 
 // ---------- events ----------
@@ -1059,6 +1135,45 @@ $("stBody").onclick=e=>{const b=e.target.closest("button");if(!b||b.disabled||!S
   else if(b.dataset.sg){const ids=S.roster.players.filter(p=>String(p.team)===String(b.dataset.sg)).map(p=>p.id);const on=!ids.every(id=>(S.status[id]||{})[k]!=null);
     if(!on&&!confirm(`ยกเลิก "${l}" ของทั้งก๊วน?`))return;setStage(ids,k,on);toast(`ทั้งก๊วน · ${on?l+" แล้ว":"ยกเลิก"+l}`);}
   renderStatus();};
+$("dgAdd").onclick=()=>{dgPick=false;dgEdit="new";renderDG();};
+$("dgFromGolf").onclick=()=>{dgEdit=null;dgPick=!dgPick;renderDG();};
+$("dgXls").onclick=e=>downloadDinnerXls(e.currentTarget);$("dtXls").onclick=e=>downloadDinnerXls(e.currentTarget);
+$("dgQ").oninput=()=>renderDG();
+$("dgFil").onclick=e=>{const b=e.target.closest("[data-dgf]");if(!b)return;dgFilter=b.dataset.dgf;renderDG();};
+$("dgForm").onclick=e=>{const id=e.target.id;
+  if(id==="dgPX"){dgPick=false;renderDG();}
+  else if(id==="dgPAll"){$("dgForm").querySelectorAll(".dpick input").forEach(c=>c.checked=true);}
+  else if(id==="dgPOk"){const ids=[...$("dgForm").querySelectorAll(".dpick input:checked")].map(c=>c.value);ids.forEach(ensureDG);dgPick=false;renderDG();toast(`เพิ่ม ${ids.length} คนจากรายชื่อกอล์ฟ`);}
+  else if(id==="dfX"){dgEdit=null;renderDG();}
+  else if(id==="dfDel"){const x=gv(dgEdit);if(x&&confirm(`ลบ ${x.name} ออกจากรายชื่อ Dinner?`)){delete S.dg[dgEdit];saveDG(dgEdit);dgEdit=null;renderDG();toast("ลบแล้ว");}}
+  else if(id==="dfOk"){const isNew=dgEdit==="new",gid=isNew?uid():dgEdit,old=S.dg[gid]||{pid:"",tb:"",in:"",ts:Date.now()};
+    if(old.pid){dgEdit=null;renderDG();return;}
+    const n=($("dfN").value||"").trim();if(!n){toast("กรุณาใส่ชื่อ");$("dfN").focus();return;}
+    const o=($("dgForm").querySelector("input[name=dfO]:checked")||{}).value||"";
+    S.dg[gid]={...old,n,t:($("dfT").value||"").trim(),o};saveDG(gid);dgEdit=null;renderDG();toast(isNew?`เพิ่ม ${n} แล้ว`:"บันทึกแล้ว");}};
+$("dgForm").onkeydown=e=>{if(e.key==="Enter"&&e.target.matches("#dfN,#dfT")){e.preventDefault();$("dfOk").click();}};
+$("dgBody").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.dph){dgPhoto=b.dataset.dph;$("dgFile").value="";$("dgFile").click();}
+  else if(b.dataset.ded){dgPick=false;dgEdit=b.dataset.ded;renderDG();window.scrollTo({top:$("dgForm").offsetTop-80,behavior:"smooth"});}
+  else if(b.dataset.dck){const x=gv(b.dataset.dck);if(!x)return;const on=!x.in;
+    if(x.golf)setStage([x.pid],"dinner",on);else{S.dg[x.gid]={...S.dg[x.gid],in:on?nowHM():""};saveDG(x.gid);}
+    toast(`${x.name} · ${on?"มาแล้ว":"ยกเลิก"}`);renderDG();}};
+const onTbSel=e=>{const sel=e.target;if(sel.dataset.dtb){setTable(sel.dataset.dtb,sel.value);render();toast(sel.value?`จัดลง ${tbName(sel.value)} แล้ว`:"ย้ายออกจากโต๊ะแล้ว");}
+  else if(sel.dataset.dta&&sel.value){setTable(sel.value,sel.dataset.dta);renderDT();toast(`จัดลง ${tbName(sel.dataset.dta)} แล้ว`);}
+  else if(sel.dataset.dts){const t=S.dt.find(x=>x.id===sel.dataset.dts);if(t){t.seats=Math.max(2,Math.min(20,+sel.value||10));saveDT();renderDT();}}
+  else if(sel.dataset.dtn){const t=S.dt.find(x=>x.id===sel.dataset.dtn);if(t){t.name=sel.value.trim()||t.name;saveDT();}}};
+$("dgBody").onchange=onTbSel;$("dtBody").onchange=onTbSel;$("dtUn").onchange=onTbSel;
+$("dtBody").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.dtx){setTable(b.dataset.dtx,"");renderDT();}
+  else if(b.dataset.dtd){const t=S.dt.find(x=>x.id===b.dataset.dtd),n=allGuests().filter(x=>x.tb===t.id).length;
+    if(!confirm(`ลบ ${t.name}?${n?` แขก ${n} คนในโต๊ะนี้จะกลับไปอยู่ในรายการ ยังไม่มีโต๊ะ`:""}`))return;
+    allGuests().filter(x=>x.tb===t.id).forEach(x=>setTable(x.gid,""));S.dt=S.dt.filter(x=>x.id!==t.id);saveDT();renderDT();}};
+$("dtAdd").onclick=()=>{const used=new Set(S.dt.map(t=>t.name));let i=S.dt.length+1;while(used.has("โต๊ะ "+i))i++;S.dt=[...S.dt,{id:uid(),name:"โต๊ะ "+i,seats:Math.max(2,Math.min(20,+$("dtSeats").value||10))}];saveDT();renderDT();};
+$("dtAuto").onclick=()=>{const G=allGuests(),un=G.filter(x=>!x.tb||!S.dt.some(t=>t.id===x.tb)).sort(byName);if(!un.length){toast("ทุกคนมีโต๊ะแล้ว");return;}
+  let k=0;S.dt.forEach(t=>{let n=G.filter(x=>x.tb===t.id).length;while(n<(+t.seats||10)&&k<un.length){setTable(un[k++].gid,t.id);n++;}});
+  renderDT();toast(k<un.length?`จัดได้ ${k} คน ยังเหลือ ${un.length-k} คน ให้เพิ่มโต๊ะ`:`จัดลงที่ว่างครบ ${k} คน`);};
+$("dgFile").addEventListener("change",async e=>{const f=e.target.files[0];const x=dgPhoto&&gv(dgPhoto);if(!f||!x)return;toast("กำลังย่อรูป…");
+  try{const key=x.golf?x.pid:"d"+x.gid;S.photos[key]=await shrinkSquare(f,560);savePhoto(key);render();toast("อัปเดตรูปแล้ว");}catch(err){toast("อ่านรูปไม่สำเร็จ");}});
 $("nav").onclick=e=>{const b=e.target.closest("button");if(b)show(b.dataset.v);};
 $("resTabs").onclick=e=>{const b=e.target.closest("[data-r]");if(b){resTab=b.dataset.r;renderResults();}};
 $("resBody").addEventListener("change",e=>{if(e.target.dataset&&e.target.dataset.hy){const k=e.target.dataset.hy;S.config={...S.config,hideYds:{...(S.config.hideYds||{}),[k]:e.target.checked}};saveConfig();toast(e.target.checked?"ซ่อนระยะใน PR แล้ว":"แสดงระยะใน PR แล้ว");return;}if(e.target.id==="bdSel"){bdPid=e.target.value;renderResults();}});
@@ -1479,11 +1594,11 @@ function groupsBySide(){
   return side;
 }
 // ---------- สถานะผู้บริหาร ----------
-const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปกลุ่ม"],["fin","ตีจบ"]];
+const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปกลุ่ม"],["fin","ตีจบ"],["dinner","ร่วม Dinner"]];
 let stFilter=null;
 function stOf(p,k){const m=S.status[p.id]||{};if(m[k]!=null)return m[k];if(k==="fin"&&calc(p).done)return "18 หลุม";return null;}
 function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
-function setStage(ids,k,on){const t=nowHM();ids.forEach(id=>{const m={...(S.status[id]||{})};if(on)m[k]=m[k]||t;else delete m[k];S.status[id]=m;saveStatus(id);});}
+function setStage(ids,k,on){const t=nowHM();ids.forEach(id=>{const m={...(S.status[id]||{})};if(on)m[k]=m[k]||t;else delete m[k];S.status[id]=m;saveStatus(id);if(k==="dinner"&&on)ensureDG(id);});}
 function renderStatus(){
   const P=S.roster.players,n=P.length,q=($("stQ").value||"").trim().toLowerCase();
   $("stSum").innerHTML=STAGES.map(([k,l])=>{const c=P.filter(p=>stOf(p,k)!=null).length,pc=n?Math.round(c*100/n):0;
@@ -1498,6 +1613,107 @@ function renderStatus(){
       ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div></div></div>
         <div class="sbs">${STAGES.map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"}><span>${l}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div></div>`).join("")}</div>`;}).join("");
   $("stBody").innerHTML=html||`<div class="card meta">${stFilter?"ทุกคนผ่านขั้นนี้แล้ว":"ไม่พบชื่อที่ค้นหา"}</div>`;
+}
+// ---------- Dinner ----------
+const DINNER=/^\/dinner/.test(location.pathname)||new URLSearchParams(location.search).has("dinner");
+let dgFilter="all",dgEdit=null,dgPick=false,dgPhoto=null;
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const ORGORDER=["PTT","PTTEP","GC","TOP","IRPC","OR"],ORGLBL={PTT:"PTT",PTTEP:"PTTEP",GC:"GC",TOP:"Thaioil",IRPC:"IRPC",OR:"OR"};
+function ensureDG(pid){if(Object.values(S.dg).some(g=>String(g.pid)===String(pid)))return;const id=uid();S.dg[id]={pid:String(pid),n:"",t:"",o:"",tb:"",in:"",ts:Date.now()};saveDG(id);}
+function gv(gid){const g=S.dg[gid];if(!g)return null;const p=g.pid?S.roster.players.find(x=>String(x.id)===String(g.pid)):null;
+  if(p)return {gid,g,golf:true,pid:p.id,name:cleanName(p.name),title:p.title||"",org:orgOf(p),ph:p,tb:g.tb||"",in:(S.status[p.id]||{}).dinner||""};
+  return {gid,g,golf:false,name:g.n||"",title:g.t||"",org:g.o||null,ph:{id:"d"+gid,name:g.n||"",org:g.o||null},tb:g.tb||"",in:g.in||""};}
+function allGuests(){return Object.keys(S.dg).map(gv).filter(x=>x&&x.name);}
+function orgLine(x){const t=x.title&&x.title!==x.org?x.title:"",o=x.org?ORGLBL[x.org]:"";return t&&o&&(t.toUpperCase().includes(x.org)||t.includes(o))?t:[t,o].filter(Boolean).join(" · ");}
+function tbName(id){const t=S.dt.find(x=>x.id===id);return t?t.name:"";}
+function tbOrder(id){const i=S.dt.findIndex(x=>x.id===id);return i<0?9999:i;}
+function byName(a,b){return a.name.replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ม\.ล\.)\s*/,"").localeCompare(b.name.replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ม\.ล\.)\s*/,""),"th");}
+function guestMeta(x){const t=x.title&&x.title!==x.org?x.title:"";return `${x.org?`<img class="lg" src="img/logo_${x.org}.png" alt="${x.org}">`:""}${esc(t)}`;}
+function tbSelect(x){return `<select data-dtb="${x.gid}" class="dsel"><option value="">— ยังไม่มีโต๊ะ —</option>${S.dt.map(t=>{const n=allGuests().filter(y=>y.tb===t.id).length;return `<option value="${t.id}"${x.tb===t.id?" selected":""}>${esc(t.name)} (${n}/${t.seats})</option>`;}).join("")}</select>`;}
+function renderDG(){
+  const G=allGuests(),n=G.length,inN=G.filter(x=>x.in).length,tbN=G.filter(x=>x.tb).length,golfN=G.filter(x=>x.golf).length;
+  $("dgSum").innerHTML=`<div><b>${n}</b><span>แขกทั้งหมด</span></div><div><b>${golfN}</b><span>มาจากกอล์ฟ</span></div><div><b>${tbN}<small>/${n}</small></b><span>จัดโต๊ะแล้ว</span></div><div class="ok"><b>${inN}<small>/${n}</small></b><span>มาแล้ว</span></div>`;
+  $("dgFil").innerHTML=[["all","ทั้งหมด"],["notin","ยังไม่มา"],["in","มาแล้ว"],["notb","ยังไม่มีโต๊ะ"]].map(([k,l])=>`<button class="chip${dgFilter===k?" on":""}" data-dgf="${k}">${l}</button>`).join("");
+  // form
+  if(dgPick){const have=new Set(G.filter(x=>x.golf).map(x=>String(x.pid)));const cand=S.roster.players.filter(p=>!have.has(String(p.id)));
+    $("dgForm").innerHTML=`<div class="card"><h2>เลือกผู้เล่นกอล์ฟที่ร่วม Dinner</h2>${cand.length?`<div class="row" style="margin-bottom:8px"><button class="btn sec sm" id="dgPAll">เลือกทั้งหมด</button><span class="meta">${cand.length} คนที่ยังไม่อยู่ในรายชื่อ Dinner</span></div>
+      <div class="dpick">${cand.map(p=>`<label><input type="checkbox" value="${p.id}">${av(p,"sm")}<span>${esc(cleanName(p.name))}</span></label>`).join("")}</div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="dgPOk">เพิ่มที่เลือก</button><button class="btn sec" id="dgPX">ปิด</button></div>`:`<p class="meta">ผู้เล่นกอล์ฟทุกคนอยู่ในรายชื่อ Dinner แล้ว</p><button class="btn sec" id="dgPX">ปิด</button>`}</div>`;}
+  else if(dgEdit){const x=dgEdit==="new"?null:gv(dgEdit);const g=x?x.g:{};
+    $("dgForm").innerHTML=`<div class="card"><h2>${x?"แก้ไขข้อมูลแขก":"เพิ่มแขก Dinner"}</h2>
+      ${x&&x.golf?`<p class="meta" style="margin-top:-4px">ชื่อและตำแหน่งดึงจากรายชื่อกอล์ฟ แก้ได้ที่หน้าตั้งค่าของเว็บกอล์ฟ</p>`:`
+      <div class="grid2"><div><label class="f">ชื่อ - นามสกุล</label><input type="text" id="dfN" value="${esc(g.n||"")}" placeholder="เช่น คุณสมชาย ใจดี"></div>
+      <div><label class="f">ตำแหน่ง / หน่วยงาน</label><input type="text" id="dfT" value="${esc(g.t||"")}" placeholder="เช่น ผู้จัดการฝ่าย"></div></div>
+      <label class="f" style="margin-top:8px">บริษัท</label><div class="dorg">${["",...ORGORDER].map(o=>`<label><input type="radio" name="dfO" value="${o}"${(g.o||"")===o?" checked":""}>${o?`<img src="img/logo_${o}.png" alt="${o}">`:"<span>อื่น ๆ / ไม่ระบุ</span>"}</label>`).join("")}</div>`}
+      <div class="row" style="margin-top:12px"><button class="btn" id="dfOk">${x?"บันทึก":"เพิ่มแขก"}</button><button class="btn sec" id="dfX">ยกเลิก</button>${x?`<button class="btn sec" id="dfDel" style="margin-left:auto;color:var(--red)">ลบออกจาก Dinner</button>`:""}</div></div>`;
+    const f=$("dfN");if(f&&dgEdit==="new")setTimeout(()=>f.focus(),0);}
+  else $("dgForm").innerHTML="";
+  const q=($("dgQ").value||"").trim().toLowerCase();
+  let L=G.filter(x=>(!q||(x.name+" "+x.title+" "+(x.org?ORGLBL[x.org]:"")+" "+tbName(x.tb)).toLowerCase().includes(q))&&(dgFilter==="all"||(dgFilter==="in"&&x.in)||(dgFilter==="notin"&&!x.in)||(dgFilter==="notb"&&!x.tb)));
+  L.sort(byName);
+  $("dgBody").innerHTML=L.length?`<div class="card" style="padding:0">${L.map(x=>`<div class="dgr">
+    <button class="dph" data-dph="${x.gid}" title="เปลี่ยนรูป">${av(x.ph)}</button>
+    <div class="dgn"><b>${esc(x.name)}</b>${x.golf?`<span class="dgolf">กอล์ฟ</span>`:""}<div class="meta">${guestMeta(x)}</div></div>
+    <div class="dgc">${tbSelect(x)}<button class="dck${x.in?" on":""}" data-dck="${x.gid}">${x.in?`มาแล้ว <small>${esc(x.in)}</small>`:"ยังไม่มา"}</button><button class="dmore" data-ded="${x.gid}" title="แก้ไข">แก้ไข</button></div></div>`).join("")}</div>`
+    :`<div class="card meta">${n?"ไม่พบรายชื่อตามที่เลือก":"ยังไม่มีแขก เริ่มจากปุ่ม เพิ่มแขก หรือ เพิ่มจากรายชื่อกอล์ฟ"}</div>`;
+}
+function seatDots(t,mem){const N=Math.max(+t.seats||10,mem.length),R=104,c=130;let h="";
+  for(let i=0;i<N;i++){const a=-Math.PI/2+i*2*Math.PI/N,x=c+R*Math.cos(a),y=c+R*Math.sin(a),m=mem[i];
+    h+=`<span class="seat${m?"":" e"}${i>=(+t.seats||10)?" over":""}" style="left:${x}px;top:${y}px" title="${m?esc(m.name):"ว่าง"}">${m?av(m.ph):""}</span>`;}
+  return h;}
+function renderDT(){
+  const G=allGuests(),seats=S.dt.reduce((a,t)=>a+(+t.seats||0),0),tbN=G.filter(x=>x.tb&&S.dt.some(t=>t.id===x.tb)).length;
+  $("dtSum").innerHTML=`<div><b>${S.dt.length}</b><span>โต๊ะ</span></div><div><b>${seats}</b><span>ที่นั่งรวม</span></div><div><b>${tbN}<small>/${G.length}</small></b><span>แขกที่มีโต๊ะ</span></div><div class="${seats-tbN<0?"bad":""}"><b>${seats-tbN}</b><span>ที่ว่าง</span></div>`;
+  const un=G.filter(x=>!x.tb||!S.dt.some(t=>t.id===x.tb)).sort(byName);
+  $("dtBody").innerHTML=S.dt.length?S.dt.map(t=>{const mem=G.filter(x=>x.tb===t.id).sort(byName),full=mem.length>=(+t.seats||10);
+    return `<div class="card dtc"><div class="dtr"><div class="ring">${seatDots(t,mem)}<div class="top${mem.length>(+t.seats||10)?" bad":""}"><input type="text" value="${esc(t.name)}" data-dtn="${t.id}" aria-label="ชื่อโต๊ะ"><small>${mem.length}/${t.seats} ที่นั่ง</small></div></div></div>
+      <ol class="dtl">${mem.map(x=>`<li>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${x.in?`<i class="okd" title="มาแล้ว">✓</i>`:""}<button data-dtx="${x.gid}" title="ย้ายออกจากโต๊ะ">×</button></li>`).join("")||`<li class="meta">ยังไม่มีแขก</li>`}</ol>
+      <div class="row" style="gap:6px">${un.length&&!full?`<select data-dta="${t.id}" class="dsel grow"><option value="">＋ เพิ่มแขกเข้าโต๊ะนี้</option>${un.map(x=>`<option value="${x.gid}">${esc(x.name)}</option>`).join("")}</select>`:`<span class="grow"></span>`}
+      <label class="meta" style="display:flex;align-items:center;gap:4px">ที่นั่ง <input type="number" min="2" max="20" value="${t.seats}" data-dts="${t.id}" style="width:58px;padding:6px"></label><button class="btn sec sm" data-dtd="${t.id}" title="ลบโต๊ะ">ลบ</button></div></div>`;}).join("")
+    :`<div class="card meta">ยังไม่มีโต๊ะ กด เพิ่มโต๊ะ ได้เลย จำนวนโต๊ะเพิ่มหรือลดได้ตลอด</div>`;
+  $("dtUn").innerHTML=un.length?`<div class="card"><h2>ยังไม่มีโต๊ะ (${un.length})</h2><div class="dun">${un.map(x=>`<div>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${tbSelect(x)}</div>`).join("")}</div></div>`:"";
+}
+function setTable(gid,tb){if(!S.dg[gid])return;S.dg[gid]={...S.dg[gid],tb:tb||""};saveDG(gid);}
+async function downloadDinnerXls(btn){
+  const old=btn.textContent;btn.disabled=true;btn.textContent="กำลังสร้างไฟล์…";
+  try{
+    if(!window.ExcelJS)await loadScript("vendor/exceljs.min.js");
+    const c=S.config,wb=new ExcelJS.Workbook();wb.creator="P1D1 Golf Day";
+    const logo=wb.addImage({base64:await fetchDataURL("img/logo_p1d1.png"),extension:"png"});
+    const FT="Angsana New",FB="Browallia New",thin={style:"thin",color:{argb:"FF8A94A6"}};
+    const box=cell=>{cell.border={top:thin,left:thin,bottom:thin,right:thin};};
+    const G=allGuests().sort((a,b)=>tbOrder(a.tb)-tbOrder(b.tb)||byName(a,b));
+    const head=(ws,cols,title)=>{let r=1;ws.getRow(r).height=72;
+      const w=cols.reduce((a,x)=>a+x*7+5,0),off=Math.max(0,w/2-35);let acc=0,ci=0;while(ci<cols.length&&acc+cols[ci]*7+5<=off){acc+=cols[ci]*7+5;ci++;}
+      ws.addImage(logo,{tl:{nativeCol:ci,nativeColOff:Math.round((off-acc)*9525),nativeRow:0,nativeRowOff:60000},ext:{width:70,height:78},editAs:"oneCell"});r++;
+      ws.mergeCells(r,1,r,cols.length);let t=ws.getCell(r,1);t.value=title;t.font={name:FT,size:28,bold:true};t.alignment={horizontal:"center"};ws.getRow(r).height=38;r++;
+      ws.mergeCells(r,1,r,cols.length);t=ws.getCell(r,1);t.value=[c.date?`วันที่ ${c.date}`:"",c.course?`ณ ${c.course}`:""].filter(Boolean).join("  ");t.font={name:FT,size:16,bold:true};t.alignment={horizontal:"center"};ws.getRow(r).height=24;r++;
+      return r+1;};
+    // sheet 1: sign-in
+    const ws=wb.addWorksheet("ลงชื่อ Dinner",{pageSetup:{paperSize:9,orientation:"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:.4,right:.4,top:.4,bottom:.5,header:.2,footer:.2}},headerFooter:{oddFooter:"&C&\"Browallia New\"&12หน้า &P / &N"}});
+    const cols=[7,40,34,12,30];ws.columns=cols.map(width=>({width}));
+    let r=head(ws,cols,(c.name||"P1D1 Golf Day 2026")+" · ใบลงชื่อ Dinner");
+    const H=["ลำดับ","ชื่อ - นามสกุล","ตำแหน่ง / หน่วยงาน","โต๊ะ","ลงชื่อ"];
+    H.forEach((h,i)=>{const cl=ws.getCell(r,i+1);cl.value=h;cl.font={name:FT,size:18,bold:true,color:{argb:"FFFFFFFF"}};cl.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF1B2A6B"}};cl.alignment={horizontal:"center",vertical:"middle"};box(cl);});
+    ws.getRow(r).height=28;const hr=r;r++;
+    const rows=G.length?G:[];const extra=5;
+    [...rows,...Array(extra).fill(null)].forEach((x,i)=>{const org=x&&x.org?ORGLBL[x.org]:"",t=x?orgLine(x):"";
+      const v=[x?i+1:"",x?x.name:"",t,x?tbName(x.tb):"",""];
+      v.forEach((val,j)=>{const cl=ws.getCell(r,j+1);cl.value=val;cl.font={name:j===1?FT:FB,size:j===1?18:15};cl.alignment={vertical:"middle",horizontal:j===0||j===3?"center":"left",wrapText:true,indent:j===1||j===2?1:0};box(cl);});
+      ws.getRow(r).height=34;r++;});
+    ws.pageSetup.printTitlesRow=`${hr}:${hr}`;
+    // sheet 2: table plan
+    const w2=wb.addWorksheet("ผังโต๊ะ",{pageSetup:{paperSize:9,orientation:"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:.4,right:.4,top:.4,bottom:.4,header:.2,footer:.2}}});
+    const c2=[18,7,44,34];w2.columns=c2.map(width=>({width}));r=head(w2,c2,(c.name||"P1D1 Golf Day 2026")+" · ผังโต๊ะ Dinner");
+    [...S.dt.map(t=>({t,mem:G.filter(x=>x.tb===t.id)})),{t:{name:"ยังไม่มีโต๊ะ"},mem:G.filter(x=>!x.tb||!S.dt.some(t=>t.id===x.tb))}].forEach(({t,mem})=>{
+      if(!mem.length&&!t.id)return;
+      const n=Math.max(1,mem.length);w2.mergeCells(r,1,r+n-1,1);const tc=w2.getCell(r,1);tc.value=t.id?`${t.name}\n${mem.length}/${t.seats} ที่นั่ง`:t.name;tc.font={name:FT,size:18,bold:true};tc.alignment={horizontal:"center",vertical:"middle",wrapText:true};tc.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFEEF1F8"}};
+      for(let i=0;i<n;i++){const x=mem[i];[x?i+1:"",x?x.name:"—",x?orgLine(x):""].forEach((val,j)=>{const cl=w2.getCell(r+i,j+2);cl.value=val;cl.font={name:j===1?FT:FB,size:j===1?17:14};cl.alignment={vertical:"middle",horizontal:j===0?"center":"left",indent:j?1:0};box(cl);});box(w2.getCell(r+i,1));w2.getRow(r+i).height=26;}
+      r+=n;});
+    const buf=await wb.xlsx.writeBuffer();const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+    a.download="P1D1-Dinner-ใบลงชื่อ.xlsx";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("ดาวน์โหลด Excel แล้ว");
+  }catch(e){console.error(e);toast("สร้างไฟล์ไม่สำเร็จ");}
+  btn.disabled=false;btn.textContent=old;
 }
 function grpLabel(t){const m=String(t.name).match(/^\s*(\d+\/\d+)/);return m?m[1]:t.name;}
 function pairingHTML(){
@@ -1761,8 +1977,9 @@ $("mcCopy").onclick=()=>copyText(mcText());
 $("mcTxt").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([mcText()],{type:"text/plain;charset=utf-8"}));a.download="สคริปต์พิธีกร-P1D1-Golf-Day-2026.txt";document.body.appendChild(a);a.click();a.remove();};
 $("mcBig").onclick=()=>$("mcBox").classList.toggle("big");
 
-const h0=(location.hash||"").slice(1); if(["results","score","pair","pr","setup"].includes(h0)) view=h0;
+const h0=(location.hash||"").slice(1); if(!DINNER&&["results","status","score","pair","pr","setup"].includes(h0)) view=h0;
 show(view);
+if(DINNER){document.body.classList.add("dinner");document.title="P1D1 Dinner";show(h0==="dtables"?"dtables":"dguests");}
 init();
 </script>
 </body>
