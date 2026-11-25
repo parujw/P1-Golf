@@ -550,7 +550,7 @@ body.dinner nav [data-g]{display:none!important}body:not(.dinner) nav [data-d]{d
 .dgr{display:flex;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.dgr:last-child{border-bottom:0}
 .dph{border:0;background:none;padding:0;cursor:pointer;flex:none}.dph .av{width:44px;height:44px}
 .dgn{flex:1;min-width:0}.dgn b{font-size:15px}.dgn .meta{display:flex;align-items:center;gap:5px;margin-top:1px}.dgn .lg,.dtl .lg{height:calc(13px*var(--k,1))}
-.dgolf.play{color:#9a6b00;background:#fff4d6}.dgolf{display:inline-block;margin-left:6px;font-size:11px;font-weight:600;color:var(--good);background:#e9f7ef;border-radius:6px;padding:1px 6px;vertical-align:2px}
+.dgolf.idle{color:var(--mute);background:#eef1f8}.dgolf.play{color:#9a6b00;background:#fff4d6}.dgolf{display:inline-block;margin-left:6px;font-size:11px;font-weight:600;color:var(--good);background:#e9f7ef;border-radius:6px;padding:1px 6px;vertical-align:2px}
 .dgc{display:flex;gap:6px;align-items:center;flex:none}
 .dsel{width:auto!important;padding:8px 8px!important;font-size:14px;max-width:190px}
 .dck{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-weight:600;cursor:pointer;min-width:150px;font-size:14px;color:var(--mute)}
@@ -595,6 +595,14 @@ button.seat{border:0;padding:0;cursor:pointer}.seat i{position:absolute;right:-4
 nav .dsk{font-weight:inherit}nav button.navlink{margin-left:auto;color:#fff;background:#ffffff1f;border-radius:10px;margin-bottom:6px;padding:8px 14px}
 body.dinner nav button.navlink{order:9}
 @media (max-width:700px){nav .dsk{display:none}nav button.navlink{margin:0;background:transparent;color:var(--navy);padding:6px 2px;border-radius:10px}}
+.dal{font-size:12px;color:#a2471a;margin-top:2px}.dalt{display:block;font-style:normal;font-size:11px;color:#a2471a}
+.whoov{position:fixed;inset:0;z-index:100;background:linear-gradient(140deg,#1b2a6bf2,#26398ff2);display:grid;place-items:center;padding:20px}
+.whobox{background:#fff;border-radius:18px;padding:26px 22px;width:100%;max-width:380px;box-shadow:0 20px 50px #0004}
+.whobox h2{margin:6px 0 4px;color:var(--navy);font-size:20px}.whobox .meta{font-size:13px;margin:0 0 14px}.wlogo{width:54px;height:auto}
+.whochip{position:absolute;right:16px;top:14px;border:0;background:#ffffff1f;color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;max-width:55vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+header .hd{position:relative}
+.dlast{font-size:11.5px;color:var(--mute);margin-top:2px}
+@media (max-width:700px){.whochip{top:10px;right:10px;font-size:12px;padding:4px 10px;max-width:46vw}}
 </style>
 </head>
 <body>
@@ -604,6 +612,7 @@ body.dinner nav button.navlink{order:9}
     <div class="ttl grow"><h1 id="evName">Golf Event</h1><small id="evSub">System 36 · Nearest to Pin</small></div>
   </div>
   <div class="logos"><img src="img/logo_PTT.png" alt="PTT"><img src="img/logo_PTTEP.png" alt="PTTEP"><img src="img/logo_GC.png" alt="GC"><img src="img/logo_TOP.png" alt="TOP"><img src="img/logo_IRPC.png" alt="IRPC"><img src="img/logo_OR.png" alt="OR"></div>
+  <button id="whoChip" class="whochip hidden" title="เปลี่ยนชื่อผู้ใช้งาน"></button>
   <nav id="nav">
     <button data-g data-v="results" class="on"><i>🏆</i><span>ประกาศผล</span></button>
     <button data-g data-v="status"><i>✅</i><span>สถานะ</span></button>
@@ -662,6 +671,12 @@ body.dinner nav button.navlink{order:9}
     <div class="card">
       <h2>พิมพ์เอกสาร</h2>
       <div class="row"><button class="btn" id="dsXls">📊 ดาวน์โหลด Excel</button><span class="meta">มี 2 ชีต: ใบลงชื่อ (เรียงตามโต๊ะ มีแถวว่างสำหรับแขกเพิ่ม) และผังโต๊ะ</span></div>
+    </div>
+    <div class="card">
+      <h2>นำเข้ารายชื่อจาก Excel</h2>
+      <p class="meta" style="margin:-4px 0 10px">ใช้ไฟล์รายชื่อเชิญ (ชีต Confirmation) เมื่อมีเวอร์ชันใหม่ อัปโหลดซ้ำได้ ระบบจะอัปเดตคนเดิม ไม่สร้างชื่อซ้ำ และไม่แตะโต๊ะหรือการเช็กอิน</p>
+      <div class="row"><button class="btn sec" id="dsImp">📥 เลือกไฟล์ Excel</button><span class="meta" id="dsImpMsg"></span></div>
+      <input type="file" id="dsImpFile" accept=".xlsx" class="hidden">
     </div>
     <div class="card">
       <h2>โต๊ะ</h2>
@@ -807,6 +822,14 @@ body.dinner nav button.navlink{order:9}
   </section>
 </main>
 
+<div class="whoov hidden" id="whoOv"><form class="whobox" id="whoForm" autocomplete="on">
+  <img src="img/logo_p1d1.png" alt="" class="wlogo">
+  <h2>ก่อนเริ่มใช้งาน</h2>
+  <p class="meta">ใส่ชื่อเล่นและหน่วยงานของคุณ เวลาอัปเดตสถานะ ทีมจะเห็นว่าใครอัปเดตล่าสุด</p>
+  <label class="f">ชื่อเล่น</label><input type="text" id="whoNick" maxlength="30" placeholder="เช่น ต้น" required>
+  <label class="f" style="margin-top:10px">หน่วยงาน</label><input type="text" id="whoUnit" maxlength="40" placeholder="เช่น ฝ่ายสื่อสารองค์กร" required>
+  <button class="btn" type="submit" style="width:100%;margin-top:16px">เริ่มใช้งาน</button>
+</form></div>
 <div class="modal hidden" id="modal"><div class="box"><div id="mTxt" style="margin-bottom:14px"></div><div class="row" style="justify-content:flex-end"><button class="btn sec" id="mNo">ยกเลิก</button><button class="btn red" id="mYes">ยืนยัน</button></div></div></div>
 <div class="toast" id="toast"></div>
 
@@ -858,7 +881,7 @@ function normRoster(R){
 function defaultRoster(){return JSON.parse(JSON.stringify(TEEOFF));}
 
 // ---------- state ----------
-const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, dg:{}, dt:[], mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
+const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, stBy:{}, stLast:{}, dg:{}, dt:[], mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
 let db=null, view="results", resTab="W", curPid=null;
 
 // ---------- utils ----------
@@ -871,8 +894,8 @@ function setBanner(t,cls){const b=$("banner");if(!t){b.classList.add("hidden");r
 
 // ---------- storage ----------
 const LKEY="p1golf_v1";
-function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status,dg:S.dg,dt:S.dt}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
-function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};S.dg=d.dg||{};S.dt=d.dt||[];}}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status,stBy:S.stBy,stLast:S.stLast,dg:S.dg,dt:S.dt}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};S.stBy=d.stBy||{};S.stLast=d.stLast||{};S.dg=d.dg||{};S.dt=d.dt||[];}}catch(e){}}
 
 const queues={};
 function write(path,data){
@@ -895,7 +918,7 @@ const saveScore=pid=>write("scores/"+pid,{s:S.scores[pid]||[],t:Date.now()});
 const saveNtp=h=>write("ntp/h"+h,{entries:S.ntp[h]||[]});
 const saveComp=k=>String(k).startsWith("ld")?write("ntp/"+k,{entries:S.ntp[k]||[]}):saveNtp(k);
 // สถานะผู้บริหาร เก็บใน collection ntp เอกสาร st_<id> (ใช้ Rules เดิมได้ ไม่ต้องแก้)
-const saveStatus=pid=>write("ntp/st_"+pid,{entries:Object.entries(S.status[pid]||{}).map(([k,t])=>({k,t})),u:Date.now()});
+const saveStatus=pid=>write("ntp/st_"+pid,{entries:Object.entries(S.status[pid]||{}).map(([k,t])=>({k,t,b:(S.stBy[pid]||{})[k]||""})),last:S.stLast[pid]||null,u:Date.now()});
 // Dinner: แขก 1 คน = เอกสาร dg_<id>, ผังโต๊ะ = dn_tables (อยู่ใน collection ntp เพื่อใช้ Rules เดิม)
 const saveDG=gid=>write("ntp/dg_"+gid,{entries:S.dg[gid]?[S.dg[gid]]:[],u:Date.now()});
 const saveDT=()=>write("ntp/dn_tables",{entries:S.dt,u:Date.now()});
@@ -915,7 +938,7 @@ async function init(){
   }catch(e){goLocal("โหลด Firebase ไม่สำเร็จ — ใช้โหมดเครื่องเดียวชั่วคราว");return;}
   S.mode="cloud"; S.canWrite=true; applyPerm();
   const timer=setTimeout(()=>setBanner("กำลังเชื่อมต่อ… (สัญญาณอาจช้า)"),10000);
-  let pending=4; const done=()=>{if(--pending===0){clearTimeout(timer);setBanner("🟢 ออนไลน์ — ผลอัปเดตแบบเรียลไทม์","ok");setTimeout(()=>setBanner(null),3000);render();}};
+  let pending=4; const done=()=>{if(--pending===0){clearTimeout(timer);setTimeout(maybeSeed,300);setBanner("🟢 ออนไลน์ — ผลอัปเดตแบบเรียลไทม์","ok");setTimeout(()=>setBanner(null),3000);render();}};
   const once=f=>{let d=false;return x=>{f(x);if(!d){d=true;done();}};};
   const onErr=e=>setBanner("การเชื่อมต่อขัดข้อง: "+(e&&e.message||""),"err");
   db.doc("event/config").onSnapshot(once(s=>{if(s.exists){S.config={...DEFAULT_CONFIG,...JSON.parse(JSON.stringify(s.data()))};if(migrateConfig(S.config))saveConfig();}render("remote");}),onErr);
@@ -923,9 +946,9 @@ async function init(){
   db.collection("scores").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id]=[...(d.data().s||[])]);S.scores=o;render("remote");}),onErr);
   db.collection("photos").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();if(x.img)o[d.id]=x.img;});S.photos=o;render("remote");},onErr);
   db.collection("pr").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();o[d.id]={img:x.img||"",title:x.title||""};});S.pr=o;render("remote");},onErr);
-  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};let dg={},dt=[];q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={};e.forEach(x=>{if(x&&x.k)m[x.k]=x.t||"";});st[d.id.slice(3)]=m;}else if(d.id.startsWith("dg_")){if(e[0])dg[d.id.slice(3)]=e[0];}else if(d.id==="dn_tables"){dt=e;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;S.dg=dg;S.dt=dt;render("remote");}),onErr);
+  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};let dg={},dt=[],stBy={},stLast={};q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={},by={},id=d.id.slice(3);e.forEach(x=>{if(x&&x.k){m[x.k]=x.t||"";if(x.b)by[x.k]=x.b;}});st[id]=m;stBy[id]=by;if(d.data().last)stLast[id]=d.data().last;}else if(d.id.startsWith("dg_")){if(e[0])dg[d.id.slice(3)]=e[0];}else if(d.id==="dn_tables"){dt=e;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;S.stBy=stBy;S.stLast=stLast;S.dg=dg;S.dt=dt;render("remote");}),onErr);
 }
-function goLocal(msg){S.mode="local";loadLocal();setBanner(msg);applyPerm();render();}
+function goLocal(msg){S.mode="local";loadLocal();setBanner(msg);applyPerm();maybeSeed();render();}
 
 // ---------- calc ----------
 function calc(p){
@@ -1174,6 +1197,10 @@ $("stBody").onclick=e=>{const b=e.target.closest("button");if(!b||b.disabled||!S
     if(!on&&!confirm(`ยกเลิก "${l}" ของทั้งก๊วน?`))return;setStage(ids,k,on);toast(`ทั้งก๊วน · ${on?l+" แล้ว":"ยกเลิก"+l}`);}
   renderStatus();};
 $("dgAdd").onclick=()=>{dgEdit="new";renderDS();};
+$("dsImp").onclick=()=>{$("dsImpFile").value="";$("dsImpFile").click();};
+$("dsImpFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;$("dsImpMsg").textContent="กำลังอ่านไฟล์…";
+  try{const R=await importXlsx(f);render();const m=`นำเข้าแล้ว: แขกใหม่ ${R.add} · อัปเดต ${R.upd} · ผู้เล่นกอล์ฟ ${R.golf} · ไม่เข้าร่วม ${R.no} · รอตอบรับ ${R.pd}`+(R.miss.length?` · หาไม่เจอในรายชื่อกอล์ฟ: ${R.miss.join(", ")}`:"");$("dsImpMsg").textContent=m;toast("นำเข้ารายชื่อแล้ว");}
+  catch(err){console.error(err);$("dsImpMsg").textContent="อ่านไฟล์ไม่สำเร็จ: "+(err.message||err);}};
 $("dsXls").onclick=e=>downloadDinnerXls(e.currentTarget);
 $("dgQ").oninput=()=>renderDG();$("dsQ").oninput=()=>renderDS();
 $("dgFil").onclick=e=>{const b=e.target.closest("[data-dgf]");if(!b)return;dgFilter=b.dataset.dgf;renderDG();};
@@ -1183,18 +1210,21 @@ $("dgForm").onclick=e=>{const id=e.target.id;
     if(x.golf){dgSet(x.gid,{no:true,tb:""});if(x.in)setStage([x.pid],"dinner",false);dgEdit=null;renderDS();toast(`${x.name} · ไม่เข้าร่วม Dinner`);}
     else if(confirm(`ลบ ${x.name} ออกจากรายชื่อ Dinner?`)){delete S.dg[dgEdit];saveDG(dgEdit);dgEdit=null;renderDS();toast("ลบแล้ว");}}
   else if(id==="dfOk"){const isNew=dgEdit==="new",gid=isNew?uid():dgEdit,old=dgGet(gid)||{pid:"",tb:"",in:"",ts:Date.now()};
-    if(old.pid){dgEdit=null;renderDS();return;}
+    const al=($("dfA").value||"").trim();
+    if(old.pid){dgSet(gid,{al});dgEdit=null;renderDS();toast("บันทึกแล้ว");return;}
     const n=($("dfN").value||"").trim();if(!n){toast("กรุณาใส่ชื่อ");$("dfN").focus();return;}
     const o=($("dgForm").querySelector("input[name=dfO]:checked")||{}).value||"";
-    S.dg[gid]={...old,n,t:($("dfT").value||"").trim(),o};saveDG(gid);dgEdit=null;renderDS();toast(isNew?`เพิ่ม ${n} แล้ว`:"บันทึกแล้ว");}};
-$("dgForm").onkeydown=e=>{if(e.key==="Enter"&&e.target.matches("#dfN,#dfT")){e.preventDefault();$("dfOk").click();}};
+    S.dg[gid]={...old,n,t:($("dfT").value||"").trim(),o,al,pd:false};saveDG(gid);dgEdit=null;renderDS();toast(isNew?`เพิ่ม ${n} แล้ว`:"บันทึกแล้ว");}};
+$("dgForm").onkeydown=e=>{if(e.key==="Enter"&&e.target.matches("#dfN,#dfT,#dfA")){e.preventDefault();$("dfOk").click();}};
 function toggleIn(gid){const x=gv(gid);if(!x)return;const on=!x.in;
-  if(x.golf)setStage([x.pid],"dinner",on);else dgSet(x.gid,{in:on?nowHM():""});
+  if(x.golf)setStage([x.pid],"dinner",on);else{const t=nowHM(),b=whoStr();dgSet(x.gid,{in:on?t:"",inBy:on?b:"",last:{k:"dinner",on,t,b}});}
   toast(`${x.name} · ${on?"ร่วมดินเนอร์แล้ว":"ยกเลิกร่วมดินเนอร์"}`);render();}
 $("dgBody").onclick=e=>{const b=e.target.closest("[data-dck]");if(b)toggleIn(b.dataset.dck);};
 $("dtBody").onclick=e=>{const b=e.target.closest("[data-dck]");if(b)toggleIn(b.dataset.dck);};
 $("dsGuests").onclick=e=>{const b=e.target.closest("button");if(!b)return;
-  if(b.dataset.dback){dgSet(b.dataset.dback,{no:false});const x=gv(b.dataset.dback);toast(`${x.name} · กลับมาร่วม Dinner`);renderDS();}
+  if(b.dataset.dyes){dgSet(b.dataset.dyes,{pd:false,no:false});toast(`${gv(b.dataset.dyes).name} · ยืนยันร่วม Dinner`);renderDS();}
+  else if(b.dataset.dnox){dgSet(b.dataset.dnox,{pd:false,no:true});toast(`${gv(b.dataset.dnox).name} · ไม่เข้าร่วม`);renderDS();}
+  else if(b.dataset.dback){dgSet(b.dataset.dback,{no:false});const x=gv(b.dataset.dback);toast(`${x.name} · กลับมาร่วม Dinner`);renderDS();}
   else if(b.dataset.dph){dgPhoto=b.dataset.dph;$("dgFile").value="";$("dgFile").click();}
   else if(b.dataset.ded){dgEdit=b.dataset.ded;renderDS();window.scrollTo({top:$("dgForm").getBoundingClientRect().top+scrollY-90,behavior:"smooth"});}};
 $("dsGuests").onchange=e=>{const sel=e.target;if(sel.dataset.dtb){setTable(sel.dataset.dtb,sel.value);renderDS();toast(sel.value?`จัดลง ${tbName(sel.value)} แล้ว`:"ย้ายออกจากโต๊ะแล้ว");}};
@@ -1645,12 +1675,24 @@ function groupsBySide(){
   const key=g=>(g.t.time||"99:99")+String(g.t.name);side.L.sort((a,b)=>key(a)<key(b)?-1:1);side.R.sort((a,b)=>key(a)<key(b)?-1:1);
   return side;
 }
+// ---------- ผู้ใช้งาน (ชื่อเล่น + หน่วยงาน) ----------
+let WHO=null;try{WHO=JSON.parse(localStorage.getItem("p1who")||"null");}catch(e){}
+const whoStr=()=>WHO?`${WHO.nick} (${WHO.unit})`:"";
+function showWho(force){const ov=$("whoOv");if(WHO&&!force){ov.classList.add("hidden");$("whoChip").classList.remove("hidden");$("whoChip").textContent="👤 "+whoStr();return;}
+  $("whoNick").value=WHO?WHO.nick:"";$("whoUnit").value=WHO?WHO.unit:"";ov.classList.remove("hidden");setTimeout(()=>$("whoNick").focus(),50);}
+$("whoForm").onsubmit=e=>{e.preventDefault();const nick=$("whoNick").value.trim(),unit=$("whoUnit").value.trim();if(!nick||!unit)return;
+  WHO={nick,unit};try{localStorage.setItem("p1who",JSON.stringify(WHO));}catch(_){}showWho();toast("สวัสดี "+nick);};
+$("whoChip").onclick=()=>showWho(true);
+function lastHTML(L,lbl){if(!L||!L.t)return "";const st=(STAGES.find(x=>x[0]===L.k)||[0,L.k])[1];
+  return `<div class="dlast">ล่าสุด: ${L.on?"":"ยกเลิก"}${esc(st)} ${esc(L.t)}${L.b?` · โดย ${esc(L.b)}`:""}</div>`;}
 // ---------- สถานะผู้บริหาร ----------
 const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปกลุ่ม"],["fin","ตีกอล์ฟเสร็จ"],["dinner","ร่วมดินเนอร์"]];
 let stFilter=null;
 function stOf(p,k){const m=S.status[p.id]||{};if(m[k]!=null)return m[k];if(k==="fin"&&calc(p).done)return "18 หลุม";return null;}
 function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
-function setStage(ids,k,on){const t=nowHM();ids.forEach(id=>{const m={...(S.status[id]||{})};if(on)m[k]=m[k]||t;else delete m[k];S.status[id]=m;saveStatus(id);if(k==="dinner"&&on)ensureDG(id);});}
+function setStage(ids,k,on){const t=nowHM(),b=whoStr();ids.forEach(id=>{const m={...(S.status[id]||{})},by={...(S.stBy[id]||{})};
+  if(on){if(!m[k]){m[k]=t;by[k]=b;}}else{delete m[k];delete by[k];}
+  S.status[id]=m;S.stBy[id]=by;S.stLast[id]={k,on,t,b};saveStatus(id);if(k==="dinner"&&on)ensureDG(id);});}
 function renderStatus(){
   const P=S.roster.players,n=P.length,q=($("stQ").value||"").trim().toLowerCase();
   $("stSum").innerHTML=STAGES.map(([k,l])=>{const c=P.filter(p=>stOf(p,k)!=null).length,pc=n?Math.round(c*100/n):0;
@@ -1662,8 +1704,8 @@ function renderStatus(){
     const gbtn=STAGES.map(([k,l])=>{const c=g.mem.filter(p=>stOf(p,k)!=null).length;return `<button class="sgb${c===g.mem.length?" on":""}" data-sg="${g.t.id}" data-k="${k}">${l} <span>${c}/${g.mem.length}</span></button>`;}).join("");
     return `<div class="card stg"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
       <div class="sgrow"><span class="meta">ทั้งก๊วน</span>${gbtn}</div>
-      ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div></div></div>
-        <div class="sbs">${STAGES.map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"}><span>${l}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div></div>`).join("")}</div>`;}).join("");
+      ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div>${lastHTML(S.stLast[p.id])}</div></div>
+        <div class="sbs">${STAGES.map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;const by=(S.stBy[p.id]||{})[k];return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"} title="${by?"โดย "+esc(by):""}"><span>${l}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div></div>`).join("")}</div>`;}).join("");
   $("stBody").innerHTML=html||`<div class="card meta">${stFilter?"ทุกคนผ่านขั้นนี้แล้ว":"ไม่พบชื่อที่ค้นหา"}</div>`;
 }
 // ---------- Dinner ----------
@@ -1677,32 +1719,83 @@ function dgGet(gid){if(S.dg[gid])return S.dg[gid];const pid=String(gid).slice(1)
 function dgSet(gid,patch){const g=dgGet(gid);if(!g)return;S.dg[gid]={...g,...patch};saveDG(gid);}
 function ensureDG(pid){const gid=golfGid(pid),g=dgGet(gid);if(g&&g.no)dgSet(gid,{no:false});}
 function gv(gid){const g=dgGet(gid);if(!g)return null;const p=g.pid?S.roster.players.find(x=>String(x.id)===String(g.pid)):null;
-  if(p)return {gid,g,golf:true,pid:p.id,name:cleanName(p.name),title:p.title||"",org:orgOf(p),ph:p,tb:g.tb||"",in:(S.status[p.id]||{}).dinner||"",fin:stOf(p,"fin"),thru:calc(p).thru};
-  return {gid,g,golf:false,test:!!g.test,name:g.n||"",title:g.t||"",org:g.o||null,ph:{id:"d"+gid,name:g.n||"",org:g.o||null},tb:g.tb||"",in:g.in||""};}
-function allGuests(withNo){const ids=new Set(Object.keys(S.dg));S.roster.players.forEach(p=>ids.add(golfGid(p.id)));return [...ids].map(gv).filter(x=>x&&x.name&&(withNo||!x.g.no));}
+  if(p)return {gid,g,golf:true,last:S.stLast[p.id]&&S.stLast[p.id].k==="dinner"?S.stLast[p.id]:null,inBy:(S.stBy[p.id]||{}).dinner||"",pid:p.id,name:cleanName(p.name),title:p.title||"",org:orgOf(p),ph:p,tb:g.tb||"",in:(S.status[p.id]||{}).dinner||"",fin:stOf(p,"fin"),thru:calc(p).thru,play:calc(p).thru>0||stOf(p,"tee")!=null,al:g.al||""};
+  return {gid,g,golf:false,last:g.last||null,inBy:g.inBy||"",test:!!g.test,name:g.n||"",title:g.t||"",org:g.o||null,ph:{id:"d"+gid,name:g.n||"",org:g.o||null},tb:g.tb||"",in:g.in||"",al:g.al||""};}
+function allGuests(withNo){const ids=new Set(Object.keys(S.dg));S.roster.players.forEach(p=>{if(!/^รอยืนยัน/.test(cleanName(p.name)))ids.add(golfGid(p.id));});return [...ids].map(gv).filter(x=>x&&x.name&&(withNo||(!x.g.no&&!x.g.pd)));}
 function orgLine(x){const t=x.title&&x.title!==x.org?x.title:"",o=x.org?ORGLBL[x.org]:"";return t&&o&&(t.toUpperCase().includes(x.org)||t.includes(o))?t:[t,o].filter(Boolean).join(" · ");}
 function tbName(id){const t=S.dt.find(x=>x.id===id);return t?t.name:"";}
 function tbOrder(id){const i=S.dt.findIndex(x=>x.id===id);return i<0?9999:i;}
 function byName(a,b){return a.name.replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ม\.ล\.)\s*/,"").localeCompare(b.name.replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ม\.ล\.)\s*/,""),"th");}
 function guestMeta(x){const t=x.title&&x.title!==x.org?x.title:"";return `${x.org?`<img class="lg" src="img/logo_${x.org}.png" alt="${x.org}">`:""}${esc(t)}`;}
 function tbSelect(x){return `<select data-dtb="${x.gid}" class="dsel"><option value="">— ยังไม่มีโต๊ะ —</option>${S.dt.map(t=>{const n=allGuests().filter(y=>y.tb===t.id).length;return `<option value="${t.id}"${x.tb===t.id?" selected":""}>${esc(t.name)} (${n}/${t.seats})</option>`;}).join("")}</select>`;}
-function golfBadge(x){return x.golf?(x.fin!=null?`<span class="dgolf">ตีกอล์ฟเสร็จแล้ว${/^\d/.test(x.fin)?" "+esc(x.fin):""}</span>`:`<span class="dgolf play">กำลังตีกอล์ฟ${x.thru?` · ${x.thru} หลุม`:""}</span>`):"";}
+// ---------- นำเข้ารายชื่อ (ชีต Confirmation) ----------
+const DN_SEED=[["ร้อยตำรวจเอก ปิยะ รักสกุล","PTT Board","Golf","กรรมการอิสระ กรรมการสรรหา","Join","",""],["พลเอกนิมิตต์ สุวรรณรัฐ","GC Board","Golf","ประธานกรรมการ และประธานกรรมการอิสระ (GC)","Join","","no dinner"],["พลอากาศเอก ชานนท์ มุ่งธัญญา","TOP Board","Golf","ประธานกรรมการ/กรรมการอิสระ (TOP)","Join","",""],["คุณพงศธร ทวีสิน","PTTEP Board","Golf","คณะกรรมการ (PTTEP)","Join","",""],["คุณดิษทัต ปันยารชุน","PTT","Golf","อดีตผู้บริหาร","Join","",""],["คุณชาญศิลป์ ตรีนุชกร","PTT","Golf","อดีตผู้บริหาร","Join","",""],["คุณพิลาสพรรณ อุดมจารุมณี","PTT/GC","Golf","อดีตผู้บริหาร","Join","",""],["พลเอก นิธิ  จึงเจริญ","","Golf","อดีตผู้บริหาร","Join","",""],["คุณคงกระพัน อินทรแจ้ง","PTT","Golf","ประธานเจ้าหน้าที่บริหารและกรรมการผู้จัดการใหญ่","Join","",""],["คุณประสงค์ อินทรหนองไผ่","PTT","Golf","ประธานเจ้าหน้าที่ปฏิบัติการกลุ่มธุรกิจปิโตรเลียมขั้นปลาย","Join","No allergies / None",""],["คุณชญาน์ จันทวสุ","PTT","Golf","รองกรรมการผู้จัดการใหญ่กลยุทธ์องค์กร","Join","","เข้าร่วมค่ะ"],["คุณสุรชัย เหล่าพูลสุข","PTT","Golf","รองกรรมการผู้จัดการใหญ่วิศวกรรมโครงการและการปฏิบัติการสู่ความเป็นเลิศ","Join","No allergies / None","เข้าร่วมค่ะ"],["คุณสุชีลา สุวรรณ","PTT","Golf","ผู้ช่วยกรรมการผู้จัดการใหญ่บริหารและพัฒนาการปฏิบัติการสู่ความเป็นเลิศ","Join","No allergies / None","สะดวก"],["คุณณัฏฐะวุฒิ เครือประดับ","PTT","Golf","ผู้ช่วยกรรมการผู้จัดการใหญ่ (ปฏิบัติงาน บ. PTT Tank)","Join","","ให้ยิงไปก่อน"],["คุณปิยะวัฒน์ เศวตนันทน์","PTT","Golf","ผู้ช่วยกรรมการผู้จัดการใหญ่จัดหาและตลาดก๊าซธรรมชาติ","Join","",""],["คุณไวธยางค์ กุลละวณิชย์","PTT","Golf","ผู้ช่วยกรรมการผู้จัดการใหญ่การค้าระหว่างประเทศกลุ่มผลิตภัณฑ์ปิโตรเลียมขั้นต้นและกิจการต่างประเทศ","Join","",""],["คุณศุภศจี ห้องสินหลาก","PTT","Golf","ผู้ช่วยกรรมการผู้จัดการใหญ่วางแผนและควบคุมความเสี่ยง","Join","No allergies / None",""],["คุณพรรคพงษ์ วังรัตนโสภณ","GC","Golf","Chief Operating Officer, Base and Intermediate Chemicals","Join","Seafood",""],["คุณพงษ์พันธุ์ อมรวิวัฒน์","TOP","Golf","ประธานเจ้าหน้าที่บริหารและกรรมการผู้จัดการใหญ่","Join","Beef",""],["คุณปีกทอง ทองใหญ่","OR","Golf","ประธานเจ้าหน้าที่บริหาร","Join","No allergies / None",""],["คุณนิสิต พงษ์วุฒิประพันธ์","OR","Golf","รองประธานเจ้าหน้าที่บริหารด้านกลยุทธ์องค์กร","Join","No allergies / None","secretary check time table"],["คุณรชา อุทัยจันทร์","OR","Golf","รองประธานเจ้าหน้าที่บริหารด้านธุรกิจหล่อลื่น","Join","No allergies / None","ไม่รับสาย แต่ส่งเมลไปแล้ว"],["คุณไกรพิท เปรมมณี","OR","Golf","รองประธานเจ้าหน้าที่บริหารด้านธุรกิจไฟล์สไตล์","Join","No allergies / None","สะดวก"],["คุณไพศาล อุดมกุลวณิชย์","OR","Golf","รองประธานเจ้าหน้าที่บริหารด้านปฏิบัติการคลังปิโตรเลียม","Join","No allergies / None",""],["คุณทรงพล เทพนำโสมนัสส์","OR","Golf","รองประธานเจ้าหน้าที่บริหารด้านธุรกิจเอนเนอร์ยี่โซลูชัน","Join","No allergies / None","สะดวก รบกวนส่งเมลไปก่อน"],["คุณบุรณิน รัตนสมบัติ","PTT","Dinner","ประธานเจ้าหน้าที่ปฏิบัติการกลุ่มธุรกิจใหม่และความยั่งยืน","Join","No allergies / None","รอเลขาแจ้งกลับ 19 โทรหาคุณแตงอีกที"],["คุณจตุรงค์ วรวิทย์สุรวัฒนา","PTT","Dinner","รองกรรมการผู้จัดการใหญ่หน่วยธุรกิจการค้าระหว่างประเทศ","Join","No allergies / None",""],["คุณพิรุณ กริ่มวงษ์รัตน์","PTT","Dinner","รองกรรมการผู้จัดการใหญ่บริหารกลยุทธ์กลุ่มธุรกิจปิโตรเลียมขั้นปลาย","Join","",""],["คุณอัจฉริยา เจริญศักดิ์","PTT","Dinner","ผู้ช่วยกรรมการผู้จัดการใหญ่แผนกลุ่มธุรกิจปิโตรเลียมขั้นปลาย","Join","No allergies / None","รอเลขาแจ้งกลับ"],["คุณมนตรี ศิลปอาชา","PTT","Dinner","ผู้ช่วยกรรมการผู้จัดการใหญ่บริหารความร่วมมือกลุ่มธุรกิจปิโตรเลียมขั้นปลาย","Join","No allergies / None",""],["คุณขจร รุ่งสฤษศักดิ์","PTT","Dinner","ผู้ช่วยกรรมการผู้จัดการใหญ่การค้าระหว่างประเทศกลุ่มผลิตภัณฑ์ปิโตรเลียมขั้นปลาย","Join","No allergies / None",""],["คุณกีรติ เลิศวศิน","PTT","Dinner","ผู้จัดการฝ่ายการค้าน้ำมันดิบ","Join","No allergies / None",""],["คุณกฤช ชัยเรืองยศ","PTT","Dinner","ผู้จัดการฝ่ายการค้าอนุพันธ์","Join","No allergies / None",""],["คุณธนนท์ กตัญญู","PTT","Dinner","ผู้จัดการฝ่ายจัดหาการขนส่งต่างประเทศ","Join","No allergies / None",""],["คุณสิทธิเดช สิทธิประณีต","PTT","Dinner","ผู้จัดการฝ่ายการค้าก๊าซ","Join","Beef",""],["คุณนันทพร ศุภกุล","PTT","Dinner","ผู้จัดการฝ่ายบริหารความร่วมมือและพัฒนาศักยภาพการค้าระหว่างประเทศ","Join","No allergies / None",""],["คุณดวงเดือน ธีรกุล","PTT","Dinner","ผู้จัดการฝ่ายพัฒนาธุรกิจ","Join","No allergies / None",""],["คุณเจิมขวัญ ณ บางช้าง","PTT","Dinner","ผู้จัดการฝ่ายบริหารมูลค่าร่วมผลิตภัณฑ์และโลจิสติกส์กลุ่มธุรกิจปิโตรเลียมขั้นปลาย","Join","No allergies / None",""],["คุณเตชิน อรุณากูร","PTT","Dinner","ผู้จัดการ","Join","",""],["คุณจักรพงษ์ ถนัดค้า","PTT","Dinner","ผู้จัดการฝ่ายบริหารห่วงโซ่อุปทาน","Join","No allergies / None",""],["คุณธิดารัตน์ ทุมมากรณ์","PTT","Dinner","ผู้จัดการฝ่ายกลยุทธ์และพาณิชยกิจตลาดพาณิชย์ก๊าซธรรมชาติและผลิตภัณฑ์","Join","No allergies / None",""],["คุณปิติพงศ์ เย็นจิตต์","PTT","Dinner","ผู้จัดการฝ่ายบริหารธุรกิจและสินทรัพย์น้ำมัน","Join","No allergies / None","researve golf"],["คุณศิริชัย จิระพงษ์พันธ์","PTT","Dinner","ผู้จัดการ บลป.","Join","",""],["คุณคุณาธิป ภาสุวณิชยพงศ์","PTT","Dinner","รองกรรมการผู้จัดการใหญ่หน่วยธุรกิจก๊าซธรรมชาติ","Join","No allergies / None","สะดวกแค่งานเย็น"],["คุณพนิดา จินายน","GC","Dinner","Executive Vice President, Marketing, Commercial and Supply Chain","Join","ไม่ทานเนื้อ ชีส เผ็ด แพ้กุ้ง","ให้ยิงนัดมาก่อน"],["คุณวโรภาส กิมชูวาณิช","GC","Dinner","Vice President, Commercial Strategy and Risk Management","Join","Beef","เข้าร่วมค่ะ"],["คุณวรัญญนันทน์ อินทธาธร","GC","Dinner","Senior Vice President, Strategy, Risk and Advocacy","","",""],["คุณสุภันตรี นันทนาสิทธิ์","GC","Dinner","Vice President, Supply Chain Excellence","","",""],["คุณพรชนินทร์ ออรุ่งโรจน์","GC","Dinner","Vice President, Strategy","Join","Not spicy / No shellfish",""],["คุณสฤษดิ์ โชติชาครพันธุ์","GC","Dinner","Vice President, Strategy and Planning","","",""],["คุณณัฐพงษ์ ธรรมสาโรช","TOP","Golf","ผู้จัดการฝ่ายการพาณิชย์","Join","No allergies / None",""],["คุณปิยาภรณ์ ถกลพัฒนกุล","TOP","Dinner","ผู้จัดการฝ่ายบริหารซัพพลายเชน","","",""],["คุณพิมพ์ชนก สกลวารี","TOP","Dinner","ผู้จัดการฝ่าย-กิจการพิเศษ 04","Join","No Pork","ท่านตีกอล์ฟด้วยค่ะ เบื้องต้นให้ยิงตารางนัดมาก่อนค่ะ"],["คุณวนิดา อุทัยสมนภา","IRPC","Dinner","รองกรรมการผู้จัดการใหญ่ พาณิชยกิจและการตลาด","Join","Beef","ส่งมาก่อนเดี๋ยวตอบอีกที"],["คุณประนาช โกศายานนท์","IRPC","Dinner","รองกรรมการผู้จัดการใหญ่ กลยุทธ์ แผนและพัฒนาธุรกิจองค์กร","","",""],["คุณพรหมพร สิ้นโศรก","IRPC","Dinner","ผู้จัดการฝ่ายอาวุโส ธุรกิจปิโตรเคมีพิเศษ","","",""],["คุณวันดี บรรยงคะรัติ","IRPC","Dinner","ผู้จัดการฝ่ายอาวุโส วางแผนการผลิต","Join","Beef","เข้าร่วมค่ะ"],["คุณขวัญชัย เหลืองชัยชาญ","IRPC","Dinner","ผู้จัดการฝ่ายอาวุโส ธุรกิจปิโตรเลียม","Join","No allergies / None",""],["คุณกิ่งกาญจน์ มานะชำนิ","IRPC","Dinner","ผู้จัดการฝ่ายอาวุโส จัดหาและค้าวัตถุดิบ","Join","Beef","เข้าร่วมค่ะ"],["คุณสุธีร์ กีปทอง","IRPC","Dinner","ผู้จัดการฝ่ายอาวุโส บริหารแผนการผลิต","Join","No allergies / None","เข้าร่วมค่ะ"],["คุณราชสุดา รังสิยากูล","OR","Dinner","รองประธานเจ้าหน้าที่บริหารกิจการพิเศษ 1 ปฏิบัติหน้าที่ ผอ. New Home รองประธานเจ้าหน้าที่บริหารกิจการพิเศษ 1 (รพญ.1)","","",""],["คุณนพพร พรวาณิชเจริญ","OR","Dinner","ผู้จัดการฝ่ายตลาดเอนเนอร์ยี่โซลูชัน","","",""],["คุณสุวัฒน์ วุฒิสังคะ","OR","Dinner","ผู้จัดการฝ่ายกลยุทธ์และพัฒนาธุรกิจต่างประเทศ","","",""],["คุณอธิวัฒน์ รัตนากร","OR","Golf","ฝ่ายปฏิบัติการจัดหาและขนส่งปิโตรเลียม (ปขธ.)","Join","","researve golf"],["คุณกฤษณ์ ลิมบานเย็น","PTTEP","Golf","SVP, Corporate Strategy Division","Join","",""]]; // รายชื่อ v1 จาก P1_D1_Golf_day__guests_2026_v1.xlsx (Join + รอตอบ)
+const THMARK=/[ัิ-ฺ็-๎]/g;
+const PFX=/^(คุณ|นาย|นาง|นางสาว|พลเอก|พลอากาศเอก|พลเรือเอก|ร้อยตำรวจเอก|ร\.ต\.อ\.|ม\.ล\.|ศ\.|รศ\.|ผศ\.|ดร\.|\s)+/;
+function given(n){return cleanName(n).replace(PFX,"").trim().split(/\s+/)[0]||"";}
+function nkey(n){return cleanName(n).replace(PFX,"").replace(/\s+/g," ").trim();}
+function lev(a,b){const m=a.length,n=b.length;if(Math.abs(m-n)>1)return 9;const d=[...Array(m+1)].map((_,i)=>[i,...Array(n).fill(0)]);for(let j=1;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n];}
+function matchGolf(name,strict){const g=given(name);if(!g)return null;const gs=g.replace(THMARK,"");
+  const c=S.roster.players.filter(p=>{const q=given(p.name);return q===g||q.replace(THMARK,"")===gs||(!strict&&g.length>3&&lev(q,g)<=1);});return c.length===1?c[0]:null;}
+function hashId(t){let h=5381;for(const ch of t)h=((h*33)^ch.charCodeAt(0))>>>0;return h.toString(36);}
+function orgCode(c){c=String(c||"").toUpperCase();return c.startsWith("PTTEP")?"PTTEP":c.startsWith("PTT")?"PTT":c.startsWith("GC")?"GC":c.startsWith("TOP")?"TOP":c.startsWith("IRPC")?"IRPC":c.startsWith("OR")?"OR":"";}
+function alNorm(a){a=String(a||"").trim();if(!a||/^no allergies/i.test(a)||/^check/i.test(a))return "";const M={"beef":"ไม่ทานเนื้อวัว","seafood":"แพ้อาหารทะเล","no pork":"ไม่ทานหมู","not spicy / no shellfish":"ไม่ทานเผ็ด ไม่ทานหอย/กุ้ง/ปู"};return M[a.toLowerCase()]||a;}
+// rows: [ชื่อ, บริษัท, Activity, ตำแหน่ง, Attendees, Allergies, remark]
+function importRows(rows){const R={add:0,upd:0,no:0,pd:0,golf:0,miss:[]};
+  const joined=new Set(rows.filter(r=>/golf/i.test(r[2])&&/^join/i.test(r[4]||"")).map(r=>{const p=matchGolf(r[0]);return p&&String(p.id);}).filter(Boolean));
+  rows.forEach(([n,co,act,ti,att,al,rm])=>{n=String(n||"").trim();if(!n||!act)return;
+    const join=/^join/i.test(att),not=/not/i.test(att),pend=!att;const a=alNorm(al);
+    if(/golf/i.test(act)){const p=matchGolf(n,!join);
+      if(!p){if(join)R.miss.push(n);return;}
+      if(!join&&joined.has(String(p.id)))return;
+      const gid=golfGid(p.id),g=dgGet(gid);if(!g)return;const noD=not||/no dinner/i.test(rm||"");
+      const patch={al:a||g.al||"",no:noD,pd:false};if(noD)patch.tb="";dgSet(gid,patch);R.golf++;if(noD)R.no++;return;}
+    const k=nkey(n),ex=Object.entries(S.dg).find(([id,g])=>!g.pid&&nkey(g.n||"")===k),gid=ex?ex[0]:"s"+hashId(k);
+    const old=S.dg[gid];
+    if(not){if(old){dgSet(gid,{no:true,pd:false,tb:""});R.no++;}return;}
+    const base=old||{pid:"",tb:"",in:"",ts:Date.now()};
+    S.dg[gid]={...base,n:cleanName(n),t:ti||base.t||"",o:orgCode(co)||base.o||"",al:a||base.al||"",no:false,pd:pend&&!(old&&!old.pd)};saveDG(gid);
+    if(pend)R.pd++;if(old)R.upd++;else R.add++;});
+  return R;}
+function maybeSeed(){if(S.config.dnSeed>=1)return;importRows(DN_SEED);S.config={...S.config,dnSeed:1};saveConfig();render();}
+async function importXlsx(file){
+  if(!window.ExcelJS)await loadScript("vendor/exceljs.min.js");
+  let buf=await file.arrayBuffer();
+  try{if(!window.JSZip)await loadScript("vendor/pptxgen.bundle.js");const z=await JSZip.loadAsync(buf);
+    for(const f of Object.keys(z.files).filter(f=>/^xl\/worksheets\/sheet\d+\.xml$/.test(f))){const x=await z.file(f).async("string");if(/<tableParts/.test(x))z.file(f,x.replace(/<tableParts[\s\S]*?<\/tableParts>|<tableParts[^>]*\/>/g,""));}
+    Object.keys(z.files).filter(f=>/^xl\/tables\//.test(f)).forEach(f=>z.remove(f));
+    for(const f of Object.keys(z.files).filter(f=>/^xl\/worksheets\/_rels\//.test(f))){const x=await z.file(f).async("string");z.file(f,x.replace(/<Relationship[^>]*\/table[^>]*\/>/g,""));}
+    {const ct=await z.file("[Content_Types].xml").async("string");z.file("[Content_Types].xml",ct.replace(/<Override[^>]*\/xl\/tables\/[^>]*\/>/g,""));}
+    buf=await z.generateAsync({type:"arraybuffer"});}catch(e){console.warn(e);}
+  const wb=new ExcelJS.Workbook();await wb.xlsx.load(buf);
+  const txt=v=>{if(v==null)return "";if(typeof v==="object"){if(v.richText)return v.richText.map(t=>t.text).join("");if(v.result!=null)return String(v.result);if(v.text)return String(v.text);}return String(v).replace(/[ ​\t]/g," ").trim();};
+  let best=null;wb.eachSheet(ws=>{let hr=0,col={};ws.eachRow((row,i)=>{if(hr)return;const vals=row.values.map(txt);
+      const ni=vals.findIndex(v=>/ชื่อ.?-?.?นามสกุล/.test(v));if(ni>0&&vals.some(v=>/attendees/i.test(v))){hr=i;vals.forEach((v,j)=>{const l=v.toLowerCase();
+        if(/ชื่อ/.test(v)&&!col.n)col.n=j;else if(/บริษัท/.test(v))col.co=j;else if(/activit/.test(l))col.act=j;else if(/ตำแหน่ง/.test(v))col.ti=j;else if(/attendees/.test(l))col.att=j;else if(/allerg/.test(l))col.al=j;else if(/remark/.test(l))col.rm=j;});}});
+    if(hr&&(!best||ws.state==="visible"))best={ws,hr,col};});
+  if(!best)throw new Error("ไม่พบชีตที่มีคอลัมน์ ชื่อ-นามสกุล และ Attendees");
+  const rows=[];best.ws.eachRow((row,i)=>{if(i<=best.hr)return;const v=row.values.map(txt),c=best.col;if(!/^\d+$/.test(String(v[1]||"")))return;
+    rows.push([v[c.n],v[c.co],v[c.act],v[c.ti],v[c.att],v[c.al],v[c.rm]]);});
+  return importRows(rows);}
+function golfBadge(x){if(!x.golf)return "";if(x.fin!=null)return `<span class="dgolf">ตีกอล์ฟเสร็จแล้ว${/^\d/.test(x.fin)?" "+esc(x.fin):""}</span>`;
+  if(x.play)return `<span class="dgolf play">กำลังตีกอล์ฟ${x.thru?` · ${x.thru} หลุม`:""}</span>`;return `<span class="dgolf idle">กอล์ฟ</span>`;}
 // สถานะรายคน
 function renderDG(){
   const G=allGuests(),n=G.length,inN=G.filter(x=>x.in).length,tbN=G.filter(x=>x.tb).length,golfN=G.filter(x=>x.golf).length,finN=G.filter(x=>x.golf&&x.fin).length;
   $("dgSum").innerHTML=`<div><b>${n}</b><span>แขกทั้งหมด</span></div><div><b>${tbN}<small>/${n}</small></b><span>จัดโต๊ะแล้ว</span></div><div><b>${finN}<small>/${golfN}</small></b><span>ตีกอล์ฟเสร็จแล้ว</span></div><div class="ok"><b>${inN}<small>/${n}</small></b><span>ร่วมดินเนอร์แล้ว</span></div>`;
-  $("dgFil").innerHTML=[["all","ทั้งหมด"],["notin","ยังไม่ร่วมดินเนอร์"],["in","ร่วมดินเนอร์แล้ว"],["fin","ตีกอล์ฟเสร็จแล้ว"],["play","ยังตีกอล์ฟอยู่"],["notb","ยังไม่มีโต๊ะ"]].map(([k,l])=>`<button class="chip${dgFilter===k?" on":""}" data-dgf="${k}">${l}</button>`).join("");
+  $("dgFil").innerHTML=[["all","ทั้งหมด"],["notin","ยังไม่ร่วมดินเนอร์"],["in","ร่วมดินเนอร์แล้ว"],["fin","ตีกอล์ฟเสร็จแล้ว"],["play","กำลังตีกอล์ฟ"],["notb","ยังไม่มีโต๊ะ"]].map(([k,l])=>`<button class="chip${dgFilter===k?" on":""}" data-dgf="${k}">${l}</button>`).join("");
   const q=($("dgQ").value||"").trim().toLowerCase();
-  const L=G.filter(x=>(!q||(x.name+" "+x.title+" "+(x.org?ORGLBL[x.org]:"")+" "+tbName(x.tb)).toLowerCase().includes(q))&&(dgFilter==="all"||(dgFilter==="in"&&x.in)||(dgFilter==="notin"&&!x.in)||(dgFilter==="notb"&&!x.tb)||(dgFilter==="fin"&&x.golf&&x.fin)||(dgFilter==="play"&&x.golf&&!x.fin))).sort(byName);
+  const L=G.filter(x=>(!q||(x.name+" "+x.title+" "+(x.org?ORGLBL[x.org]:"")+" "+tbName(x.tb)).toLowerCase().includes(q))&&(dgFilter==="all"||(dgFilter==="in"&&x.in)||(dgFilter==="notin"&&!x.in)||(dgFilter==="notb"&&!x.tb)||(dgFilter==="fin"&&x.golf&&x.fin)||(dgFilter==="play"&&x.golf&&x.play&&!x.fin))).sort(byName);
   $("dgBody").innerHTML=L.length?`<div class="card" style="padding:0">${L.map(x=>`<div class="dgr">
     ${av(x.ph)}
-    <div class="dgn"><b>${esc(x.name)}</b>${golfBadge(x)}${x.test?`<span class="dtest">ทดสอบ</span>`:""}<div class="meta">${guestMeta(x)}</div></div>
+    <div class="dgn"><b>${esc(x.name)}</b>${golfBadge(x)}${x.test?`<span class="dtest">ทดสอบ</span>`:""}<div class="meta">${guestMeta(x)}</div>${x.al?`<div class="dal">อาหาร: ${esc(x.al)}</div>`:""}${lastHTML(x.last)}</div>
     <div class="dgc"><span class="dtbl${x.tb?"":" none"}">${x.tb?esc(tbName(x.tb)):"ยังไม่มีโต๊ะ"}</span><button class="dck${x.in?" on":""}" data-dck="${x.gid}">${x.in?`ร่วมดินเนอร์แล้ว <small>${esc(x.in)}</small>`:"ยังไม่ร่วมดินเนอร์"}</button></div></div>`).join("")}</div>`
     :`<div class="card meta">${n?"ไม่พบรายชื่อตามที่เลือก":"ยังไม่มีแขก เพิ่มได้ที่หน้า ตั้งค่า"}</div>`;
 }
 function seatDots(t,mem){const N=Math.max(+t.seats||10,mem.length),R=104,c=130;let h="";
   for(let i=0;i<N;i++){const a=-Math.PI/2+i*2*Math.PI/N,x=c+R*Math.cos(a),y=c+R*Math.sin(a),m=mem[i];
-    h+=m?`<button class="seat${m.in?" in":""}${i>=(+t.seats||10)?" over":""}" data-dck="${m.gid}" style="left:${x}px;top:${y}px" title="${esc(m.name)} · แตะเพื่อ${m.in?"ยกเลิก":"บันทึก"}ร่วมดินเนอร์">${av(m.ph)}${m.in?"<i>✓</i>":""}</button>`:`<span class="seat e" style="left:${x}px;top:${y}px" title="ว่าง"></span>`;}
+    h+=m?`<button class="seat${m.in?" in":""}${i>=(+t.seats||10)?" over":""}" data-dck="${m.gid}" style="left:${x}px;top:${y}px" title="${esc(m.name)}${m.inBy?" · บันทึกโดย "+esc(m.inBy):""} · แตะเพื่อ${m.in?"ยกเลิก":"บันทึก"}ร่วมดินเนอร์">${av(m.ph)}${m.in?"<i>✓</i>":""}</button>`:`<span class="seat e" style="left:${x}px;top:${y}px" title="ว่าง"></span>`;}
   return h;}
 // ผังโต๊ะ (ดูอย่างเดียว)
 function renderDT(){
@@ -1711,7 +1804,7 @@ function renderDT(){
   const un=G.filter(x=>!x.tb||!S.dt.some(t=>t.id===x.tb)).sort(byName);
   $("dtBody").innerHTML=S.dt.length?S.dt.map(t=>{const mem=G.filter(x=>x.tb===t.id).sort(byName),inT=mem.filter(x=>x.in).length;
     return `<div class="card dtc"><div class="dtr"><div class="ring">${seatDots(t,mem)}<div class="top${mem.length>(+t.seats||10)?" bad":""}"><b>${esc(t.name)}</b><small>${mem.length}/${t.seats} ที่นั่ง</small>${mem.length?`<small>มาแล้ว ${inT}</small>`:""}</div></div></div>
-      <ol class="dtl">${mem.map(x=>`<li>${av(x.ph,"sm")}<span>${esc(x.name)}</span><button class="dck sm${x.in?" on":""}" data-dck="${x.gid}">${x.in?`ร่วมแล้ว <small>${esc(x.in)}</small>`:"ยังไม่ร่วม"}</button></li>`).join("")||`<li class="meta">ยังไม่มีแขก</li>`}</ol></div>`;}).join("")
+      <ol class="dtl">${mem.map(x=>`<li>${av(x.ph,"sm")}<span>${esc(x.name)}${x.al?`<em class="dalt" title="${esc(x.al)}">${esc(x.al)}</em>`:""}</span><button class="dck sm${x.in?" on":""}" data-dck="${x.gid}" title="${x.inBy?"โดย "+esc(x.inBy):""}">${x.in?`ร่วมแล้ว <small>${esc(x.in)}</small>`:"ยังไม่ร่วม"}</button></li>`).join("")||`<li class="meta">ยังไม่มีแขก</li>`}</ol></div>`;}).join("")
     :`<div class="card meta">ยังไม่มีโต๊ะ เพิ่มโต๊ะได้ที่หน้า ตั้งค่า</div>`;
   $("dtUn").innerHTML=un.length?`<div class="card"><h2>ยังไม่มีโต๊ะ (${un.length})</h2><div class="dun ro">${un.map(x=>`<div>${av(x.ph,"sm")}<span>${esc(x.name)}</span></div>`).join("")}</div></div>`:"";
 }
@@ -1729,15 +1822,17 @@ function renderDS(){
       <div class="grid2"><div><label class="f">ชื่อ - นามสกุล</label><input type="text" id="dfN" value="${esc(g.n||"")}" placeholder="เช่น คุณสมชาย ใจดี"></div>
       <div><label class="f">ตำแหน่ง / หน่วยงาน</label><input type="text" id="dfT" value="${esc(g.t||"")}" placeholder="เช่น ผู้จัดการฝ่าย"></div></div>
       <label class="f" style="margin-top:8px">บริษัท</label><div class="dorg">${["",...ORGORDER].map(o=>`<label><input type="radio" name="dfO" value="${o}"${(g.o||"")===o?" checked":""}>${o?`<img src="img/logo_${o}.png" alt="${o}">`:"<span>อื่น ๆ / ไม่ระบุ</span>"}</label>`).join("")}</div>`}
-      <div class="row" style="margin-top:12px">${x&&x.golf?"":`<button class="btn" id="dfOk">${x?"บันทึก":"เพิ่มแขก"}</button>`}<button class="btn sec" id="dfX">${x&&x.golf?"ปิด":"ยกเลิก"}</button>${x?`<button class="btn sec" id="dfDel" style="margin-left:auto;color:var(--red)">${x.golf?"ไม่เข้าร่วม Dinner":"ลบออกจาก Dinner"}</button>`:""}</div></div>`;
+      <label class="f" style="margin-top:8px">อาหารที่แพ้ / ไม่ทาน</label><input type="text" id="dfA" value="${esc(g.al||"")}" placeholder="เว้นว่างถ้าไม่มี">
+      <div class="row" style="margin-top:12px"><button class="btn" id="dfOk">${x?"บันทึก":"เพิ่มแขก"}</button><button class="btn sec" id="dfX">ยกเลิก</button>${x?`<button class="btn sec" id="dfDel" style="margin-left:auto;color:var(--red)">${x.golf?"ไม่เข้าร่วม Dinner":"ลบออกจาก Dinner"}</button>`:""}</div></div>`;
     const f=$("dfN");if(f&&dgEdit==="new")setTimeout(()=>f.focus(),0);}
   else $("dgForm").innerHTML="";
   const q=($("dsQ").value||"").trim().toLowerCase(),hit=x=>!q||(x.name+" "+x.title).toLowerCase().includes(q);
-  const L=G.filter(hit).sort(byName),NO=allGuests(true).filter(x=>x.g.no&&hit(x)).sort(byName);
+  const L=G.filter(hit).sort(byName),NO=allGuests(true).filter(x=>x.g.no&&hit(x)).sort(byName),PD=allGuests(true).filter(x=>x.g.pd&&!x.g.no&&hit(x)).sort(byName);
   $("dsGuests").innerHTML=(L.length?`<div class="dlist">${L.map(x=>`<div class="dgr">
     <button class="dph" data-dph="${x.gid}" title="เปลี่ยนรูป">${av(x.ph)}<i>เปลี่ยนรูป</i></button>
-    <div class="dgn"><b>${esc(x.name)}</b>${x.golf?`<span class="dgolf">กอล์ฟ</span>`:""}${x.test?`<span class="dtest">ทดสอบ</span>`:""}<div class="meta">${guestMeta(x)}</div></div>
+    <div class="dgn"><b>${esc(x.name)}</b>${x.golf?`<span class="dgolf">กอล์ฟ</span>`:""}${x.test?`<span class="dtest">ทดสอบ</span>`:""}<div class="meta">${guestMeta(x)}</div>${x.al?`<div class="dal">อาหาร: ${esc(x.al)}</div>`:""}</div>
     <div class="dgc">${tbSelect(x)}<button class="dmore" data-ded="${x.gid}">แก้ไข</button></div></div>`).join("")}</div>`:`<p class="meta">ไม่พบรายชื่อ</p>`)
+    +(PD.length?`<h3 class="dnoh">รอตอบรับ (${PD.length})</h3><div class="dlist">${PD.map(x=>`<div class="dgr">${av(x.ph)}<div class="dgn"><b>${esc(x.name)}</b><div class="meta">${guestMeta(x)}</div></div><div class="dgc"><button class="btn sm" data-dyes="${x.gid}">ยืนยันร่วม</button><button class="btn sec sm" data-dnox="${x.gid}">ไม่เข้าร่วม</button></div></div>`).join("")}</div>`:"")
     +(NO.length?`<h3 class="dnoh">ไม่เข้าร่วม Dinner (${NO.length})</h3><div class="dlist">${NO.map(x=>`<div class="dgr no">${av(x.ph)}<div class="dgn"><b>${esc(x.name)}</b><div class="meta">${guestMeta(x)}</div></div><div class="dgc"><button class="btn sec sm" data-dback="${x.gid}">กลับมาร่วม</button></div></div>`).join("")}</div>`:"");
 }
 function setTable(gid,tb){dgSet(gid,{tb:tb||""});}
@@ -1771,11 +1866,11 @@ async function downloadDinnerXls(btn){
     ws.pageSetup.printTitlesRow=`${hr}:${hr}`;
     // sheet 2: table plan
     const w2=wb.addWorksheet("ผังโต๊ะ",{pageSetup:{paperSize:9,orientation:"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:.4,right:.4,top:.4,bottom:.4,header:.2,footer:.2}}});
-    const c2=[18,7,44,34];w2.columns=c2.map(width=>({width}));r=head(w2,c2,(c.name||"P1D1 Golf Day 2026")+" · ผังโต๊ะ Dinner");
+    const c2=[18,7,40,32,24];w2.columns=c2.map(width=>({width}));r=head(w2,c2,(c.name||"P1D1 Golf Day 2026")+" · ผังโต๊ะ Dinner");
     [...S.dt.map(t=>({t,mem:G.filter(x=>x.tb===t.id)})),{t:{name:"ยังไม่มีโต๊ะ"},mem:G.filter(x=>!x.tb||!S.dt.some(t=>t.id===x.tb))}].forEach(({t,mem})=>{
       if(!mem.length&&!t.id)return;
       const n=Math.max(1,mem.length);w2.mergeCells(r,1,r+n-1,1);const tc=w2.getCell(r,1);tc.value=t.id?`${t.name}\n${mem.length}/${t.seats} ที่นั่ง`:t.name;tc.font={name:FT,size:18,bold:true};tc.alignment={horizontal:"center",vertical:"middle",wrapText:true};tc.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFEEF1F8"}};
-      for(let i=0;i<n;i++){const x=mem[i];[x?i+1:"",x?x.name:"—",x?orgLine(x):""].forEach((val,j)=>{const cl=w2.getCell(r+i,j+2);cl.value=val;cl.font={name:j===1?FT:FB,size:j===1?17:14};cl.alignment={vertical:"middle",horizontal:j===0?"center":"left",indent:j?1:0};box(cl);});box(w2.getCell(r+i,1));w2.getRow(r+i).height=26;}
+      for(let i=0;i<n;i++){const x=mem[i];[x?i+1:"",x?x.name:"—",x?orgLine(x):"",x?x.al:""].forEach((val,j)=>{const cl=w2.getCell(r+i,j+2);cl.value=val;cl.font={name:j===1?FT:FB,size:j===1?17:14};cl.alignment={vertical:"middle",horizontal:j===0?"center":"left",indent:j?1:0};box(cl);});box(w2.getCell(r+i,1));w2.getRow(r+i).height=26;}
       r+=n;});
     const buf=await wb.xlsx.writeBuffer();const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
     a.download="P1D1-Dinner-ใบลงชื่อ.xlsx";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("ดาวน์โหลด Excel แล้ว");
@@ -2047,6 +2142,7 @@ $("mcBig").onclick=()=>$("mcBox").classList.toggle("big");
 const h0=(location.hash||"").slice(1); if(!DINNER&&["results","status","score","pair","pr","setup"].includes(h0)) view=h0;
 show(view);
 if(DINNER){document.body.classList.add("dinner");document.title="P1D1 Dinner";show(["dtables","dsetup"].includes(h0)?h0:"dguests");}
+showWho();
 init();
 </script>
 </body>
