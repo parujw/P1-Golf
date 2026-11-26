@@ -602,7 +602,40 @@ body.dinner nav button.navlink{order:9}
 .whochip{position:absolute;right:16px;top:14px;border:0;background:#ffffff1f;color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;max-width:55vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 header .hd{position:relative}
 .dlast{font-size:11.5px;color:var(--mute);margin-top:2px}
-@media (max-width:700px){.whochip{top:10px;right:10px;font-size:12px;padding:4px 10px;max-width:46vw}}
+@media (max-width:700px){.whochip{top:10px;right:10px;font-size:12px;padding:4px 10px;max-width:28vw}.whochip .wu{display:none}header h1{padding-right:30vw}.lkfs{display:none}}
+.lkstage{position:relative;border-radius:20px;padding:22px 24px 26px;margin-bottom:16px;color:#fff;background:radial-gradient(120% 90% at 50% 0%,#33479e 0%,#1b2a6b 55%,#121d4d 100%);box-shadow:0 12px 30px #1b2a6b40;text-align:center;overflow:hidden}
+.lkstage:fullscreen{display:flex;flex-direction:column;justify-content:center;border-radius:0;padding:40px}
+.lkhead{font-family:"Barlow Condensed",sans-serif;letter-spacing:.18em;font-size:14px;color:#f2c94c;font-weight:600}
+.lkfs{position:absolute;right:14px;top:12px;border:0;background:#ffffff1a;color:#fff;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px}
+.lkprize{display:flex;gap:18px;align-items:center;justify-content:center;margin:14px auto 6px;text-align:left}
+.lkpi{width:150px;height:112px;border-radius:14px;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}.lkpi img{width:100%;height:100%;object-fit:contain}
+.lkprize small{color:#c9d2f2;font-size:13px}.lkprize h3{margin:2px 0;font-size:26px;font-family:"Chakra Petch",sans-serif;line-height:1.25}.lkprize em{font-style:normal;color:#f2c94c;font-weight:600}
+.lkname{min-height:120px;display:flex;align-items:center;justify-content:center;margin:14px 0 10px}
+.lkname.idle span{font-size:18px;color:#c9d2f2}
+.lkp{display:flex;align-items:center;gap:14px;text-align:left}.lkp .av{color:var(--navy);font-size:34px}.lkp .av{width:56px;height:56px;flex:none}
+.lkp b{display:block;font-size:20px}.lkp span{display:flex;align-items:center;gap:6px;font-size:13px;color:#c9d2f2}.lkp .lg{height:calc(14px*var(--k,1));background:#fff;border-radius:4px;padding:2px 4px;box-sizing:content-box}
+.lkp.big .av{width:96px;height:96px;border:3px solid #f2c94c}.lkp.big b{font-size:34px;font-family:"Chakra Petch",sans-serif;line-height:1.2}
+.lkname.roll .lkp.big b{opacity:.85}
+.lkname.pop{animation:lkpop .5s cubic-bezier(.2,1.6,.4,1)}@keyframes lkpop{0%{transform:scale(.85)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.lkname.pop{animation:none}}
+.lkact{justify-content:center;gap:10px}
+.btn.gold{background:#f2b705;color:#1b2a6b;font-weight:700}.btn.gold.big{font-size:18px;padding:14px 30px;border-radius:14px}.btn.ghost{background:transparent;border:1px solid #ffffff66;color:#fff}
+.lkprev{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}.lkprev span{font-size:12px;background:#ffffff1f;border-radius:999px;padding:3px 10px}
+.lkstage:fullscreen .lkp.big b{font-size:64px}.lkstage:fullscreen .lkp.big .av{width:170px;height:170px}.lkstage:fullscreen .lkpi{width:300px;height:225px}.lkstage:fullscreen .lkprize h3{font-size:46px}.lkstage:fullscreen .lkhead{font-size:20px}.lkstage:fullscreen .lkname{min-height:240px}
+.lkslots{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.lks{position:relative;display:flex;gap:10px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 10px;cursor:pointer}
+.lks i{font-style:normal;width:24px;height:24px;border-radius:50%;background:#eef1f8;color:var(--navy);font-weight:700;font-size:12px;display:grid;place-items:center;flex:none}
+.lks small{display:block;font-size:11.5px;color:var(--mute)}.lks b{display:block;font-size:14px}.lks b.mute{color:#b3b9cc;font-weight:500}.lks em{display:block;font-style:normal;font-size:11px;color:var(--mute)}
+.lks.won{background:#f3fbf6;border-color:#bfe5cf}.lks.won i{background:var(--good);color:#fff}.lks.cur{border-color:#f2b705;box-shadow:0 0 0 2px #f2b705 inset}
+.lkx{position:absolute;right:6px;top:4px;color:var(--mute);font-size:18px;padding:0 4px}
+.lkorgs{display:flex;flex-wrap:wrap;gap:6px}.lkorgs label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer}
+.lkorgs img{height:calc(16px*var(--k,1))}.lkorgs small{color:var(--mute)}.lkorgs span{font-size:13px;font-weight:600}.lkorgs input{width:18px;height:18px;margin:0}
+.lkpeople{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 10px;max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:8px}
+.lkpeople label{display:flex;align-items:center;gap:8px;font-size:14px;padding:3px 0;cursor:pointer}.lkpeople input{width:18px;height:18px;margin:0;flex:none}.lkpeople .av{width:24px;height:24px;flex:0 0 24px;font-size:11px}
+.lkpeople label.won{opacity:.55}.lkpeople em{font-style:normal;font-size:11px;color:var(--good);margin-left:auto}
+.lkpr{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}.lkpr>input[type=text]{flex:1;min-width:160px}
+.lkpimg{width:64px;height:48px;border:1px dashed #b9c2da;border-radius:8px;background:#fff;overflow:hidden;cursor:pointer;padding:0;font-size:11px;color:var(--mute);flex:none}.lkpimg img{width:100%;height:100%;object-fit:contain}
+@media (max-width:700px){.lkprize{flex-direction:column;text-align:center}.lkprize h3{font-size:22px}.lkp.big b{font-size:24px}.lkp.big .av{width:72px;height:72px}.lkstage{padding:18px 14px 22px}}
 </style>
 </head>
 <body>
@@ -624,6 +657,7 @@ header .hd{position:relative}
     <button data-d data-href="/" class="navlink"><i>⛳</i><span>เว็บกอล์ฟ</span></button>
     <button data-v="dguests" data-d><i>✅</i><span>สถานะ</span></button>
     <button data-v="dtables" data-d><i>⭕</i><span>ผังโต๊ะ</span></button>
+    <button data-v="dlucky" data-d><i>🎁</i><span>Lucky Draw</span></button>
     <button data-v="dsetup" data-d><i>⚙️</i><span>ตั้งค่า</span></button>
   </nav>
 </div></header>
@@ -664,6 +698,19 @@ header .hd{position:relative}
     <div id="dtSum" class="dsum"></div>
     <div id="dtBody" class="dtgrid"></div>
     <div id="dtUn"></div>
+  </section>
+
+  <!-- DINNER: lucky draw -->
+  <section id="v-dlucky" class="hidden">
+    <div class="lkstage" id="lkStage"></div>
+    <div class="card"><h2>รางวัลทั้งหมด</h2><div id="lkSlots" class="lkslots"></div>
+      <div class="row" style="margin-top:12px"><button class="btn sec" id="lkCopyW">📋 คัดลอกผลรางวัล</button><button class="btn sec" id="lkReset">ล้างผลสุ่มทั้งหมด</button></div></div>
+    <div class="card"><h2>ผู้มีสิทธิ์ลุ้นรางวัล</h2>
+      <div id="lkFil"></div>
+      <div class="row" style="margin:10px 0;gap:8px"><button class="btn" id="lkCopy">📋 คัดลอกรายชื่อผู้มีสิทธิ์</button><span class="meta">วางในแอปสุ่มอื่นได้เลย เช่น วงล้อสุ่มชื่อ (1 บรรทัดต่อ 1 คน)</span></div>
+      <div id="lkPeople"></div></div>
+    <div class="card"><h2>แก้ไขของรางวัล</h2><p class="meta" style="margin:-4px 0 10px">ลำดับในรายการคือลำดับการสุ่ม เริ่มจากรางวัลแรก</p><div id="lkPrizes"></div>
+      <input type="file" id="lkFile" accept="image/*" class="hidden"></div>
   </section>
 
   <!-- DINNER: setup (data entry + print) -->
@@ -881,7 +928,7 @@ function normRoster(R){
 function defaultRoster(){return JSON.parse(JSON.stringify(TEEOFF));}
 
 // ---------- state ----------
-const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, stBy:{}, stLast:{}, dg:{}, dt:[], mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
+const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, stBy:{}, stLast:{}, dg:{}, dt:[], lk:[], mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
 let db=null, view="results", resTab="W", curPid=null;
 
 // ---------- utils ----------
@@ -894,8 +941,8 @@ function setBanner(t,cls){const b=$("banner");if(!t){b.classList.add("hidden");r
 
 // ---------- storage ----------
 const LKEY="p1golf_v1";
-function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status,stBy:S.stBy,stLast:S.stLast,dg:S.dg,dt:S.dt}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
-function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};S.stBy=d.stBy||{};S.stLast=d.stLast||{};S.dg=d.dg||{};S.dt=d.dt||[];}}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status,stBy:S.stBy,stLast:S.stLast,dg:S.dg,dt:S.dt,lk:S.lk}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};S.stBy=d.stBy||{};S.stLast=d.stLast||{};S.dg=d.dg||{};S.dt=d.dt||[];S.lk=d.lk||[];}}catch(e){}}
 
 const queues={};
 function write(path,data){
@@ -921,6 +968,7 @@ const saveComp=k=>String(k).startsWith("ld")?write("ntp/"+k,{entries:S.ntp[k]||[
 const saveStatus=pid=>write("ntp/st_"+pid,{entries:Object.entries(S.status[pid]||{}).map(([k,t])=>({k,t,b:(S.stBy[pid]||{})[k]||""})),last:S.stLast[pid]||null,u:Date.now()});
 // Dinner: แขก 1 คน = เอกสาร dg_<id>, ผังโต๊ะ = dn_tables (อยู่ใน collection ntp เพื่อใช้ Rules เดิม)
 const saveDG=gid=>write("ntp/dg_"+gid,{entries:S.dg[gid]?[S.dg[gid]]:[],u:Date.now()});
+const saveLK=()=>write("ntp/dn_lucky",{entries:S.lk,u:Date.now()});
 const saveDT=()=>write("ntp/dn_tables",{entries:S.dt,u:Date.now()});
 const savePhoto=id=>write("photos/"+id,{img:S.photos[id]||"",t:Date.now()});
 const savePR=id=>write("pr/"+id,{img:(S.pr[id]||{}).img||"",title:(S.pr[id]||{}).title||"",t:Date.now()});
@@ -946,7 +994,7 @@ async function init(){
   db.collection("scores").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id]=[...(d.data().s||[])]);S.scores=o;render("remote");}),onErr);
   db.collection("photos").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();if(x.img)o[d.id]=x.img;});S.photos=o;render("remote");},onErr);
   db.collection("pr").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();o[d.id]={img:x.img||"",title:x.title||""};});S.pr=o;render("remote");},onErr);
-  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};let dg={},dt=[],stBy={},stLast={};q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={},by={},id=d.id.slice(3);e.forEach(x=>{if(x&&x.k){m[x.k]=x.t||"";if(x.b)by[x.k]=x.b;}});st[id]=m;stBy[id]=by;if(d.data().last)stLast[id]=d.data().last;}else if(d.id.startsWith("dg_")){if(e[0])dg[d.id.slice(3)]=e[0];}else if(d.id==="dn_tables"){dt=e;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;S.stBy=stBy;S.stLast=stLast;S.dg=dg;S.dt=dt;render("remote");}),onErr);
+  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};let dg={},dt=[],lk=[],stBy={},stLast={};q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={},by={},id=d.id.slice(3);e.forEach(x=>{if(x&&x.k){m[x.k]=x.t||"";if(x.b)by[x.k]=x.b;}});st[id]=m;stBy[id]=by;if(d.data().last)stLast[id]=d.data().last;}else if(d.id.startsWith("dg_")){if(e[0])dg[d.id.slice(3)]=e[0];}else if(d.id==="dn_tables"){dt=e;}else if(d.id==="dn_lucky"){lk=e;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;S.stBy=stBy;S.stLast=stLast;S.dg=dg;S.dt=dt;S.lk=lk;render("remote");}),onErr);
 }
 function goLocal(msg){S.mode="local";loadLocal();setBanner(msg);applyPerm();maybeSeed();render();}
 
@@ -1008,6 +1056,7 @@ function render(src){
   if(view==="dguests") renderDG();
   if(view==="dtables") renderDT();
   if(view==="dsetup"&&!typing) renderDS();
+  if(view==="dlucky"&&!lkRolling&&!(document.activeElement&&document.activeElement.matches&&document.activeElement.matches("#lkPrizes input"))) renderLK();
   if(DINNER){$("evName").textContent=(S.config.name||"P1D1 Golf Day")+" · Dinner";$("evSub").textContent=(S.config.course||"")+(S.config.date?" · "+S.config.date:"");}
   if(presIdx!=null) drawPresenter();
   if(view==="setup"&&src!=="remote") renderSetup();
@@ -1183,8 +1232,8 @@ function applyPerm(){
   if(!S.canWrite&&view!=="results"&&!DINNER) show("results");
 }
 function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
-  ["results","status","score","pair","pr","setup","dguests","dtables","dsetup"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
-  if(v==="score"){if(scMode==="g")renderGroup();else renderScore();}if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();if(v==="status")renderStatus();if(v==="dguests")renderDG();if(v==="dtables")renderDT();if(v==="dsetup")renderDS();
+  ["results","status","score","pair","pr","setup","dguests","dtables","dsetup","dlucky"].forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
+  if(v==="score"){if(scMode==="g")renderGroup();else renderScore();}if(v==="setup")renderSetup();if(v==="pr")renderPR();if(v==="pair")renderPair();if(v==="results")renderResults();if(v==="status")renderStatus();if(v==="dguests")renderDG();if(v==="dtables")renderDT();if(v==="dsetup")renderDS();if(v==="dlucky")renderLK();
   try{history.replaceState(null,"",location.pathname+location.search+"#"+v);}catch(e){}
 }
 
@@ -1196,6 +1245,29 @@ $("stBody").onclick=e=>{const b=e.target.closest("button");if(!b||b.disabled||!S
   else if(b.dataset.sg){const ids=S.roster.players.filter(p=>String(p.team)===String(b.dataset.sg)).map(p=>p.id);const on=!ids.every(id=>(S.status[id]||{})[k]!=null);
     if(!on&&!confirm(`ยกเลิก "${l}" ของทั้งก๊วน?`))return;setStage(ids,k,on);toast(`ทั้งก๊วน · ${on?l+" แล้ว":"ยกเลิก"+l}`);}
   renderStatus();};
+$("lkStage").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.id==="lkGo")lkRoll();
+  else if(b.id==="lkFs"){const st=$("lkStage");if(document.fullscreenElement)document.exitFullscreen();else if(st.requestFullscreen)st.requestFullscreen();}
+  else if(b.id==="lkOk"&&lkCand){const cur=lkCur();if(!cur)return;S.lk=[...S.lk,{s:cur.key,g:lkCand.gid,n:lkCand.name,o:lkCand.org||"",p:cur.p.name,t:nowHM(),b:whoStr()}];saveLK();toast(`🎉 ${lkCand.name} ได้รับ ${cur.p.name}`);lkCand=null;lkSel=null;renderLK();}
+  else if(b.id==="lkAbs"&&lkCand){setLKC({excl:{...LKC().excl,[lkCand.gid]:true}});toast(`ตัดชื่อ ${lkCand.name} ออกจากการสุ่ม (เปิดกลับได้ในรายชื่อด้านล่าง)`);lkCand=null;renderLK();setTimeout(lkRoll,300);}};
+$("lkSlots").onclick=async e=>{const x=e.target.closest("[data-lkx]");if(x){e.stopPropagation();const w=lkWin(x.dataset.lkx);if(w&&await confirmBox(`ยกเลิกผล ${w.p}: ${w.n}?`)){S.lk=S.lk.filter(v=>v.s!==w.s);saveLK();renderLK();}return;}
+  const b=e.target.closest("[data-lks]");if(!b||lkWin(b.dataset.lks)||lkRolling)return;lkSel=b.dataset.lks;lkCand=null;renderLK();$("lkStage").scrollIntoView({behavior:"smooth"});};
+$("lkReset").onclick=async()=>{if(!S.lk.length)return;if(await confirmBox(`ล้างผลสุ่มทั้งหมด ${S.lk.length} รางวัล?`)){S.lk=[];saveLK();lkCand=null;renderLK();toast("ล้างผลสุ่มแล้ว");}};
+$("lkCopy").onclick=()=>{const E=lkEligible();lkCopyText(E.map(x=>x.name).join("\n"),`คัดลอก ${E.length} รายชื่อแล้ว`);};
+$("lkCopyW").onclick=()=>{const sl=lkSlots();const t=sl.map((x,i)=>{const w=lkWin(x.key);return `${i+1}. ${x.p.name} — ${w?w.n+(w.o?" ("+(ORGLBL[w.o]||w.o)+")":""):"ยังไม่สุ่ม"}`;}).join("\n");lkCopyText("ผลรางวัล Lucky Draw\n"+t,"คัดลอกผลรางวัลแล้ว");};
+$("lkFil").onchange=e=>{const el=e.target;const c=LKC();
+  if(el.dataset.lko)setLKC({orgs:{...c.orgs,[el.dataset.lko]:el.checked}});else if(el.id==="lkIn")setLKC({onlyIn:el.checked});else if(el.id==="lkGolf")setLKC({golf:el.checked});lkCand=null;renderLK();};
+$("lkPeople").onchange=e=>{const g=e.target.dataset.lkp;if(!g)return;const ex={...LKC().excl};if(e.target.checked)delete ex[g];else ex[g]=true;setLKC({excl:ex});renderLK();};
+const lkPz=()=>LKC().prizes.map(p=>({...p}));
+$("lkPrizes").onchange=e=>{const el=e.target,P=lkPz();let i;
+  if((i=el.dataset.lkn)!=null)P[i].name=el.value.trim()||P[i].name;else if((i=el.dataset.lkv)!=null)P[i].value=el.value.trim();else if((i=el.dataset.lkq)!=null)P[i].qty=Math.max(0,Math.min(20,+el.value||0));else return;
+  setLKC({prizes:P});el.blur();renderLK();};
+$("lkPrizes").onclick=async e=>{const b=e.target.closest("button");if(!b)return;const P=lkPz();
+  if(b.id==="lkAddP"){P.push({id:"p"+uid(),name:"รางวัลใหม่",value:"",qty:1,img:""});setLKC({prizes:P});renderLK();}
+  else if(b.dataset.lkup){const i=+b.dataset.lkup;[P[i-1],P[i]]=[P[i],P[i-1]];setLKC({prizes:P});renderLK();}
+  else if(b.dataset.lkdel){const i=+b.dataset.lkdel;if(await confirmBox(`ลบรางวัล ${P[i].name}?`)){P.splice(i,1);setLKC({prizes:P});renderLK();}}
+  else if(b.dataset.lkimg){lkImgFor=+b.dataset.lkimg;$("lkFile").value="";$("lkFile").click();}};
+$("lkFile").onchange=async e=>{const f=e.target.files[0],p=LKC().prizes[lkImgFor];if(!f||!p)return;try{S.photos["lk_"+p.id]=await shrinkSquare(f,560);savePhoto("lk_"+p.id);renderLK();toast("อัปเดตรูปรางวัลแล้ว");}catch(err){toast("อ่านรูปไม่สำเร็จ");}};
 $("dgAdd").onclick=()=>{dgEdit="new";renderDS();};
 $("dsImp").onclick=()=>{$("dsImpFile").value="";$("dsImpFile").click();};
 $("dsImpFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;$("dsImpMsg").textContent="กำลังอ่านไฟล์…";
@@ -1678,7 +1750,7 @@ function groupsBySide(){
 // ---------- ผู้ใช้งาน (ชื่อเล่น + หน่วยงาน) ----------
 let WHO=null;try{WHO=JSON.parse(localStorage.getItem("p1who")||"null");}catch(e){}
 const whoStr=()=>WHO?`${WHO.nick} (${WHO.unit})`:"";
-function showWho(force){const ov=$("whoOv");if(WHO&&!force){ov.classList.add("hidden");$("whoChip").classList.remove("hidden");$("whoChip").textContent="👤 "+whoStr();return;}
+function showWho(force){const ov=$("whoOv");if(WHO&&!force){ov.classList.add("hidden");$("whoChip").classList.remove("hidden");$("whoChip").innerHTML=`👤 ${esc(WHO.nick)}<span class="wu"> (${esc(WHO.unit)})</span>`;return;}
   $("whoNick").value=WHO?WHO.nick:"";$("whoUnit").value=WHO?WHO.unit:"";ov.classList.remove("hidden");setTimeout(()=>$("whoNick").focus(),50);}
 $("whoForm").onsubmit=e=>{e.preventDefault();const nick=$("whoNick").value.trim(),unit=$("whoUnit").value.trim();if(!nick||!unit)return;
   WHO={nick,unit};try{localStorage.setItem("p1who",JSON.stringify(WHO));}catch(_){}showWho();toast("สวัสดี "+nick);};
@@ -1778,6 +1850,52 @@ async function importXlsx(file){
   const rows=[];best.ws.eachRow((row,i)=>{if(i<=best.hr)return;const v=row.values.map(txt),c=best.col;if(!/^\d+$/.test(String(v[1]||"")))return;
     rows.push([v[c.n],v[c.co],v[c.act],v[c.ti],v[c.att],v[c.al],v[c.rm]]);});
   return importRows(rows);}
+// ---------- Lucky Draw ----------
+let lkRolling=false,lkCand=null,lkSel=null,lkImgFor=null;
+const LK_DEF=[{id:"or",name:"OR Gift Card",value:"1,000 บาท",qty:5,img:"img/lk_orcard.jpg"},{id:"hw",name:"หูฟัง Huawei FreeClip 2",value:"4,490 บาท",qty:3,img:"img/lk_huawei.jpg"},{id:"bose",name:"ลำโพง BOSE SoundLink",value:"6,290 บาท",qty:2,img:"img/lk_bose.jpg"}];
+const LKORG=[...ORGORDER,"OTHER"];
+function LKC(){const L=S.config.lucky||{};return {prizes:L.prizes||LK_DEF,orgs:L.orgs||{},onlyIn:!!L.onlyIn,golf:L.golf!==false,excl:L.excl||{}};}
+function setLKC(patch){S.config={...S.config,lucky:{...LKC(),...patch}};saveConfig();}
+function lkImg(p){return S.photos["lk_"+p.id]||p.img||"";}
+function lkSlots(){const out=[];LKC().prizes.forEach(p=>{for(let i=1;i<=(+p.qty||0);i++)out.push({key:p.id+"-"+i,p,i});});return out;}
+function lkWin(key){return S.lk.find(w=>w.s===key);}
+function lkEligible(){const c=LKC(),won=new Set(S.lk.map(w=>w.g));
+  return allGuests().filter(x=>!won.has(x.gid)&&!c.excl[x.gid]&&c.orgs[x.org||"OTHER"]!==false&&(!c.onlyIn||x.in)&&(c.golf||!x.golf)).sort(byName);}
+function lkPool(){const c=LKC();return allGuests().filter(x=>c.orgs[x.org||"OTHER"]!==false&&(!c.onlyIn||x.in)&&(c.golf||!x.golf)).sort(byName);}
+function rnd(n){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n;}
+function lkCur(){const sl=lkSlots();if(lkSel&&sl.some(x=>x.key===lkSel)&&!lkWin(lkSel))return sl.find(x=>x.key===lkSel);return sl.find(x=>!lkWin(x.key))||null;}
+function lkPersonHTML(x,big){return `<div class="lkp${big?" big":""}">${av(x.ph)}<div><b>${esc(x.name)}</b><span>${x.org?`<img class="lg" src="img/logo_${x.org}.png" alt="${x.org}">`:""}${esc(x.title&&x.title!==x.org?x.title:"")}</span></div></div>`;}
+function renderLK(){
+  const sl=lkSlots(),cur=lkCur(),E=lkEligible(),done=sl.filter(x=>lkWin(x.key)).length;
+  if(!lkRolling){
+    let mid;
+    if(lkCand){mid=`<div class="lkname show">${lkPersonHTML(lkCand,1)}</div><div class="row lkact"><button class="btn gold" id="lkOk">ยืนยันผู้โชคดี</button><button class="btn ghost" id="lkAbs">ไม่อยู่ในงาน สุ่มใหม่</button></div>`;}
+    else if(cur){const w=sl.filter(x=>x.p.id===cur.p.id&&lkWin(x.key)).map(x=>lkWin(x.key));
+      mid=`<div class="lkname idle"><span>${E.length?`ผู้มีสิทธิ์ ${E.length} คน`:"ไม่มีผู้มีสิทธิ์ ตรวจตัวกรองด้านล่าง"}</span></div><div class="row lkact"><button class="btn gold big" id="lkGo" ${E.length?"":"disabled"}>🎲 สุ่มรางวัลนี้</button></div>
+        ${w.length?`<div class="lkprev">${w.map(x=>`<span>${esc(x.n)}</span>`).join("")}</div>`:""}`;}
+    else mid=`<div class="lkname idle"><span>สุ่มครบ ${sl.length} รางวัลแล้ว 🎉</span></div>`;
+    $("lkStage").innerHTML=`<button class="lkfs" id="lkFs" title="เต็มจอ">⛶ เต็มจอ</button><div class="lkhead">LUCKY DRAW · ${esc(S.config.name||"P1D1 Golf Day 2026")}</div>
+      ${cur?`<div class="lkprize"><div class="lkpi">${lkImg(cur.p)?`<img src="${lkImg(cur.p)}" alt="">`:""}</div><div><small>รางวัลที่ ${sl.findIndex(x=>x.key===cur.key)+1} จาก ${sl.length} · ชิ้นที่ ${cur.i}/${cur.p.qty}</small><h3>${esc(cur.p.name)}</h3>${cur.p.value?`<em>มูลค่า ${esc(cur.p.value)}</em>`:""}</div></div>`:""}
+      ${mid}`;}
+  $("lkSlots").innerHTML=sl.map((x,i)=>{const w=lkWin(x.key);return `<button class="lks${w?" won":""}${cur&&cur.key===x.key?" cur":""}" data-lks="${x.key}"><i>${i+1}</i><div><small>${esc(x.p.name)}</small>${w?`<b>${esc(w.n)}</b><em>${esc(w.t)}${w.b?" · "+esc(w.b):""}</em>`:`<b class="mute">ยังไม่สุ่ม</b>`}</div>${w?`<span class="lkx" data-lkx="${x.key}" title="ยกเลิกผลนี้">×</span>`:""}</button>`;}).join("")+`<div class="meta" style="grid-column:1/-1">สุ่มแล้ว ${done}/${sl.length} · แตะรางวัลที่ยังไม่สุ่มเพื่อเลือกสุ่มรางวัลนั้น</div>`;
+  const c=LKC(),pool=allGuests();
+  $("lkFil").innerHTML=`<div class="lkorgs">${LKORG.map(o=>{const n=pool.filter(x=>(x.org||"OTHER")===o).length;return `<label><input type="checkbox" data-lko="${o}" ${c.orgs[o]!==false?"checked":""}>${o==="OTHER"?"<span>อื่น ๆ</span>":`<img src="img/logo_${o}.png" alt="${o}">`}<small>${n}</small></label>`;}).join("")}</div>
+    <div class="row" style="gap:16px;margin-top:8px"><label class="psl"><input type="checkbox" id="lkIn" ${c.onlyIn?"checked":""}>เฉพาะคนที่ร่วมดินเนอร์แล้ว (เช็กอินแล้ว)</label><label class="psl"><input type="checkbox" id="lkGolf" ${c.golf?"checked":""}>รวมผู้เล่นกอล์ฟ</label></div>`;
+  const P=lkPool(),won=new Set(S.lk.map(w=>w.g));
+  $("lkPeople").innerHTML=`<div class="meta" style="margin-bottom:6px">ผู้มีสิทธิ์ ${E.length} คน${P.length-E.length?` · ตัดออก/ได้รางวัลแล้ว ${P.length-E.length} คน`:""} · เอาเครื่องหมายออกเพื่อไม่ให้สุ่มชื่อนั้น</div>
+    <div class="lkpeople">${P.map(x=>`<label class="${won.has(x.gid)?"won":""}"><input type="checkbox" data-lkp="${x.gid}" ${!c.excl[x.gid]&&!won.has(x.gid)?"checked":""} ${won.has(x.gid)?"disabled":""}>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${won.has(x.gid)?"<em>ได้รางวัลแล้ว</em>":""}</label>`).join("")}</div>`;
+  if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#lkPrizes")))
+  $("lkPrizes").innerHTML=c.prizes.map((p,i)=>`<div class="lkpr"><button class="lkpimg" data-lkimg="${i}" title="เปลี่ยนรูป">${lkImg(p)?`<img src="${lkImg(p)}" alt="">`:"＋ รูป"}</button>
+      <input type="text" value="${esc(p.name)}" data-lkn="${i}" aria-label="ชื่อรางวัล"><input type="text" value="${esc(p.value||"")}" data-lkv="${i}" placeholder="มูลค่า" style="max-width:120px"><label class="meta">จำนวน <input type="number" min="0" max="20" value="${p.qty}" data-lkq="${i}" style="width:60px;padding:6px"></label>
+      <button class="btn sec sm" data-lkup="${i}" ${i?"":"disabled"} title="เลื่อนขึ้น">↑</button><button class="btn sec sm" data-lkdel="${i}" title="ลบรางวัล">ลบ</button></div>`).join("")+`<button class="btn sec" id="lkAddP" style="margin-top:8px">＋ เพิ่มรางวัล</button>`;
+}
+function lkRoll(){const E=lkEligible();if(!E.length||lkRolling)return;lkRolling=true;lkCand=null;
+  const pick=E[rnd(E.length)];const box=$("lkStage").querySelector(".lkname");const act=$("lkStage").querySelector(".lkact");if(act)act.style.visibility="hidden";
+  box.className="lkname roll";let n=0;const total=32;
+  const step=()=>{n++;const x=n>=total?pick:E[rnd(E.length)];box.innerHTML=lkPersonHTML(x,1);
+    if(n<total)setTimeout(step,40+Math.pow(n/total,3)*380);else{lkCand=pick;lkRolling=false;setTimeout(()=>{renderLK();const nb=$("lkStage").querySelector(".lkname");if(nb)nb.classList.add("pop");},250);}};
+  step();}
+function lkCopyText(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(msg)).catch(()=>{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast(msg);}catch(e){toast("คัดลอกไม่สำเร็จ");}ta.remove();});}
 function golfBadge(x){if(!x.golf)return "";if(x.fin!=null)return `<span class="dgolf">ตีกอล์ฟเสร็จแล้ว${/^\d/.test(x.fin)?" "+esc(x.fin):""}</span>`;
   if(x.play)return `<span class="dgolf play">กำลังตีกอล์ฟ${x.thru?` · ${x.thru} หลุม`:""}</span>`;return `<span class="dgolf idle">กอล์ฟ</span>`;}
 // สถานะรายคน
@@ -2141,7 +2259,7 @@ $("mcBig").onclick=()=>$("mcBox").classList.toggle("big");
 
 const h0=(location.hash||"").slice(1); if(!DINNER&&["results","status","score","pair","pr","setup"].includes(h0)) view=h0;
 show(view);
-if(DINNER){document.body.classList.add("dinner");document.title="P1D1 Dinner";show(["dtables","dsetup"].includes(h0)?h0:"dguests");}
+if(DINNER){document.body.classList.add("dinner");document.title="P1D1 Dinner";show(["dtables","dsetup","dlucky"].includes(h0)?h0:"dguests");}
 showWho();
 init();
 </script>
