@@ -636,6 +636,10 @@ header .hd{position:relative}
 .lkpr{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}.lkpr>input[type=text]{flex:1;min-width:160px}
 .lkpimg{width:64px;height:48px;border:1px dashed #b9c2da;border-radius:8px;background:#fff;overflow:hidden;cursor:pointer;padding:0;font-size:11px;color:var(--mute);flex:none}.lkpimg img{width:100%;height:100%;object-fit:contain}
 @media (max-width:700px){.lkprize{flex-direction:column;text-align:center}.lkprize h3{font-size:22px}.lkp.big b{font-size:24px}.lkp.big .av{width:72px;height:72px}.lkstage{padding:18px 14px 22px}}
+.lkseg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
+.lkseg button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:600;font-size:14px;cursor:pointer;color:var(--ink)}
+.lkseg button b{margin-left:4px;color:var(--mute);font-weight:600}.lkseg button.on{background:var(--navy);border-color:var(--navy);color:#fff}.lkseg button.on b{color:#f2c94c}
+.lkwarn{margin:-2px 0 10px;font-size:13px;color:#a2471a}.lkpeople .lkin{font-style:normal;color:var(--good);font-weight:700;margin-left:auto}
 </style>
 </head>
 <body>
@@ -704,10 +708,10 @@ header .hd{position:relative}
   <section id="v-dlucky" class="hidden">
     <div class="lkstage" id="lkStage"></div>
     <div class="card"><h2>รางวัลทั้งหมด</h2><div id="lkSlots" class="lkslots"></div>
-      <div class="row" style="margin-top:12px"><button class="btn sec" id="lkCopyW">📋 คัดลอกผลรางวัล</button><button class="btn sec" id="lkReset">ล้างผลสุ่มทั้งหมด</button></div></div>
+      <div class="row" style="margin-top:12px"><button class="btn sec" id="lkCopyW">📋 คัดลอกผลรางวัล</button><button class="btn sec" id="lkXls">📊 Excel ผลรางวัล + ผู้มีสิทธิ์</button><button class="btn sec" id="lkReset">ล้างผลสุ่มทั้งหมด</button></div></div>
     <div class="card"><h2>ผู้มีสิทธิ์ลุ้นรางวัล</h2>
       <div id="lkFil"></div>
-      <div class="row" style="margin:10px 0;gap:8px"><button class="btn" id="lkCopy">📋 คัดลอกรายชื่อผู้มีสิทธิ์</button><span class="meta">วางในแอปสุ่มอื่นได้เลย เช่น วงล้อสุ่มชื่อ (1 บรรทัดต่อ 1 คน)</span></div>
+      <div class="row" style="margin:10px 0;gap:8px"><button class="btn" id="lkCopy">📋 คัดลอกรายชื่อผู้มีสิทธิ์</button><button class="btn sec" id="lkXls2">📊 ส่งออก Excel</button><span class="meta">วางในแอปสุ่มอื่นได้เลย เช่น วงล้อสุ่มชื่อ (1 บรรทัดต่อ 1 คน)</span></div>
       <div id="lkPeople"></div></div>
     <div class="card"><h2>แก้ไขของรางวัล</h2><p class="meta" style="margin:-4px 0 10px">ลำดับในรายการคือลำดับการสุ่ม เริ่มจากรางวัลแรก</p><div id="lkPrizes"></div>
       <input type="file" id="lkFile" accept="image/*" class="hidden"></div>
@@ -1253,8 +1257,10 @@ $("lkStage").onclick=e=>{const b=e.target.closest("button");if(!b)return;
 $("lkSlots").onclick=async e=>{const x=e.target.closest("[data-lkx]");if(x){e.stopPropagation();const w=lkWin(x.dataset.lkx);if(w&&await confirmBox(`ยกเลิกผล ${w.p}: ${w.n}?`)){S.lk=S.lk.filter(v=>v.s!==w.s);saveLK();renderLK();}return;}
   const b=e.target.closest("[data-lks]");if(!b||lkWin(b.dataset.lks)||lkRolling)return;lkSel=b.dataset.lks;lkCand=null;renderLK();$("lkStage").scrollIntoView({behavior:"smooth"});};
 $("lkReset").onclick=async()=>{if(!S.lk.length)return;if(await confirmBox(`ล้างผลสุ่มทั้งหมด ${S.lk.length} รางวัล?`)){S.lk=[];saveLK();lkCand=null;renderLK();toast("ล้างผลสุ่มแล้ว");}};
+$("lkXls").onclick=e=>downloadLuckyXls(e.currentTarget);$("lkXls2").onclick=e=>downloadLuckyXls(e.currentTarget);
 $("lkCopy").onclick=()=>{const E=lkEligible();lkCopyText(E.map(x=>x.name).join("\n"),`คัดลอก ${E.length} รายชื่อแล้ว`);};
 $("lkCopyW").onclick=()=>{const sl=lkSlots();const t=sl.map((x,i)=>{const w=lkWin(x.key);return `${i+1}. ${x.p.name} — ${w?w.n+(w.o?" ("+(ORGLBL[w.o]||w.o)+")":""):"ยังไม่สุ่ม"}`;}).join("\n");lkCopyText("ผลรางวัล Lucky Draw\n"+t,"คัดลอกผลรางวัลแล้ว");};
+$("lkFil").onclick=e=>{const b=e.target.closest("[data-lkin]");if(!b)return;setLKC({onlyIn:b.dataset.lkin==="1"});lkCand=null;renderLK();};
 $("lkFil").onchange=e=>{const el=e.target;const c=LKC();
   if(el.dataset.lko)setLKC({orgs:{...c.orgs,[el.dataset.lko]:el.checked}});else if(el.id==="lkIn")setLKC({onlyIn:el.checked});else if(el.id==="lkGolf")setLKC({golf:el.checked});lkCand=null;renderLK();};
 $("lkPeople").onchange=e=>{const g=e.target.dataset.lkp;if(!g)return;const ex={...LKC().excl};if(e.target.checked)delete ex[g];else ex[g]=true;setLKC({excl:ex});renderLK();};
@@ -1854,7 +1860,7 @@ async function importXlsx(file){
 let lkRolling=false,lkCand=null,lkSel=null,lkImgFor=null;
 const LK_DEF=[{id:"or",name:"OR Gift Card",value:"1,000 บาท",qty:5,img:"img/lk_orcard.jpg"},{id:"hw",name:"หูฟัง Huawei FreeClip 2",value:"4,490 บาท",qty:3,img:"img/lk_huawei.jpg"},{id:"bose",name:"ลำโพง BOSE SoundLink",value:"6,290 บาท",qty:2,img:"img/lk_bose.jpg"}];
 const LKORG=[...ORGORDER,"OTHER"];
-function LKC(){const L=S.config.lucky||{};return {prizes:L.prizes||LK_DEF,orgs:L.orgs||{},onlyIn:!!L.onlyIn,golf:L.golf!==false,excl:L.excl||{}};}
+function LKC(){const L=S.config.lucky||{};return {prizes:L.prizes||LK_DEF,orgs:L.orgs||{},onlyIn:L.onlyIn!==false,golf:L.golf!==false,excl:L.excl||{}};}
 function setLKC(patch){S.config={...S.config,lucky:{...LKC(),...patch}};saveConfig();}
 function lkImg(p){return S.photos["lk_"+p.id]||p.img||"";}
 function lkSlots(){const out=[];LKC().prizes.forEach(p=>{for(let i=1;i<=(+p.qty||0);i++)out.push({key:p.id+"-"+i,p,i});});return out;}
@@ -1871,7 +1877,7 @@ function renderLK(){
     let mid;
     if(lkCand){mid=`<div class="lkname show">${lkPersonHTML(lkCand,1)}</div><div class="row lkact"><button class="btn gold" id="lkOk">ยืนยันผู้โชคดี</button><button class="btn ghost" id="lkAbs">ไม่อยู่ในงาน สุ่มใหม่</button></div>`;}
     else if(cur){const w=sl.filter(x=>x.p.id===cur.p.id&&lkWin(x.key)).map(x=>lkWin(x.key));
-      mid=`<div class="lkname idle"><span>${E.length?`ผู้มีสิทธิ์ ${E.length} คน`:"ไม่มีผู้มีสิทธิ์ ตรวจตัวกรองด้านล่าง"}</span></div><div class="row lkact"><button class="btn gold big" id="lkGo" ${E.length?"":"disabled"}>🎲 สุ่มรางวัลนี้</button></div>
+      mid=`<div class="lkname idle"><span>${E.length?`ผู้มีสิทธิ์ ${E.length} คน${LKC().onlyIn?" ที่ร่วมดินเนอร์":""}`:"ไม่มีผู้มีสิทธิ์ ตรวจตัวกรองด้านล่าง"}</span></div><div class="row lkact"><button class="btn gold big" id="lkGo" ${E.length?"":"disabled"}>🎲 สุ่มรางวัลนี้</button></div>
         ${w.length?`<div class="lkprev">${w.map(x=>`<span>${esc(x.n)}</span>`).join("")}</div>`:""}`;}
     else mid=`<div class="lkname idle"><span>สุ่มครบ ${sl.length} รางวัลแล้ว 🎉</span></div>`;
     $("lkStage").innerHTML=`<button class="lkfs" id="lkFs" title="เต็มจอ">⛶ เต็มจอ</button><div class="lkhead">LUCKY DRAW · ${esc(S.config.name||"P1D1 Golf Day 2026")}</div>
@@ -1879,11 +1885,14 @@ function renderLK(){
       ${mid}`;}
   $("lkSlots").innerHTML=sl.map((x,i)=>{const w=lkWin(x.key);return `<button class="lks${w?" won":""}${cur&&cur.key===x.key?" cur":""}" data-lks="${x.key}"><i>${i+1}</i><div><small>${esc(x.p.name)}</small>${w?`<b>${esc(w.n)}</b><em>${esc(w.t)}${w.b?" · "+esc(w.b):""}</em>`:`<b class="mute">ยังไม่สุ่ม</b>`}</div>${w?`<span class="lkx" data-lkx="${x.key}" title="ยกเลิกผลนี้">×</span>`:""}</button>`;}).join("")+`<div class="meta" style="grid-column:1/-1">สุ่มแล้ว ${done}/${sl.length} · แตะรางวัลที่ยังไม่สุ่มเพื่อเลือกสุ่มรางวัลนั้น</div>`;
   const c=LKC(),pool=allGuests();
-  $("lkFil").innerHTML=`<div class="lkorgs">${LKORG.map(o=>{const n=pool.filter(x=>(x.org||"OTHER")===o).length;return `<label><input type="checkbox" data-lko="${o}" ${c.orgs[o]!==false?"checked":""}>${o==="OTHER"?"<span>อื่น ๆ</span>":`<img src="img/logo_${o}.png" alt="${o}">`}<small>${n}</small></label>`;}).join("")}</div>
-    <div class="row" style="gap:16px;margin-top:8px"><label class="psl"><input type="checkbox" id="lkIn" ${c.onlyIn?"checked":""}>เฉพาะคนที่ร่วมดินเนอร์แล้ว (เช็กอินแล้ว)</label><label class="psl"><input type="checkbox" id="lkGolf" ${c.golf?"checked":""}>รวมผู้เล่นกอล์ฟ</label></div>`;
+  const inAll=pool.filter(x=>x.in).length;
+  $("lkFil").innerHTML=`<div class="lkseg"><span class="meta">สุ่มจาก</span><button data-lkin="1" class="${c.onlyIn?"on":""}">เฉพาะคนที่ร่วมดินเนอร์แล้ว <b>${inAll}</b></button><button data-lkin="0" class="${c.onlyIn?"":"on"}">ทุกคนในรายชื่อ Dinner <b>${pool.length}</b></button></div>
+    ${c.onlyIn&&!inAll?`<p class="lkwarn">ยังไม่มีใครถูกบันทึกว่าร่วมดินเนอร์ เช็กอินได้ที่แท็บสถานะหรือผังโต๊ะ</p>`:""}
+    <div class="lkorgs">${LKORG.map(o=>{const n=pool.filter(x=>(x.org||"OTHER")===o).length;return `<label><input type="checkbox" data-lko="${o}" ${c.orgs[o]!==false?"checked":""}>${o==="OTHER"?"<span>อื่น ๆ</span>":`<img src="img/logo_${o}.png" alt="${o}">`}<small>${n}</small></label>`;}).join("")}</div>
+    <div class="row" style="gap:16px;margin-top:8px"><label class="psl"><input type="checkbox" id="lkGolf" ${c.golf?"checked":""}>รวมผู้เล่นกอล์ฟ</label></div>`;
   const P=lkPool(),won=new Set(S.lk.map(w=>w.g));
   $("lkPeople").innerHTML=`<div class="meta" style="margin-bottom:6px">ผู้มีสิทธิ์ ${E.length} คน${P.length-E.length?` · ตัดออก/ได้รางวัลแล้ว ${P.length-E.length} คน`:""} · เอาเครื่องหมายออกเพื่อไม่ให้สุ่มชื่อนั้น</div>
-    <div class="lkpeople">${P.map(x=>`<label class="${won.has(x.gid)?"won":""}"><input type="checkbox" data-lkp="${x.gid}" ${!c.excl[x.gid]&&!won.has(x.gid)?"checked":""} ${won.has(x.gid)?"disabled":""}>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${won.has(x.gid)?"<em>ได้รางวัลแล้ว</em>":""}</label>`).join("")}</div>`;
+    <div class="lkpeople">${P.map(x=>`<label class="${won.has(x.gid)?"won":""}"><input type="checkbox" data-lkp="${x.gid}" ${!c.excl[x.gid]&&!won.has(x.gid)?"checked":""} ${won.has(x.gid)?"disabled":""}>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${won.has(x.gid)?"<em>ได้รางวัลแล้ว</em>":x.in?`<i class="lkin" title="ร่วมดินเนอร์แล้ว ${esc(x.in)}">✓</i>`:""}</label>`).join("")}</div>`;
   if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#lkPrizes")))
   $("lkPrizes").innerHTML=c.prizes.map((p,i)=>`<div class="lkpr"><button class="lkpimg" data-lkimg="${i}" title="เปลี่ยนรูป">${lkImg(p)?`<img src="${lkImg(p)}" alt="">`:"＋ รูป"}</button>
       <input type="text" value="${esc(p.name)}" data-lkn="${i}" aria-label="ชื่อรางวัล"><input type="text" value="${esc(p.value||"")}" data-lkv="${i}" placeholder="มูลค่า" style="max-width:120px"><label class="meta">จำนวน <input type="number" min="0" max="20" value="${p.qty}" data-lkq="${i}" style="width:60px;padding:6px"></label>
@@ -1896,6 +1905,38 @@ function lkRoll(){const E=lkEligible();if(!E.length||lkRolling)return;lkRolling=
     if(n<total)setTimeout(step,40+Math.pow(n/total,3)*380);else{lkCand=pick;lkRolling=false;setTimeout(()=>{renderLK();const nb=$("lkStage").querySelector(".lkname");if(nb)nb.classList.add("pop");},250);}};
   step();}
 function lkCopyText(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(msg)).catch(()=>{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast(msg);}catch(e){toast("คัดลอกไม่สำเร็จ");}ta.remove();});}
+async function downloadLuckyXls(btn){
+  const old=btn.textContent;btn.disabled=true;btn.textContent="กำลังสร้างไฟล์…";
+  try{
+    if(!window.ExcelJS)await loadScript("vendor/exceljs.min.js");
+    const c=S.config,wb=new ExcelJS.Workbook();wb.creator="P1D1 Golf Day";
+    const logo=wb.addImage({base64:await fetchDataURL("img/logo_p1d1.png"),extension:"png"});
+    const FT="Angsana New",FB="Browallia New",thin={style:"thin",color:{argb:"FF8A94A6"}},box=cl=>{cl.border={top:thin,left:thin,bottom:thin,right:thin};};
+    const sheet=(name,cols,title,sub,H,rows,rowH)=>{
+      const ws=wb.addWorksheet(name,{pageSetup:{paperSize:9,orientation:cols.length>6?"landscape":"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:.4,right:.4,top:.4,bottom:.5,header:.2,footer:.2}}});
+      ws.columns=cols.map(width=>({width}));ws.getRow(1).height=72;
+      const w=cols.reduce((a,x)=>a+x*7+5,0),off=Math.max(0,w/2-35);let acc=0,ci=0;while(ci<cols.length&&acc+cols[ci]*7+5<=off){acc+=cols[ci]*7+5;ci++;}
+      ws.addImage(logo,{tl:{nativeCol:ci,nativeColOff:Math.round((off-acc)*9525),nativeRow:0,nativeRowOff:60000},ext:{width:70,height:78},editAs:"oneCell"});
+      ws.mergeCells(2,1,2,cols.length);let t=ws.getCell(2,1);t.value=title;t.font={name:FT,size:28,bold:true};t.alignment={horizontal:"center"};ws.getRow(2).height=38;
+      ws.mergeCells(3,1,3,cols.length);t=ws.getCell(3,1);t.value=sub;t.font={name:FT,size:16,bold:true};t.alignment={horizontal:"center"};ws.getRow(3).height=24;
+      let r=5;H.forEach((h,i)=>{const cl=ws.getCell(r,i+1);cl.value=h;cl.font={name:FT,size:17,bold:true,color:{argb:"FFFFFFFF"}};cl.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF1B2A6B"}};cl.alignment={horizontal:"center",vertical:"middle",wrapText:true};box(cl);});
+      ws.getRow(r).height=28;ws.pageSetup.printTitlesRow="5:5";r++;
+      rows.forEach(v=>{v.forEach((val,j)=>{const cl=ws.getCell(r,j+1);cl.value=val;cl.font={name:j===1||j===3?FT:FB,size:j===1||j===3?17:14};cl.alignment={vertical:"middle",horizontal:j===0?"center":"left",wrapText:true,indent:j?1:0};box(cl);});ws.getRow(r).height=rowH;r++;});
+      return ws;};
+    const sub=[c.date?`วันที่ ${c.date}`:"",c.course?`ณ ${c.course}`:""].filter(Boolean).join("  ");
+    const sl=lkSlots(),G=allGuests(true),byG=id=>G.find(x=>x.gid===id);
+    sheet("ผลรางวัล",[8,30,14,34,34,10,22,26],(c.name||"P1D1 Golf Day 2026")+" · ผล Lucky Draw",sub,
+      ["ลำดับ","รางวัล","มูลค่า","ผู้โชคดี","ตำแหน่ง / หน่วยงาน","เวลา","บันทึกโดย","ลงชื่อรับรางวัล"],
+      sl.map((x,i)=>{const w=lkWin(x.key),g=w&&byG(w.g);return [i+1,x.p.name,x.p.value||"",w?w.n:"ยังไม่สุ่ม",g?orgLine(g):(w&&w.o?ORGLBL[w.o]||w.o:""),w?w.t:"",w?w.b||"":"",""];}),34);
+    const cf=LKC(),E=lkEligible(),won=new Set(S.lk.map(w=>w.g));
+    const P=lkPool().map(x=>[x,won.has(x.gid)?"ได้รางวัลแล้ว":cf.excl[x.gid]?"ตัดออก":"มีสิทธิ์"]);
+    sheet("ผู้มีสิทธิ์",[8,36,44,18,16,16],(c.name||"P1D1 Golf Day 2026")+" · รายชื่อผู้มีสิทธิ์ลุ้นรางวัล",`${cf.onlyIn?"เฉพาะคนที่ร่วมดินเนอร์แล้ว":"ทุกคนในรายชื่อ Dinner"} · มีสิทธิ์ ${E.length} คน`,
+      ["ลำดับ","ชื่อ - นามสกุล","ตำแหน่ง / หน่วยงาน","ร่วมดินเนอร์","สถานะสุ่ม","โต๊ะ"],
+      P.map(([x,st],i)=>[i+1,x.name,orgLine(x),x.in?"✓ "+x.in:"",st,tbName(x.tb)]),26);
+    const buf=await wb.xlsx.writeBuffer();const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+    a.download="P1D1-LuckyDraw.xlsx";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("ดาวน์โหลด Excel แล้ว");
+  }catch(e){console.error(e);toast("สร้างไฟล์ไม่สำเร็จ");}
+  btn.disabled=false;btn.textContent=old;}
 function golfBadge(x){if(!x.golf)return "";if(x.fin!=null)return `<span class="dgolf">ตีกอล์ฟเสร็จแล้ว${/^\d/.test(x.fin)?" "+esc(x.fin):""}</span>`;
   if(x.play)return `<span class="dgolf play">กำลังตีกอล์ฟ${x.thru?` · ${x.thru} หลุม`:""}</span>`;return `<span class="dgolf idle">กอล์ฟ</span>`;}
 // สถานะรายคน
