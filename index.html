@@ -796,7 +796,9 @@ header .hd{position:relative}
     </div>
     <div class="card" id="mcCard">
       <h2>🎤 สคริปต์พิธีกร</h2>
-      <div class="meta" style="margin-bottom:10px">สร้างจากผลจริงอัตโนมัติ เรียงตามลำดับสไลด์ · ข้อความใน [ ] คือคิวเปลี่ยนสไลด์ ไม่ต้องอ่าน</div>
+      <div class="sub" id="mcMode" style="margin:0 0 8px"><button class="chip on" data-mm="open">พิธีเปิดก่อนออกรอบ (ภาคสนาม)</button><button class="chip" data-mm="award">ประกาศรางวัล</button></div>
+      <div class="meta" style="margin-bottom:10px" id="mcNote"></div>
+      <div class="grid2 hidden" id="mcChairBox" style="margin-bottom:10px"><div><label class="f">ประธานในพิธี</label><input type="text" id="mcChair" placeholder="เช่น คุณคงกระพัน อินทรแจ้ง"></div><div><label class="f">ตำแหน่ง</label><input type="text" id="mcChairT" placeholder="เช่น ประธานเจ้าหน้าที่บริหารและกรรมการผู้จัดการใหญ่ ปตท."></div></div>
       <div class="row" style="margin-bottom:10px">
         <div class="sub" id="mcVoice" style="margin:0"><button class="chip on" data-mv="m">พิธีกรชาย (ครับ)</button><button class="chip" data-mv="f">พิธีกรหญิง (ค่ะ)</button></div>
       </div>
@@ -2221,9 +2223,70 @@ function renderReady(){
 }
 
 // ---------- MC script (sports-announcer style, generated from live results) ----------
-let mcVoice="m";
+let mcVoice="m",mcMode="open";
+function mcOpenScript(){
+  const c=S.config,P=S.roster.players.filter(p=>!/^รอยืนยัน/.test(cleanName(p.name))),G=gTeams(),best=+c.teamBest||3;
+  const K=mcVoice==="f"?"ค่ะ":"ครับ",ME=mcVoice==="f"?"ดิฉัน":"ผม",CN=/rajpruek/i.test(c.course||"")?"ราชพฤกษ์ คลับ":(c.course||"สนาม");
+  const L=[];const h=t=>L.push({h:t}),p=t=>L.push({p:t}),cue=t=>L.push({cue:t}),pause=()=>L.push({pause:1});
+  const chair=(c.mcChair||"").trim(),chairT=(c.mcChairT||"").trim(),CH=chair?`<b>${esc(chair)}</b>${chairT?` ${esc(chairT)}`:""}`:`<b>[ชื่อประธานในพิธี]</b>`;
+  const pz=k=>prize(k)||{},ldH=prShow("ld")?(c.ldHoles||[]):[],ntH=prShow("ntp")?(c.ntpHoles||[]):[];
+  const T1=G.filter(t=>String(t.start)==="1"),T10=G.filter(t=>String(t.start)==="10");
+  const mem=t=>S.roster.players.filter(p=>String(p.team)===String(t.id)&&!/^รอยืนยัน/.test(cleanName(p.name))).map(p=>esc(cleanName(p.name))).join(" · ")||"(รอยืนยันรายชื่อ)";
+  const first=[...G].map(t=>t.time).filter(Boolean).sort()[0];
+  // 1
+  h("ต้อนรับ");cue("นักกอล์ฟรวมตัวที่จุดรวมพลหน้าหลุม 1 · เปิดเพลงเบา ๆ");
+  p(`สวัสดี${K} ท่านผู้บริหาร แขกผู้มีเกียรติ และนักกอล์ฟทุกท่าน ${ME}ขอต้อนรับทุกท่านสู่ <b>${esc(c.name||"P1D1 Golf Day 2026")}</b> ณ ${esc(CN)}${K}`);
+  {const by={};P.forEach(x=>{const o=orgOf(x)||"";by[o]=(by[o]||0)+1;});const parts=ORGORDER.filter(o=>by[o]).map(o=>`${ORGLBL[o]} ${by[o]} ท่าน`);
+   p(`ปีนี้เรามีนักกอล์ฟร่วมการแข่งขันทั้งหมด <span class="hl">${P.length} ท่าน</span> แบ่งเป็น ${G.length} ก๊วน${parts.length?` ได้แก่ ${parts.join(" ")}${by[""]?` และผู้มีเกียรติอีก ${by[""]} ท่าน`:""}`:""}${K}`);}
+  p(`อากาศดี สนามสวย กรีนกำลังดี เหลือแค่วงสวิงของทุกท่านที่ต้องพร้อมด้วย${K}`);
+  p(`ก่อนออกรอบ ${ME}ขอเวลาสั้น ๆ ราว 10 นาที สำหรับพิธีเปิด แนะนำกติกา รางวัล และถ่ายภาพร่วมกัน${K}`);
+  // 2
+  h("ประธานกล่าวเปิด");
+  p(`ลำดับแรก ${ME}ขอเรียนเชิญ ${CH} ประธานในพิธี กล่าวเปิดการแข่งขัน${K} ขอเสียงปรบมือต้อนรับ${K}`);
+  cue("ประธานกล่าวเปิด · ทีมงานเตรียมไมค์และถ่ายภาพ");
+  p(`กราบขอบพระคุณ ${chair?esc(chair.replace(/\s.*$/,"")):"ท่านประธาน"}เป็นอย่างสูง${K} ได้รับพลังใจจากท่านประธานแบบนี้ เชื่อว่าวันนี้ทุกท่านคงตีได้ดีกว่ามาตรฐานแน่นอน${K}`);
+  // 3
+  h("กติกาการแข่งขัน");
+  p(`วันนี้เราใช้ระบบ <b>System 36</b> ซึ่งเป็นมิตรกับทุกระดับฝีมือ${K} หลักการง่าย ๆ คือ ทุกหลุมที่ทำได้พาร์หรือดีกว่า ได้ 2 แต้ม โบกี้ได้ 1 แต้ม ส่วนดับเบิลโบกี้ขึ้นไป 0 แต้ม`);
+  p(`เมื่อจบ 18 หลุม นำแต้มรวมไปหักจาก 36 ได้เป็นแฮนดิแคปของวันนี้ แล้วนำแฮนดิแคปไปหักจากสกอร์จริง ได้เป็น <b>สกอร์สุทธิ</b>${c.hcCap?` โดยแฮนดิแคปสูงสุดไม่เกิน ${esc(c.hcCap)}`:""}${K}`);
+  p(`พูดง่าย ๆ คือ ไม่ต้องตีดีที่สุดในสนาม แต่ให้ตีให้ดีกว่ามาตรฐานของตัวเอง ใครฟอร์มดีกว่าปกติ ก็มีลุ้นทุกคน${K}`);
+  if(prShow("team"))p(`ประเภททีม วัดจากสกอร์สุทธิ ${best} ใบที่ดีที่สุดใน 4 ท่านของก๊วน ก๊วนไหนรวมกันได้น้อยที่สุดคือแชมป์ ฉะนั้นทุกช็อตของทุกท่านมีความหมายต่อเพื่อนร่วมก๊วน${K}`);
+  p(`ทีมงานจะบันทึกสกอร์ในระบบออนไลน์ทุกหลุม ผลการคำนวณและวิธีคิดเปิดดูได้ในเว็บไซต์ของงาน โปร่งใสทุกแต้ม${K}`);
+  p(`ขอฝากเรื่องความเร็วในการเล่น ให้รักษาระยะห่างกับก๊วนข้างหน้า และขอความกรุณาปิดเสียงโทรศัพท์ระหว่างเพื่อนกำลังสวิง${K}`);
+  // 4
+  h("การออกรอบ");
+  p(`วันนี้ออกรอบพร้อมกัน 2 จุด คือ <b>หลุม 1</b> และ <b>หลุม 10</b>${first?` เริ่มทีออฟก๊วนแรกเวลา <b>${esc(first)} น.</b>`:""}${K}`);
+  if(T1.length){p(`ก๊วนที่เริ่มหลุม 1`);T1.forEach(t=>p(`• ${esc(t.time||"รอเวลา")} — ${mem(t)}`));}
+  if(T10.length){p(`ก๊วนที่เริ่มหลุม 10`);T10.forEach(t=>p(`• ${esc(t.time||"รอเวลา")} — ${mem(t)}`));}
+  // 5
+  h("รางวัลวันนี้");
+  const ov=[];
+  if(SHT0())ov.push(`<b>รางวัลชนะเลิศประเภททีม</b>${pz("team").item?` รับ ${esc(pz("team").item)}`:""}${pz("team").value?` มูลค่ารวม ${esc(pz("team").value)}`:""}`);
+  if(ntH.length)ov.push(`<b>Nearest to Pin</b> ทีช็อตใกล้ธงที่สุด หลุม ${ntH.join(", ")} ลูกต้องอยู่บนกรีน${pz("ntp").item?` รับ ${esc(pz("ntp").item)}`:""}`);
+  if(ldH.length)ov.push(`<b>Longest Drive</b> ไดรฟ์ไกลที่สุด หลุม ${ldH.join(", ")} ลูกต้องอยู่บนแฟร์เวย์${pz("ld").item?` รับ ${esc(pz("ld").item)}`:""}`);
+  if(prShow("ind")&&c.indOn!==false)ov.push(`<b>ประเภทเดี่ยว</b> อันดับ 1 ถึง ${c.indPlaces||3} ของแต่ละ Flight`);
+  p(`วันนี้มีรางวัลให้ลุ้น ${ov.length} ประเภท${K}`);ov.forEach((t,i)=>p(`${i+1}. ${t}`));
+  if(ntH.length||ldH.length)p(`ที่หลุมรางวัลจะมีป้ายและทีมงานคอยวัดระยะ ใครทีช็อตสวย ขอให้ยิ้มให้กล้องไว้ก่อนเลย${K}`);
+  {const lp=(LKC().prizes||[]).filter(x=>+x.qty>0),n=lp.reduce((a,x)=>a+(+x.qty||0),0);
+   if(n)p(`และสำหรับท่านที่อยู่ร่วมงานเลี้ยงช่วงค่ำ ยังมี <b>Lucky Draw</b> อีก ${n} รางวัล ได้แก่ ${lp.map(x=>esc(x.name)).join(" ")} ตีกอล์ฟเสร็จแล้วอย่าเพิ่งรีบกลับนะ${K}`);}
+  // 6
+  h("ถ่ายภาพรวม");cue("ทีมงานจัดแถวถ่ายภาพหน้าหลุม 1 · ประธานอยู่กลาง");
+  p(`ก่อนแยกย้ายไปที่รถกอล์ฟ ขอเรียนเชิญท่านประธานและนักกอล์ฟทุกท่าน มาถ่ายภาพหมู่ร่วมกันที่หน้าหลุม 1 ${K}`);
+  p(`แถวหน้าขอเป็นท่านผู้บริหาร แถวหลังยืนเรียงตามสะดวก ขอรอยยิ้มแบบที่เพิ่งพัตต์ลงเบอร์ดี้${K}`);
+  pause();p(`หนึ่ง สอง สาม... ขออีกหนึ่งภาพ ขอท่าชูไม้กอล์ฟ หนึ่ง สอง สาม ขอบคุณ${K}`);
+  // 7
+  h("ถ่ายรูปก๊วนที่หลุม 1");cue("ทีมงานเรียกทีละก๊วน · ช่างภาพประจำจุดหลุม 1");
+  p(`ต่อไปเป็นภาพประจำก๊วนที่หลุม 1 ${K} ${ME}จะเรียนเชิญทีละก๊วน${T10.length?" ขอเริ่มจากก๊วนที่ออกหลุม 10 ก่อน เพื่อให้มีเวลาขึ้นรถไปหลุม 10":""}`);
+  [...T10,...T1].forEach(t=>p(`• ก๊วน ${esc(grpLabel(t))}: ${mem(t)}`));
+  p(`ถ่ายภาพเสร็จแล้ว ก๊วนหลุม 10 ขึ้นรถกอล์ฟได้เลย ส่วนก๊วนหลุม 1 รอเรียกตามเวลาทีออฟ${K}`);
+  // 8
+  h("ส่งนักกอล์ฟออกรอบ");
+  p(`ขอให้ทุกท่านสนุกกับเกมวันนี้ ตีตรง ไกล แม่น และลูกไม่ลงน้ำ${K} พบกันอีกครั้งที่คลับเฮาส์ตอนประกาศรางวัล${K}`);
+  p(`ขอเชิญก๊วนแรก ${T1[0]?esc(grpLabel(T1[0])):""} เตรียมตัวที่แท่นทีหลุม 1 ได้เลย${K} ขอให้ทุกท่านโชคดี${K}`);
+  return L;}
+function SHT0(){return prShow("team");}
 function mcScript(){
-  const c=S.config,d=awardsData(),P=S.roster.players,SHT=prShow("team"),G=gTeams(),par=c.pars.reduce((a,b)=>a+b,0);
+  const c=S.config,d=awardsData(),P=S.roster.players.filter(p=>!/^รอยืนยัน/.test(cleanName(p.name))),SHT=prShow("team"),G=gTeams(),par=c.pars.reduce((a,b)=>a+b,0);
   const K=mcVoice==="f"?"ค่ะ":"ครับ", CN=/rajpruek/i.test(c.course||"")?"ราชพฤกษ์ คลับ":(c.course||""), ME=mcVoice==="f"?"ดิฉัน":"ผม";
   const L=[];const h=t=>L.push({h:t}),p=t=>L.push({p:t}),cue=t=>L.push({cue:t}),pause=()=>L.push({pause:1});
   const who=pl=>pl?`<b>${esc(pl.name)}</b>${pl.title?` ${esc(pl.title)}`:""}`:`<b>[รอผล]</b>`;
@@ -2289,13 +2352,18 @@ function mcScript(){
   return L;
 }
 function renderMC(){
-  const L=mcScript();
+  const L=mcMode==="open"?mcOpenScript():mcScript();
+  $("mcNote").textContent=mcMode==="open"?"ใช้ตอนรวมตัวก่อนออกรอบ ข้อมูลก๊วน เวลา และรางวัลดึงจากระบบ ข้อความใน [ ] คือคิวสำหรับทีมงาน ไม่ต้องอ่าน":"สร้างจากผลจริงอัตโนมัติ เรียงตามลำดับสไลด์ ข้อความใน [ ] คือคิวเปลี่ยนสไลด์ ไม่ต้องอ่าน";
+  $("mcChairBox").classList.toggle("hidden",mcMode!=="open");
+  if(document.activeElement!==$("mcChair")&&document.activeElement!==$("mcChairT")){$("mcChair").value=S.config.mcChair||"";$("mcChairT").value=S.config.mcChairT||"";}
   $("mcBox").innerHTML=L.map(x=>x.h?`<h4>${x.h}</h4>`:x.cue?`<div class="cue">[${x.cue}]</div>`:x.pause?`<p class="pause">(เว้นจังหวะ)</p>`:`<p>${x.p}</p>`).join("");
 }
-function mcText(){const tmp=document.createElement("div");return mcScript().map(x=>x.h?`\n== ${x.h} ==`:x.cue?`[${x.cue}]`:x.pause?"(เว้นจังหวะ)":(tmp.innerHTML=x.p,tmp.textContent)).join("\n");}
+function mcText(){const tmp=document.createElement("div");return (mcMode==="open"?mcOpenScript():mcScript()).map(x=>x.h?`\n== ${x.h} ==`:x.cue?`[${x.cue}]`:x.pause?"(เว้นจังหวะ)":(tmp.innerHTML=x.p,tmp.textContent)).join("\n");}
 $("mcVoice").onclick=e=>{const b=e.target.closest("[data-mv]");if(!b)return;mcVoice=b.dataset.mv;document.querySelectorAll("#mcVoice .chip").forEach(c=>c.classList.toggle("on",c.dataset.mv===mcVoice));renderMC();};
+$("mcMode").onclick=e=>{const b=e.target.closest("[data-mm]");if(!b)return;mcMode=b.dataset.mm;document.querySelectorAll("#mcMode .chip").forEach(c=>c.classList.toggle("on",c.dataset.mm===mcMode));renderMC();};
+$("mcChair").onchange=$("mcChairT").onchange=()=>{S.config={...S.config,mcChair:$("mcChair").value.trim(),mcChairT:$("mcChairT").value.trim()};saveConfig();renderMC();toast("บันทึกชื่อประธานแล้ว");};
 $("mcCopy").onclick=()=>copyText(mcText());
-$("mcTxt").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([mcText()],{type:"text/plain;charset=utf-8"}));a.download="สคริปต์พิธีกร-P1D1-Golf-Day-2026.txt";document.body.appendChild(a);a.click();a.remove();};
+$("mcTxt").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([mcText()],{type:"text/plain;charset=utf-8"}));a.download=(mcMode==="open"?"สคริปต์พิธีเปิด":"สคริปต์ประกาศรางวัล")+"-P1D1-Golf-Day-2026.txt";document.body.appendChild(a);a.click();a.remove();};
 $("mcBig").onclick=()=>$("mcBox").classList.toggle("big");
 
 const h0=(location.hash||"").slice(1); if(!DINNER&&["results","status","score","pair","pr","setup"].includes(h0)) view=h0;
