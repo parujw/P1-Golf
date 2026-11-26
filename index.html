@@ -1039,7 +1039,7 @@ function compCards(kind){
 }
 const PRIZEIMG={team:"img/prize_team.jpg",ld:"img/prize_ld.jpg",ntp:"img/prize_ntp.jpg"};
 function prize(k){const p=((S.config.prizes||{})[k])||{};return p.item||p.value||p.by?p:null;}
-function prizeBox(k){const p=prize(k);if(!p)return "";return `<div class="prizebox">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:"<span style='font-size:28px'>🎁</span>"}<div><div class="nm">🎁 ${esc(p.item||"")}</div><div class="meta">${p.value?esc(p.value):""}${p.by?` · มอบโดย ${esc(p.by)}`:""}</div></div></div>`;}
+function prizeBox(k){const p=prize(k);if(!p)return "";return `<div class="prizebox">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:"<span style='font-size:28px'>🎁</span>"}<div><div class="nm">🎁 ${esc(p.item||"")}</div><div class="meta">${p.by?`มอบโดย ${esc(p.by)}`:""}</div></div></div>`;}
 const hasYds=x=>x&&x.yds!==""&&x.yds!=null&&!isNaN(+x.yds);
 function compWinner(k,asc){const e=S.ntp[k]||[];const m=e.find(x=>x.win);if(m)return m;const v=e.filter(hasYds);if(v.length)return v.reduce((a,b)=>asc?(+b.yds<+a.yds?b:a):(+b.yds>+a.yds?b:a));return e.length===1?e[0]:null;}
 function ydsHidden(k){return !!((S.config.hideYds||{})[k]);}
@@ -1211,7 +1211,7 @@ function renderSetup(){
   $("cName").value=c.name||"";$("cDate").value=c.date||"";$("cCourse").value=c.course||"";$("cFA").value=c.flightA||"";$("cFB").value=c.flightB||"";
   draftHoles={ntp:[...(c.ntpHoles||[])],ld:[...(c.ldHoles||[])]};drawHoles();
   $("cIndOn").checked=c.indOn!==false;$("cIndPl").value=c.indPlaces||3;$("cTeamPl").value=c.teamPlaces||1;
-  const P=c.prizes||{};$("prizeEd").innerHTML=[["team","ประเภททีม"],["ld","Longest Drive"],["ntp","Nearest to Pin"],["ind","ประเภทเดี่ยว"]].map(([k,t])=>`<label class="f" style="margin-top:10px">🎁 ของรางวัล ${t}</label><div class="grid2" style="grid-template-columns:1fr 1fr;gap:6px"><input type="text" style="grid-column:1/-1" data-pz="${k}.item" value="${esc((P[k]||{}).item||"")}" placeholder="ของรางวัล"><input type="text" data-pz="${k}.qty" value="${esc((P[k]||{}).qty||"")}" placeholder="จำนวน เช่น 4 ใบ"><input type="text" data-pz="${k}.value" value="${esc((P[k]||{}).value||"")}" placeholder="มูลค่ารวม"><input type="text" style="grid-column:1/-1" data-pz="${k}.by" value="${esc((P[k]||{}).by||"")}" placeholder="มอบโดย"></div>`).join("");$("cCap").value=c.hcCap??"";$("cTeams").value=S.roster.teams.length;$("cBest").value=c.teamBest;
+  const P=c.prizes||{};$("prizeEd").innerHTML=[["team","ประเภททีม"],["ld","Longest Drive"],["ntp","Nearest to Pin"],["ind","ประเภทเดี่ยว"]].map(([k,t])=>`<label class="f" style="margin-top:10px">🎁 ของรางวัล ${t}</label><div class="grid2" style="grid-template-columns:1fr 1fr;gap:6px"><input type="text" style="grid-column:1/-1" data-pz="${k}.item" value="${esc((P[k]||{}).item||"")}" placeholder="ของรางวัล"><input type="text" data-pz="${k}.qty" value="${esc((P[k]||{}).qty||"")}" placeholder="จำนวน เช่น 4 ใบ"><input type="text" style="grid-column:1/-1" data-pz="${k}.by" value="${esc((P[k]||{}).by||"")}" placeholder="มอบโดย"></div>`).join("");$("cCap").value=c.hcCap??"";$("cTeams").value=S.roster.teams.length;$("cBest").value=c.teamBest;
   const pc=i=>`<div class="hole"><div class="h">${i+1}</div><input type="number" min="3" max="6" data-par="${i}" value="${c.pars[i]}"></div>`;
   $("parOut").innerHTML=[...Array(9)].map((_,i)=>pc(i)).join("");$("parIn").innerHTML=[...Array(9)].map((_,i)=>pc(i+9)).join("");
   parTotal();
@@ -1451,7 +1451,7 @@ const ORGNAME={PTT:"PTT",PTTEP:"PTTEP",GC:"GC",TOP:"Thaioil",IRPC:"IRPC",OR:"OR"
 // estimate font size so text fits on one line (Thai combining marks don't take width)
 function fitFont(t,width,max,min){const n=String(t||"").replace(/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/g,"").length||1;return Math.max(min,Math.min(max,Math.floor(width/(n*0.56))));}
 function slidePrize(s){const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const p=prize(k);if(!p||(s.kind==="p"||s.kind==="t")&&s.rank>0&&k!=="ind")return "";
-  return `<div class="prize">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:""}<div><b>🎁 ${esc(p.item||"")}</b><small>${p.value?esc(p.value):""}${p.by?` · มอบโดย ${esc(p.by)}`:""}</small></div></div>`;}
+  return `<div class="prize">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:""}<div><b>🎁 ${esc(p.item||"")}</b><small>${p.by?`มอบโดย ${esc(p.by)}`:""}</small></div></div>`;}
 
 // ---------- PR themes ----------
 const THEMES=[["d","แบบ Broadcast สกอร์การ์ด"],["p","แบบภาพผู้ชนะเต็มจอ"],["o","แบบเดิม"]];
@@ -1485,7 +1485,7 @@ function thNums(m){
   if(!m.nums.length)return "";
   return `<div class="nums">${m.nums.map(n=>`<div class="${n.k?"k":""}"><b>${esc(n.v)}</b>${esc(n.l)}</div>`).join("")}</div>`;
 }
-function thPrize(m,inl){return m.prize?`<div class="pz${inl?" inl":""}">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}<div><b>${esc(m.prize.item||"")}</b>${[m.prize.value,m.prize.by?"มอบโดย "+m.prize.by:""].filter(Boolean).map(esc).join(" · ")}</div></div>`:"";}
+function thPrize(m,inl){return m.prize?`<div class="pz${inl?" inl":""}">${m.prize.img?`<img src="${m.prize.img}" alt="">`:""}<div><b>${esc(m.prize.item||"")}</b>${m.prize.by?esc("มอบโดย "+m.prize.by):""}</div></div>`:"";}
 function thSub(m){const o=m.org;return (o||m.sub)?`<div class="sb">${o?`<img src="img/logo_${o}.png" alt="${o}">`:""}<span>${esc(m.sub||"")}</span></div>`:"";}
 
 function symHTML(v,par){v=+v;if(!(v>0))return "–";const d=v-par;const cls=d<=-2?"c2":d===-1?"c1":d===1?"s1":d>=2?"s2":"";
@@ -1532,7 +1532,7 @@ function prizeSlideHTML(s,th){
   const body=`<div class="zx">
       <div class="zt" style="font-size:${fitFont(title,600,64,34)}px">${esc(title)}</div>
       <div class="zi" style="font-size:${fitFont(p.item||"",600,56,30)}px">${esc(p.item||"")}</div>
-      <div class="zrows">${p.qty?`<div><span>จำนวน</span><b>${esc(noParen(p.qty))}</b></div>`:""}${p.value?`<div><span>มูลค่ารวม</span><b>${esc(noParen(p.value))}</b></div>`:""}</div>
+      <div class="zrows">${p.qty?`<div><span>จำนวน</span><b>${esc(noParen(p.qty))}</b></div>`:""}</div>
       ${holes.length?`<div class="zh"><span>หลุม</span>${holes.map(h=>`<b>${h}<small>PAR ${c.pars[h-1]}</small></b>`).join("")}</div>`:""}${cnt?`<div class="zc">${esc(cnt)}</div>`:""}
       ${p.by?`<div class="zb">มอบโดย <b>${esc(p.by)}</b></div>`:""}</div>
     <div class="zimg">${img?`<img src="${img}" alt="">`:`<span>🎁</span>`}</div>`;
@@ -1883,7 +1883,7 @@ function renderLK(){
         ${w.length?`<div class="lkprev">${w.map(x=>`<span>${esc(x.n)}</span>`).join("")}</div>`:""}`;}
     else mid=`<div class="lkname idle"><span>สุ่มครบ ${sl.length} รางวัลแล้ว 🎉</span></div>`;
     $("lkStage").innerHTML=`<button class="lkfs" id="lkFs" title="เต็มจอ">⛶ เต็มจอ</button><div class="lkhead">LUCKY DRAW · ${esc(S.config.name||"P1D1 Golf Day 2026")}</div>
-      ${cur?`<div class="lkprize"><div class="lkpi">${lkImg(cur.p)?`<img src="${lkImg(cur.p)}" alt="">`:""}</div><div><small>รางวัลที่ ${sl.findIndex(x=>x.key===cur.key)+1} จาก ${sl.length} · ชิ้นที่ ${cur.i}/${cur.p.qty}</small><h3>${esc(cur.p.name)}</h3>${cur.p.value?`<em>มูลค่า ${esc(cur.p.value)}</em>`:""}</div></div>`:""}
+      ${cur?`<div class="lkprize"><div class="lkpi">${lkImg(cur.p)?`<img src="${lkImg(cur.p)}" alt="">`:""}</div><div><small>รางวัลที่ ${sl.findIndex(x=>x.key===cur.key)+1} จาก ${sl.length} · ชิ้นที่ ${cur.i}/${cur.p.qty}</small><h3>${esc(cur.p.name)}</h3></div></div>`:""}
       ${mid}`;}
   $("lkSlots").innerHTML=sl.map((x,i)=>{const w=lkWin(x.key);return `<button class="lks${w?" won":""}${cur&&cur.key===x.key?" cur":""}" data-lks="${x.key}"><i>${i+1}</i><div><small>${esc(x.p.name)}</small>${w?`<b>${esc(w.n)}</b><em>${esc(w.t)}${w.b?" · "+esc(w.b):""}</em>`:`<b class="mute">ยังไม่สุ่ม</b>`}</div>${w?`<span class="lkx" data-lkx="${x.key}" title="ยกเลิกผลนี้">×</span>`:""}</button>`;}).join("")+`<div class="meta" style="grid-column:1/-1">สุ่มแล้ว ${done}/${sl.length} · แตะรางวัลที่ยังไม่สุ่มเพื่อเลือกสุ่มรางวัลนั้น</div>`;
   const c=LKC(),pool=allGuests();
@@ -1897,7 +1897,7 @@ function renderLK(){
     <div class="lkpeople">${P.map(x=>`<label class="${won.has(x.gid)?"won":""}"><input type="checkbox" data-lkp="${x.gid}" ${!c.excl[x.gid]&&!won.has(x.gid)?"checked":""} ${won.has(x.gid)?"disabled":""}>${av(x.ph,"sm")}<span>${esc(x.name)}</span>${won.has(x.gid)?"<em>ได้รางวัลแล้ว</em>":x.in?`<i class="lkin" title="ร่วมดินเนอร์แล้ว ${esc(x.in)}">✓</i>`:""}</label>`).join("")}</div>`;
   if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#lkPrizes")))
   $("lkPrizes").innerHTML=c.prizes.map((p,i)=>`<div class="lkpr"><button class="lkpimg" data-lkimg="${i}" title="เปลี่ยนรูป">${lkImg(p)?`<img src="${lkImg(p)}" alt="">`:"＋ รูป"}</button>
-      <input type="text" value="${esc(p.name)}" data-lkn="${i}" aria-label="ชื่อรางวัล"><input type="text" value="${esc(p.value||"")}" data-lkv="${i}" placeholder="มูลค่า" style="max-width:120px"><label class="meta">จำนวน <input type="number" min="0" max="20" value="${p.qty}" data-lkq="${i}" style="width:60px;padding:6px"></label>
+      <input type="text" value="${esc(p.name)}" data-lkn="${i}" aria-label="ชื่อรางวัล"><label class="meta">จำนวน <input type="number" min="0" max="20" value="${p.qty}" data-lkq="${i}" style="width:60px;padding:6px"></label>
       <button class="btn sec sm" data-lkup="${i}" ${i?"":"disabled"} title="เลื่อนขึ้น">↑</button><button class="btn sec sm" data-lkdel="${i}" title="ลบรางวัล">ลบ</button></div>`).join("")+`<button class="btn sec" id="lkAddP" style="margin-top:8px">＋ เพิ่มรางวัล</button>`;
 }
 function lkRoll(){const E=lkEligible();if(!E.length||lkRolling)return;lkRolling=true;lkCand=null;
@@ -1923,13 +1923,13 @@ async function downloadLuckyXls(btn){
       ws.mergeCells(3,1,3,cols.length);t=ws.getCell(3,1);t.value=sub;t.font={name:FT,size:16,bold:true};t.alignment={horizontal:"center"};ws.getRow(3).height=24;
       let r=5;H.forEach((h,i)=>{const cl=ws.getCell(r,i+1);cl.value=h;cl.font={name:FT,size:17,bold:true,color:{argb:"FFFFFFFF"}};cl.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF1B2A6B"}};cl.alignment={horizontal:"center",vertical:"middle",wrapText:true};box(cl);});
       ws.getRow(r).height=28;ws.pageSetup.printTitlesRow="5:5";r++;
-      rows.forEach(v=>{v.forEach((val,j)=>{const cl=ws.getCell(r,j+1);cl.value=val;cl.font={name:j===1||j===3?FT:FB,size:j===1||j===3?17:14};cl.alignment={vertical:"middle",horizontal:j===0?"center":"left",wrapText:true,indent:j?1:0};box(cl);});ws.getRow(r).height=rowH;r++;});
+      rows.forEach(v=>{v.forEach((val,j)=>{const cl=ws.getCell(r,j+1);cl.value=val;cl.font={name:FT,size:16};cl.alignment={vertical:"middle",horizontal:j===0?"center":"left",wrapText:true,indent:j?1:0};box(cl);});ws.getRow(r).height=rowH;r++;});
       return ws;};
     const sub=[c.date?`วันที่ ${c.date}`:"",c.course?`ณ ${c.course}`:""].filter(Boolean).join("  ");
     const sl=lkSlots(),G=allGuests(true),byG=id=>G.find(x=>x.gid===id);
-    sheet("ผลรางวัล",[8,30,14,34,34,10,22,26],(c.name||"P1D1 Golf Day 2026")+" · ผล Lucky Draw",sub,
-      ["ลำดับ","รางวัล","มูลค่า","ผู้โชคดี","ตำแหน่ง / หน่วยงาน","เวลา","บันทึกโดย","ลงชื่อรับรางวัล"],
-      sl.map((x,i)=>{const w=lkWin(x.key),g=w&&byG(w.g);return [i+1,x.p.name,x.p.value||"",w?w.n:"ยังไม่สุ่ม",g?orgLine(g):(w&&w.o?ORGLBL[w.o]||w.o:""),w?w.t:"",w?w.b||"":"",""];}),34);
+    sheet("ผลรางวัล",[8,32,34,36,10,22,26],(c.name||"P1D1 Golf Day 2026")+" · ผล Lucky Draw",sub,
+      ["ลำดับ","รางวัล","ผู้โชคดี","ตำแหน่ง / หน่วยงาน","เวลา","บันทึกโดย","ลงชื่อรับรางวัล"],
+      sl.map((x,i)=>{const w=lkWin(x.key),g=w&&byG(w.g);return [i+1,x.p.name,w?w.n:"ยังไม่สุ่ม",g?orgLine(g):(w&&w.o?ORGLBL[w.o]||w.o:""),w?w.t:"",w?w.b||"":"",""];}),34);
     const cf=LKC(),E=lkEligible(),won=new Set(S.lk.map(w=>w.g));
     const P=lkPool().map(x=>[x,won.has(x.gid)?"ได้รางวัลแล้ว":cf.excl[x.gid]?"ตัดออก":"มีสิทธิ์"]);
     sheet("ผู้มีสิทธิ์",[8,36,44,18,16,16],(c.name||"P1D1 Golf Day 2026")+" · รายชื่อผู้มีสิทธิ์ลุ้นรางวัล",`${cf.onlyIn?"เฉพาะคนที่ร่วมดินเนอร์แล้ว":"ทุกคนในรายชื่อ Dinner"} · มีสิทธิ์ ${E.length} คน`,
@@ -2225,64 +2225,70 @@ function renderReady(){
 // ---------- MC script (sports-announcer style, generated from live results) ----------
 let mcVoice="m",mcMode="open";
 function mcOpenScript(){
-  const c=S.config,P=S.roster.players.filter(p=>!/^รอยืนยัน/.test(cleanName(p.name))),G=gTeams(),best=+c.teamBest||3;
+  const c=S.config,real=p=>!/^รอยืนยัน/.test(cleanName(p.name)),P=S.roster.players.filter(real),G=gTeams(),best=+c.teamBest||3;
   const K=mcVoice==="f"?"ค่ะ":"ครับ",ME=mcVoice==="f"?"ดิฉัน":"ผม",CN=/rajpruek/i.test(c.course||"")?"ราชพฤกษ์ คลับ":(c.course||"สนาม");
   const L=[];const h=t=>L.push({h:t}),p=t=>L.push({p:t}),cue=t=>L.push({cue:t}),pause=()=>L.push({pause:1});
   const chair=(c.mcChair||"").trim(),chairT=(c.mcChairT||"").trim(),CH=chair?`<b>${esc(chair)}</b>${chairT?` ${esc(chairT)}`:""}`:`<b>[ชื่อประธานในพิธี]</b>`;
   const pz=k=>prize(k)||{},ldH=prShow("ld")?(c.ldHoles||[]):[],ntH=prShow("ntp")?(c.ntpHoles||[]):[];
   const T1=G.filter(t=>String(t.start)==="1"),T10=G.filter(t=>String(t.start)==="10");
-  const mem=t=>S.roster.players.filter(p=>String(p.team)===String(t.id)&&!/^รอยืนยัน/.test(cleanName(p.name))).map(p=>esc(cleanName(p.name))).join(" · ")||"(รอยืนยันรายชื่อ)";
+  const ppl=t=>S.roster.players.filter(p=>String(p.team)===String(t.id)&&real(p));
+  const mem=t=>ppl(t).map(p=>esc(cleanName(p.name))).join(" · ")||"(รอยืนยันรายชื่อ)";
+  const intro=pl=>`<b>${esc(cleanName(pl.name))}</b>${orgOf(pl)?` จาก ${esc(ORGLBL[orgOf(pl)]||orgOf(pl))}`:""}`;
   const first=[...G].map(t=>t.time).filter(Boolean).sort()[0];
-  // 1
+  const by={};P.forEach(x=>{const o=orgOf(x)||"";by[o]=(by[o]||0)+1;});const parts=ORGORDER.filter(o=>by[o]).map(o=>`${ORGLBL[o]} ${by[o]} ท่าน`);
+  // 1 welcome
   h("ต้อนรับ");cue("นักกอล์ฟรวมตัวที่จุดรวมพลหน้าหลุม 1 · เปิดเพลงเบา ๆ");
-  p(`สวัสดี${K} ท่านผู้บริหาร แขกผู้มีเกียรติ และนักกอล์ฟทุกท่าน ${ME}ขอต้อนรับทุกท่านสู่ <b>${esc(c.name||"P1D1 Golf Day 2026")}</b> ณ ${esc(CN)}${K}`);
-  {const by={};P.forEach(x=>{const o=orgOf(x)||"";by[o]=(by[o]||0)+1;});const parts=ORGORDER.filter(o=>by[o]).map(o=>`${ORGLBL[o]} ${by[o]} ท่าน`);
-   p(`ปีนี้เรามีนักกอล์ฟร่วมการแข่งขันทั้งหมด <span class="hl">${P.length} ท่าน</span> แบ่งเป็น ${G.length} ก๊วน${parts.length?` ได้แก่ ${parts.join(" ")}${by[""]?` และผู้มีเกียรติอีก ${by[""]} ท่าน`:""}`:""}${K}`);}
-  p(`อากาศดี สนามสวย กรีนกำลังดี เหลือแค่วงสวิงของทุกท่านที่ต้องพร้อมด้วย${K}`);
-  p(`ก่อนออกรอบ ${ME}ขอเวลาสั้น ๆ ราว 10 นาที สำหรับพิธีเปิด แนะนำกติกา รางวัล และถ่ายภาพร่วมกัน${K}`);
-  // 2
+  p(`สวัสดี${K} ท่านผู้บริหาร แขกผู้มีเกียรติ และนักกอล์ฟทุกท่าน ${ME}ขอต้อนรับทุกท่านสู่ <b>${esc(c.name||"P1D1 Golf Day 2026")}</b> ณ ${esc(CN)} ${K}`);
+  p(`ปีนี้เรามีนักกอล์ฟร่วมการแข่งขันทั้งหมด <span class="hl">${P.length} ท่าน</span> ใน ${G.length} ก๊วน${parts.length?` ได้แก่ ${parts.join(" ")}${by[""]?` และผู้มีเกียรติอีก ${by[""]} ท่าน`:""}`:""} ${K}`);
+  p(`ฟ้าเป็นใจ สนามพร้อม ธงปักรอแล้วทั้ง 18 หลุม สิ่งเดียวที่ยังไม่มีใครรู้คือ วันนี้ลูกแรกของแต่ละท่านจะไปทางไหน ${K}`);
+  p(`ก่อนออกรอบ ${ME}ขอเวลาราว 10 นาที สำหรับพิธีเปิด แนะนำรางวัล ถ่ายภาพร่วมกัน แล้วส่งทุกท่านขึ้นแท่นที ${K}`);
+  // 2 chairman
   h("ประธานกล่าวเปิด");
-  p(`ลำดับแรก ${ME}ขอเรียนเชิญ ${CH} ประธานในพิธี กล่าวเปิดการแข่งขัน${K} ขอเสียงปรบมือต้อนรับ${K}`);
+  p(`ลำดับแรก ${ME}ขอเรียนเชิญ ${CH} ประธานในพิธี กล่าวเปิดการแข่งขัน ${K} ขอเสียงปรบมือต้อนรับ ${K}`);
   cue("ประธานกล่าวเปิด · ทีมงานเตรียมไมค์และถ่ายภาพ");
-  p(`กราบขอบพระคุณ ${chair?esc(chair.replace(/\s.*$/,"")):"ท่านประธาน"}เป็นอย่างสูง${K} ได้รับพลังใจจากท่านประธานแบบนี้ เชื่อว่าวันนี้ทุกท่านคงตีได้ดีกว่ามาตรฐานแน่นอน${K}`);
-  // 3
-  h("กติกาการแข่งขัน");
-  p(`วันนี้เราใช้ระบบ <b>System 36</b> ซึ่งเป็นมิตรกับทุกระดับฝีมือ${K} หลักการง่าย ๆ คือ ทุกหลุมที่ทำได้พาร์หรือดีกว่า ได้ 2 แต้ม โบกี้ได้ 1 แต้ม ส่วนดับเบิลโบกี้ขึ้นไป 0 แต้ม`);
-  p(`เมื่อจบ 18 หลุม นำแต้มรวมไปหักจาก 36 ได้เป็นแฮนดิแคปของวันนี้ แล้วนำแฮนดิแคปไปหักจากสกอร์จริง ได้เป็น <b>สกอร์สุทธิ</b>${c.hcCap?` โดยแฮนดิแคปสูงสุดไม่เกิน ${esc(c.hcCap)}`:""}${K}`);
-  p(`พูดง่าย ๆ คือ ไม่ต้องตีดีที่สุดในสนาม แต่ให้ตีให้ดีกว่ามาตรฐานของตัวเอง ใครฟอร์มดีกว่าปกติ ก็มีลุ้นทุกคน${K}`);
-  if(prShow("team"))p(`ประเภททีม วัดจากสกอร์สุทธิ ${best} ใบที่ดีที่สุดใน 4 ท่านของก๊วน ก๊วนไหนรวมกันได้น้อยที่สุดคือแชมป์ ฉะนั้นทุกช็อตของทุกท่านมีความหมายต่อเพื่อนร่วมก๊วน${K}`);
-  p(`ทีมงานจะบันทึกสกอร์ในระบบออนไลน์ทุกหลุม ผลการคำนวณและวิธีคิดเปิดดูได้ในเว็บไซต์ของงาน โปร่งใสทุกแต้ม${K}`);
-  p(`ขอฝากเรื่องความเร็วในการเล่น ให้รักษาระยะห่างกับก๊วนข้างหน้า และขอความกรุณาปิดเสียงโทรศัพท์ระหว่างเพื่อนกำลังสวิง${K}`);
-  // 4
+  p(`กราบขอบพระคุณ ${chair?esc(chair.replace(/\s.*$/,"")):"ท่านประธาน"}เป็นอย่างสูง ${K} ได้กำลังใจจากท่านประธานแบบนี้ เชื่อว่าวันนี้ทุกท่านจะตีได้ดีกว่ามาตรฐานของตัวเองแน่นอน ${K}`);
+  // 3 prizes = rules
+  h("รางวัลวันนี้");
+  p(`ต่อไปเป็นช่วงที่ทุกท่านตั้งใจฟังที่สุด รางวัลของวันนี้ ${K}`);
+  let n=0;
+  if(prShow("team")){n++;
+    p(`<b>รางวัลที่ ${n} ชนะเลิศประเภททีม</b>${pz("team").item?` รับ ${esc(pz("team").item)}${pz("team").qty?` ${esc(noParen(pz("team").qty))}`:""}`:""}`);
+    p(`คิดคะแนนแบบ <b>System 36</b> ${K} ทุกหลุมที่ทำได้พาร์หรือดีกว่าได้ 2 แต้ม โบกี้ได้ 1 แต้ม ดับเบิลโบกี้ขึ้นไปไม่ได้แต้ม จบ 18 หลุม นำแต้มรวมไปหักจาก 36 ได้เป็นแฮนดิแคปของวันนี้ แล้วหักจากสกอร์จริง ได้เป็นสกอร์สุทธิ`);
+    p(`จากนั้นเลือก <b>สกอร์สุทธิที่ดีที่สุด ${best} ใบ จาก 4 ท่านในก๊วน</b> มารวมกัน ก๊วนที่ได้ผลรวมน้อยที่สุดคือแชมป์ ${K}`);
+    p(`แปลว่าในก๊วนเดียวกัน วันไหนใครพลาดไปหนึ่งคน เพื่อนอีก ${best} คนยังพาทีมไปต่อได้ ${ME}จึงขอแนะนำว่า ช่วยกันเชียร์ให้ทุกพัตต์ อย่าเพิ่งแซวเพื่อนจนกว่าจะส่งสกอร์การ์ด ${K}`);}
+  if(ntH.length){n++;
+    p(`<b>รางวัลที่ ${n} Nearest to Pin</b> ${ntH.length} หลุม คือหลุม ${ntH.join(", ")}${pz("ntp").item?` รับ ${esc(pz("ntp").item)}`:""}`);
+    p(`วัดจากทีช็อตแรกที่หยุดอยู่บนกรีนและใกล้ธงที่สุด ลูกที่ตกนอกกรีนไม่นับ ต่อให้ใกล้ธงแค่ไหนก็ตาม ${K}`);}
+  if(ldH.length){n++;
+    p(`<b>รางวัลที่ ${n} Longest Drive</b> หลุม ${ldH.join(", ")}${pz("ld").item?` รับ ${esc(pz("ld").item)}`:""}`);
+    p(`วัดจากไดรฟ์ที่ไกลที่สุดและต้องหยุดอยู่บนแฟร์เวย์ ไกลแค่ไหนแต่ถ้าลงรัฟ ก็ต้องเก็บความภูมิใจไว้คนเดียว ${K}`);}
+  if(prShow("ind")&&c.indOn!==false){n++;
+    p(`<b>รางวัลที่ ${n} ประเภทเดี่ยว</b> อันดับ 1 ถึง ${c.indPlaces||3} ของแต่ละ Flight${pz("ind").item?` รับ ${esc(pz("ind").item)}`:""} ใช้สกอร์สุทธิแบบเดียวกัน ถ้าเท่ากันดูแฮนดิแคปที่ต่ำกว่า แล้วดู 9 หลุมหลัง ${K}`);}
+  if(ntH.length||ldH.length)p(`ที่หลุมรางวัลจะมีป้ายและทีมงานคอยวัดระยะ ใครทีช็อตสวย ขอให้ยิ้มให้กล้องไว้ก่อนเลย ${K}`);
+  p(`ทีมงานบันทึกสกอร์ออนไลน์ทุกหลุม วิธีคิดคะแนนเปิดดูได้ในเว็บไซต์ของงาน โปร่งใสทุกแต้ม ${K}`);
+  {const lp=(LKC().prizes||[]).filter(x=>+x.qty>0),m=lp.reduce((a,x)=>a+(+x.qty||0),0);
+   if(m)p(`และของแถมสำหรับท่านที่อยู่ร่วมงานเลี้ยงช่วงค่ำ ยังมี <b>Lucky Draw</b> อีก ${m} รางวัล ได้แก่ ${lp.map(x=>esc(x.name)).join(" ")} รางวัลนี้ไม่ต้องใช้วงสวิง ขอแค่อยู่ในงาน ${K}`);}
+  p(`ฝากอีกนิด รักษาจังหวะการเล่นให้ทันก๊วนข้างหน้า และปิดเสียงโทรศัพท์ระหว่างเพื่อนกำลังสวิง ${K}`);
+  // 4 start
   h("การออกรอบ");
-  p(`วันนี้ออกรอบพร้อมกัน 2 จุด คือ <b>หลุม 1</b> และ <b>หลุม 10</b>${first?` เริ่มทีออฟก๊วนแรกเวลา <b>${esc(first)} น.</b>`:""}${K}`);
+  p(`วันนี้ออกรอบพร้อมกัน 2 จุด คือ <b>หลุม 1</b> และ <b>หลุม 10</b>${first?` ก๊วนแรกทีออฟเวลา <b>${esc(first)} น.</b>`:""} ${K}`);
   if(T1.length){p(`ก๊วนที่เริ่มหลุม 1`);T1.forEach(t=>p(`• ${esc(t.time||"รอเวลา")} — ${mem(t)}`));}
   if(T10.length){p(`ก๊วนที่เริ่มหลุม 10`);T10.forEach(t=>p(`• ${esc(t.time||"รอเวลา")} — ${mem(t)}`));}
-  // 5
-  h("รางวัลวันนี้");
-  const ov=[];
-  if(SHT0())ov.push(`<b>รางวัลชนะเลิศประเภททีม</b>${pz("team").item?` รับ ${esc(pz("team").item)}`:""}${pz("team").value?` มูลค่ารวม ${esc(pz("team").value)}`:""}`);
-  if(ntH.length)ov.push(`<b>Nearest to Pin</b> ทีช็อตใกล้ธงที่สุด หลุม ${ntH.join(", ")} ลูกต้องอยู่บนกรีน${pz("ntp").item?` รับ ${esc(pz("ntp").item)}`:""}`);
-  if(ldH.length)ov.push(`<b>Longest Drive</b> ไดรฟ์ไกลที่สุด หลุม ${ldH.join(", ")} ลูกต้องอยู่บนแฟร์เวย์${pz("ld").item?` รับ ${esc(pz("ld").item)}`:""}`);
-  if(prShow("ind")&&c.indOn!==false)ov.push(`<b>ประเภทเดี่ยว</b> อันดับ 1 ถึง ${c.indPlaces||3} ของแต่ละ Flight`);
-  p(`วันนี้มีรางวัลให้ลุ้น ${ov.length} ประเภท${K}`);ov.forEach((t,i)=>p(`${i+1}. ${t}`));
-  if(ntH.length||ldH.length)p(`ที่หลุมรางวัลจะมีป้ายและทีมงานคอยวัดระยะ ใครทีช็อตสวย ขอให้ยิ้มให้กล้องไว้ก่อนเลย${K}`);
-  {const lp=(LKC().prizes||[]).filter(x=>+x.qty>0),n=lp.reduce((a,x)=>a+(+x.qty||0),0);
-   if(n)p(`และสำหรับท่านที่อยู่ร่วมงานเลี้ยงช่วงค่ำ ยังมี <b>Lucky Draw</b> อีก ${n} รางวัล ได้แก่ ${lp.map(x=>esc(x.name)).join(" ")} ตีกอล์ฟเสร็จแล้วอย่าเพิ่งรีบกลับนะ${K}`);}
-  // 6
+  // 5 group photo
   h("ถ่ายภาพรวม");cue("ทีมงานจัดแถวถ่ายภาพหน้าหลุม 1 · ประธานอยู่กลาง");
-  p(`ก่อนแยกย้ายไปที่รถกอล์ฟ ขอเรียนเชิญท่านประธานและนักกอล์ฟทุกท่าน มาถ่ายภาพหมู่ร่วมกันที่หน้าหลุม 1 ${K}`);
-  p(`แถวหน้าขอเป็นท่านผู้บริหาร แถวหลังยืนเรียงตามสะดวก ขอรอยยิ้มแบบที่เพิ่งพัตต์ลงเบอร์ดี้${K}`);
-  pause();p(`หนึ่ง สอง สาม... ขออีกหนึ่งภาพ ขอท่าชูไม้กอล์ฟ หนึ่ง สอง สาม ขอบคุณ${K}`);
-  // 7
-  h("ถ่ายรูปก๊วนที่หลุม 1");cue("ทีมงานเรียกทีละก๊วน · ช่างภาพประจำจุดหลุม 1");
-  p(`ต่อไปเป็นภาพประจำก๊วนที่หลุม 1 ${K} ${ME}จะเรียนเชิญทีละก๊วน${T10.length?" ขอเริ่มจากก๊วนที่ออกหลุม 10 ก่อน เพื่อให้มีเวลาขึ้นรถไปหลุม 10":""}`);
-  [...T10,...T1].forEach(t=>p(`• ก๊วน ${esc(grpLabel(t))}: ${mem(t)}`));
-  p(`ถ่ายภาพเสร็จแล้ว ก๊วนหลุม 10 ขึ้นรถกอล์ฟได้เลย ส่วนก๊วนหลุม 1 รอเรียกตามเวลาทีออฟ${K}`);
-  // 8
+  p(`ขอเรียนเชิญท่านประธานและนักกอล์ฟทุกท่าน ถ่ายภาพหมู่ร่วมกันที่หน้าหลุม 1 ${K}`);
+  p(`แถวหน้าขอเป็นท่านผู้บริหาร แถวหลังยืนตามสะดวก ขอรอยยิ้มแบบที่เพิ่งพัตต์ลงเบอร์ดี้ ${K}`);
+  pause();p(`หนึ่ง สอง สาม... ขออีกภาพ ท่าชูไม้กอล์ฟ หนึ่ง สอง สาม ขอบคุณ ${K}`);
+  // 6 per-group photo + first tee announcer
+  h("ถ่ายรูปก๊วนที่หลุม 1");cue("ช่างภาพประจำแท่นทีหลุม 1 · พิธีกรประกาศชื่อแบบผู้ประกาศหน้าแท่นที");
+  p(`ต่อไปเป็นภาพประจำก๊วนที่แท่นทีหลุม 1 ${K} ${ME}จะประกาศชื่อแบบสนามแข่งขันอาชีพ${T10.length?` ขอเริ่มจากก๊วนที่ออกหลุม 10 ก่อน เพื่อให้มีเวลาขึ้นรถไปหลุม 10`:""}`);
+  [...T10,...T1].forEach(t=>{const m=ppl(t);if(!m.length){p(`• ก๊วน ${esc(grpLabel(t))}: (รอยืนยันรายชื่อ)`);return;}
+    p(`• <b>ก๊วน ${esc(grpLabel(t))}</b>${t.time?` ทีออฟ ${esc(t.time)} น.`:""} ขอต้อนรับสู่แท่นที ${m.map(intro).join(" · ")} ขอเสียงปรบมือ ${K}`);});
+  p(`ถ่ายภาพเสร็จแล้ว ก๊วนหลุม 10 ขึ้นรถกอล์ฟได้เลย ส่วนก๊วนหลุม 1 รอเรียกตามเวลาทีออฟ ${K}`);
+  // 7 send off
   h("ส่งนักกอล์ฟออกรอบ");
-  p(`ขอให้ทุกท่านสนุกกับเกมวันนี้ ตีตรง ไกล แม่น และลูกไม่ลงน้ำ${K} พบกันอีกครั้งที่คลับเฮาส์ตอนประกาศรางวัล${K}`);
-  p(`ขอเชิญก๊วนแรก ${T1[0]?esc(grpLabel(T1[0])):""} เตรียมตัวที่แท่นทีหลุม 1 ได้เลย${K} ขอให้ทุกท่านโชคดี${K}`);
+  p(`ขอให้ทุกท่านสนุกกับเกมวันนี้ ตีตรง ไกล แม่น และลูกไม่ลงน้ำ ${K} พบกันอีกครั้งที่คลับเฮาส์ตอนประกาศรางวัล ${K}`);
+  if(T1[0]){const m=ppl(T1[0]);p(`และนี่คือช็อตแรกของ ${esc(c.name||"P1D1 Golf Day 2026")} ${K} ขอเชิญก๊วน ${esc(grpLabel(T1[0]))} ขึ้นแท่นทีหลุม 1${m[0]?` ผู้ตีลูกแรกของวันนี้ ${intro(m[0])}`:""} ขอให้ทุกท่านโชคดี ${K}`);}
   return L;}
 function SHT0(){return prShow("team");}
 function mcScript(){
@@ -2294,7 +2300,7 @@ function mcScript(){
   const card=pl=>{if(!pl)return "";const r=calc(pl);if(!r.done)return `สกอร์ยังบันทึกไม่ครบ 18 หลุม (${r.thru}/18)`;
     const sc=S.scores[pl.id]||[],out=sc.slice(0,9).reduce((a,b)=>a+(+b||0),0),inn=sc.slice(9).reduce((a,b)=>a+(+b||0),0);
     return `สกอร์ 9 หลุมแรก <b>${out}</b> · 9 หลุมหลัง <b>${inn}</b> · รวม <b>${r.gross}</b> คิดเป็น <span class="hl">${ovp(r.gross)}</span>`;};
-  const pz=k=>prize(k)||{};
+  const pz=k=>({...(prize(k)||{}),value:""});
   if(!prShow("ind"))d.indOn=false;if(!prShow("ld"))d.ld=[];if(!prShow("ntp"))d.ntp=[];
   const ldH=prShow("ld")?(c.ldHoles||[]):[],ntH=prShow("ntp")?(c.ntpHoles||[]):[];
   // 1. opening
