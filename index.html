@@ -1319,6 +1319,7 @@ $("dsGuests").onchange=e=>{const sel=e.target;if(sel.dataset.dtb){setTable(sel.d
 $("dsTables").onchange=e=>{const el=e.target;
   if(el.dataset.dts){const t=S.dt.find(x=>x.id===el.dataset.dts);if(t){t.seats=Math.max(2,Math.min(20,+el.value||10));saveDT();renderDS();}}
   else if(el.dataset.dtn){const t=S.dt.find(x=>x.id===el.dataset.dtn);if(t){t.name=el.value.trim()||t.name;saveDT();renderDS();toast("บันทึกชื่อโต๊ะแล้ว");}}};
+$("dsTables").addEventListener("click",e=>{if(e.target.id==="dPmX"){S.config={...S.config,dnPlanMiss:[]};saveConfig();renderDS();}});
 $("dsTables").onclick=e=>{const b=e.target.closest("button[data-dtd]");if(!b)return;const t=S.dt.find(x=>x.id===b.dataset.dtd),n=allGuests().filter(x=>x.tb===t.id).length;
   if(!confirm(`ลบ ${t.name}?${n?` แขก ${n} คนในโต๊ะนี้จะกลับไปอยู่ในรายการ ยังไม่มีโต๊ะ`:""}`))return;
   allGuests().filter(x=>x.tb===t.id).forEach(x=>setTable(x.gid,""));S.dt=S.dt.filter(x=>x.id!==t.id);saveDT();renderDS();};
@@ -1857,7 +1858,17 @@ const DN_ONLY26=["คุณบุรณิน รัตนสมบัติ", "
 function applyOnly26(){const keep=new Set(DN_ONLY26.map(nkey));
   DN_SEED.filter(r=>!/golf/i.test(r[2])).forEach(r=>{const k=nkey(r[0]),e=Object.entries(S.dg).find(([id,g])=>!g.pid&&nkey(g.n||"")===k);if(!e)return;
     if(keep.has(k))dgSet(e[0],{no:false,pd:false});else if(!e[1].no||e[1].pd)dgSet(e[0],{no:true,pd:false,tb:""});});}
-function maybeSeed(){const v=+S.config.dnSeed||0;if(v>=3)return;if(v<1)importRows(DN_SEED);if(v<2)importRows(DN_SEED2);applyOnly26();S.config={...S.config,dnSeed:3};saveConfig();render();}
+// 27 พ.ย.: ผังโต๊ะจากภาพที่ส่งมา (ชื่อขึ้นต้น @ = เพิ่มเป็นแขกใหม่)
+const DN_PLAN=[["VIP 1", 8, ["คุณประสงค์", "คุณอิทธิพล", "คุณชานนท์", "คุณคงกระพัน", "คุณชาญศิลป์", "คุณพงศธร", "คุณนิธิ"]], ["VIP 2", 8, ["คุณไวธยางค์", "คุณปิยะวัฒน์", "คุณคุณาธิป", "คุณจตุรงค์", "คุณบุรณิน", "คุณชญาน์", "คุณพิลาสพรรณ"]], ["VIP 3", 8, ["คุณมนตรี", "คุณวนิดา", "คุณพนิดา", "คุณพงษ์พันธุ์", "คุณนิสิต", "คุณศุภศจี", "คุณพรรคพงษ์"]], ["VIP 4", 10, ["คุณไพศาล", "คุณทรงพล", "คุณรชา", "คุณไกรพิท", "คุณขจร", "คุณสุชีลา", "คุณอัจฉริยา"]], ["1", 12, ["@เลขา รธท.", "@เลขาพี่บอย", "@เลขา ปธบ.", "@เลขา ผผท."]], ["3", 12, []], ["4", 12, []]];
+function findGuest(n){const g=given(n),gs=g.replace(THMARK,"");const A=allGuests(true);
+  let c=A.filter(x=>given(x.name)===g||given(x.name).replace(THMARK,"")===gs);if(c.length!==1&&g.length>3)c=A.filter(x=>lev(given(x.name),g)<=1);return c.length===1?c[0]:null;}
+function applyPlan(){const miss=[];
+  DN_PLAN.forEach(([name,seats,people])=>{let t=S.dt.find(x=>x.name===name);if(!t){t={id:"t"+hashId(name),name,seats};S.dt=[...S.dt,t];}else t.seats=seats;
+    people.forEach(n=>{if(n[0]==="@"){const nm=n.slice(1),gid="s"+hashId(nkey(nm));S.dg[gid]={...(S.dg[gid]||{pid:"",t:"",o:"",in:"",ts:Date.now()}),n:nm,tb:t.id,no:false,pd:false};saveDG(gid);return;}
+      const x=findGuest(n);if(!x){miss.push(n+" ("+name+")");return;}dgSet(x.gid,{tb:t.id,no:false,pd:false});});});
+  saveDT();return miss;}
+function maybeSeed(){const v=+S.config.dnSeed||0;if(v>=4)return;if(v<1)importRows(DN_SEED);if(v<2)importRows(DN_SEED2);if(v<3)applyOnly26();
+  const miss=applyPlan();S.config={...S.config,dnSeed:4,dnPlanMiss:miss};saveConfig();render();}
 async function importXlsx(file){
   if(!window.ExcelJS)await loadScript("vendor/exceljs.min.js");
   let buf=await file.arrayBuffer();
@@ -1991,11 +2002,12 @@ function renderDT(){
 // ตั้งค่า: โต๊ะ + แขก
 function renderDS(){
   const G=allGuests();
-  $("dsTables").innerHTML=S.dt.length?`<div class="dst">${S.dt.map(t=>{const n=G.filter(x=>x.tb===t.id).length;return `<div class="dstr">
+  const pm=(S.config.dnPlanMiss||[]);
+  $("dsTables").innerHTML=(pm.length?`<p class="lkwarn">จัดโต๊ะจากผังไม่ได้ เพราะหาชื่อไม่เจอ: ${pm.map(esc).join(", ")} · เลือกโต๊ะให้เองในรายชื่อด้านล่าง <button class="dmore" id="dPmX">ซ่อน</button></p>`:"")+(S.dt.length?`<div class="dst">${S.dt.map(t=>{const n=G.filter(x=>x.tb===t.id).length;return `<div class="dstr">
       <input type="text" value="${esc(t.name)}" data-dtn="${t.id}" aria-label="ชื่อโต๊ะ">
       <label class="meta">ที่นั่ง <input type="number" min="2" max="20" value="${t.seats}" data-dts="${t.id}"></label>
       <span class="meta${n>(+t.seats||10)?" bad":""}">${n}/${t.seats} คน</span>
-      <button class="btn sec sm" data-dtd="${t.id}">ลบ</button></div>`;}).join("")}</div>`:`<p class="meta">ยังไม่มีโต๊ะ กด เพิ่มโต๊ะ ได้เลย เพิ่มหรือลดได้ตลอด</p>`;
+      <button class="btn sec sm" data-dtd="${t.id}">ลบ</button></div>`;}).join("")}</div>`:`<p class="meta">ยังไม่มีโต๊ะ กด เพิ่มโต๊ะ ได้เลย เพิ่มหรือลดได้ตลอด</p>`);
   if(dgEdit){const x=dgEdit==="new"?null:gv(dgEdit);const g=x?x.g:{};
     $("dgForm").innerHTML=`<div class="dform"><h3>${x?"แก้ไข "+esc(x.name):"เพิ่มแขก Dinner"}</h3>
       ${x&&x.golf?`<p class="meta" style="margin-top:-4px">ชื่อและตำแหน่งดึงจากรายชื่อกอล์ฟ แก้ได้ที่หน้าตั้งค่าของเว็บกอล์ฟ</p>`:`
