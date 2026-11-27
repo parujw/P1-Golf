@@ -640,6 +640,7 @@ header .hd{position:relative}
 .lkseg button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:600;font-size:14px;cursor:pointer;color:var(--ink)}
 .lkseg button b{margin-left:4px;color:var(--mute);font-weight:600}.lkseg button.on{background:var(--navy);border-color:var(--navy);color:#fff}.lkseg button.on b{color:#f2c94c}
 .lkwarn{margin:-2px 0 10px;font-size:13px;color:#a2471a}.lkpeople .lkin{font-style:normal;color:var(--good);font-weight:700;margin-left:auto}
+.dmore.del{color:var(--red)}
 </style>
 </head>
 <body>
@@ -1301,7 +1302,13 @@ function toggleIn(gid){const x=gv(gid);if(!x)return;const on=!x.in;
   toast(`${x.name} · ${on?"ร่วมดินเนอร์แล้ว":"ยกเลิกร่วมดินเนอร์"}`);render();}
 $("dgBody").onclick=e=>{const b=e.target.closest("[data-dck]");if(b)toggleIn(b.dataset.dck);};
 $("dtBody").onclick=e=>{const b=e.target.closest("[data-dck]");if(b)toggleIn(b.dataset.dck);};
-$("dsGuests").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+function dgKill(gid){delete S.dg[gid];saveDG(gid);}
+$("dsGuests").onclick=async e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.id==="dDelNo"){const L=allGuests(true).filter(x=>x.g.no&&!x.golf);if(await confirmBox(`ลบรายชื่อที่ไม่เข้าร่วม ${L.length} คนออกจากระบบ? (ผู้เล่นกอล์ฟยังอยู่ในรายชื่อกอล์ฟ)`)){L.forEach(x=>dgKill(x.gid));renderDS();toast(`ลบ ${L.length} รายชื่อแล้ว`);}return;}
+  if(b.dataset.dkill){const x=gv(b.dataset.dkill);if(x&&await confirmBox(`ลบ ${x.name} ออกจากระบบ?`)){dgKill(x.gid);renderDS();toast("ลบแล้ว");}return;}
+  if(b.dataset.ddel){const x=gv(b.dataset.ddel);if(!x)return;
+    if(x.golf){if(await confirmBox(`${x.name} เป็นผู้เล่นกอล์ฟ จะตั้งเป็น "ไม่เข้าร่วม Dinner" (ยังอยู่ในรายชื่อกอล์ฟ)?`)){dgSet(x.gid,{no:true,tb:""});if(x.in)setStage([x.pid],"dinner",false);renderDS();toast(`${x.name} · ไม่เข้าร่วม Dinner`);}}
+    else if(await confirmBox(`ลบ ${x.name} ออกจากรายชื่อ Dinner?`)){dgKill(x.gid);renderDS();toast("ลบแล้ว");}return;}
   if(b.dataset.dyes){dgSet(b.dataset.dyes,{pd:false,no:false});toast(`${gv(b.dataset.dyes).name} · ยืนยันร่วม Dinner`);renderDS();}
   else if(b.dataset.dnox){dgSet(b.dataset.dnox,{pd:false,no:true});toast(`${gv(b.dataset.dnox).name} · ไม่เข้าร่วม`);renderDS();}
   else if(b.dataset.dback){dgSet(b.dataset.dback,{no:false});const x=gv(b.dataset.dback);toast(`${x.name} · กลับมาร่วม Dinner`);renderDS();}
@@ -1999,9 +2006,9 @@ function renderDS(){
   $("dsGuests").innerHTML=(L.length?`<div class="dlist">${L.map(x=>`<div class="dgr">
     <button class="dph" data-dph="${x.gid}" title="เปลี่ยนรูป">${av(x.ph)}<i>เปลี่ยนรูป</i></button>
     <div class="dgn"><b>${esc(x.name)}</b>${x.golf?`<span class="dgolf">กอล์ฟ</span>`:""}${x.test?`<span class="dtest">ทดสอบ</span>`:""}<div class="meta">${guestMeta(x)}</div>${x.al?`<div class="dal">อาหาร: ${esc(x.al)}</div>`:""}</div>
-    <div class="dgc">${tbSelect(x)}<button class="dmore" data-ded="${x.gid}">แก้ไข</button></div></div>`).join("")}</div>`:`<p class="meta">ไม่พบรายชื่อ</p>`)
+    <div class="dgc">${tbSelect(x)}<button class="dmore" data-ded="${x.gid}">แก้ไข</button><button class="dmore del" data-ddel="${x.gid}" title="${x.golf?"ไม่เข้าร่วม Dinner":"ลบออกจากรายชื่อ"}">ลบ</button></div></div>`).join("")}</div>`:`<p class="meta">ไม่พบรายชื่อ</p>`)
     +(PD.length?`<h3 class="dnoh">รอตอบรับ (${PD.length})</h3><div class="dlist">${PD.map(x=>`<div class="dgr">${av(x.ph)}<div class="dgn"><b>${esc(x.name)}</b><div class="meta">${guestMeta(x)}</div></div><div class="dgc"><button class="btn sm" data-dyes="${x.gid}">ยืนยันร่วม</button><button class="btn sec sm" data-dnox="${x.gid}">ไม่เข้าร่วม</button></div></div>`).join("")}</div>`:"")
-    +(NO.length?`<h3 class="dnoh">ไม่เข้าร่วม Dinner (${NO.length})</h3><div class="dlist">${NO.map(x=>`<div class="dgr no">${av(x.ph)}<div class="dgn"><b>${esc(x.name)}</b><div class="meta">${guestMeta(x)}</div></div><div class="dgc"><button class="btn sec sm" data-dback="${x.gid}">กลับมาร่วม</button></div></div>`).join("")}</div>`:"");
+    +(NO.length?`<div class="row" style="margin:16px 0 8px"><h3 class="dnoh" style="margin:0">ไม่เข้าร่วม Dinner (${NO.length})</h3>${NO.some(x=>!x.golf)?`<button class="btn sec sm" id="dDelNo" style="margin-left:auto;color:var(--red)">ลบรายชื่อที่ไม่เข้าร่วมทั้งหมด</button>`:""}</div><div class="dlist">${NO.map(x=>`<div class="dgr no">${av(x.ph)}<div class="dgn"><b>${esc(x.name)}</b>${x.golf?`<span class="dgolf idle">กอล์ฟ</span>`:""}<div class="meta">${guestMeta(x)}</div></div><div class="dgc"><button class="btn sec sm" data-dback="${x.gid}">กลับมาร่วม</button>${x.golf?"":`<button class="dmore del" data-dkill="${x.gid}">ลบ</button>`}</div></div>`).join("")}</div>`:"");
 }
 function setTable(gid,tb){dgSet(gid,{tb:tb||""});}
 async function downloadDinnerXls(btn){
