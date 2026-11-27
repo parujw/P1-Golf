@@ -1456,6 +1456,8 @@ function slideList(){
 }
 const ORGNAME={PTT:"PTT",PTTEP:"PTTEP",GC:"GC",TOP:"Thaioil",IRPC:"IRPC",OR:"OR"};
 // estimate font size so text fits on one line (Thai combining marks don't take width)
+function firstOnly(n){const t=String(n||"").trim().split(/\s+/);if(t.length<2)return t[0]||"";return /\.$|^(พลเอก|พลอากาศเอก|พลเรือเอก|พลตำรวจเอก|ร้อยตำรวจเอก|ดร\.?|นาย|นาง|นางสาว)$/.test(t[0])?t[0]+" "+t[1]:t[0];}
+function pairName(n){const r=shortRank(n);return S.config.pairNoSur?firstOnly(r):r;}
 function shortRank(n){return cleanName(n).replace(/^พลอากาศเอก\s*/,"พล.อ.อ. ").replace(/^พลเรือเอก\s*/,"พล.ร.อ. ").replace(/^พลตำรวจเอก\s*/,"พล.ต.อ. ").replace(/^พลเอก\s*/,"พล.อ. ").replace(/^ร้อยตำรวจเอก\s*/,"ร.ต.อ. ");}
 let _mctx=null;function fitPx(t,width,max,min,weight){try{_mctx=_mctx||document.createElement("canvas").getContext("2d");for(let f=max;f>=min;f-=.5){_mctx.font=`${weight||700} ${f}px Anuphan, sans-serif`;if(_mctx.measureText(String(t||"")).width<=width)return f;}return min;}catch(e){return fitFont(t,width,max,min);}}
 function fitFont(t,width,max,min){const n=String(t||"").replace(/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/g,"").length||1;return Math.max(min,Math.min(max,Math.floor(width/(n*0.56))));}
@@ -2058,14 +2060,14 @@ function grpLabel(t){const m=String(t.name).match(/^\s*(\d+\/\d+)/);return m?m[1
 function pairingHTML(){
   const side=groupsBySide(), rows=Math.max(1,side.L.length,side.R.length), sc=Math.min(1,755/(rows*200));
   const col=(arr,left)=>`<div class="col" style="left:${left}px;transform:scale(${sc});transform-origin:0 0">${arr.map(g=>`<div class="grp"><div class="pill">${esc(grpLabel(g.t))} TEE OFF ${esc(fmtTime(g.t.time))}</div>
-    <div class="mem">${g.mem.slice(0,4).map(p=>{const src=photoSrc(p);return `<div class="m">${src?`<img src="${src}" alt="">`:`<span class="ph">${esc(cleanName(p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ร้อยตำรวจเอก)\s*/,"").slice(0,1))}</span>`}<div class="tx"><b style="font-size:${fitPx(shortRank(p.name),180,17,10)}px">${esc(shortRank(p.name))}</b>${p.title?`<small style="font-size:${fitPx(p.title,176,14,9,600)}px">${esc(p.title)}</small>`:""}</div></div>`;}).join("")}</div></div>`).join("")}</div>`;
+    <div class="mem">${g.mem.slice(0,4).map(p=>{const src=photoSrc(p);return `<div class="m">${src?`<img src="${src}" alt="">`:`<span class="ph">${esc(cleanName(p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ร้อยตำรวจเอก)\s*/,"").slice(0,1))}</span>`}<div class="tx"><b style="font-size:${fitPx(pairName(p.name),180,S.config.pairNoSur?21:17,10)}px">${esc(pairName(p.name))}</b>${p.title?`<small style="font-size:${fitPx(p.title,176,14,9,600)}px">${esc(p.title)}</small>`:""}</div></div>`;}).join("")}</div></div>`).join("")}</div>`;
   const bg=(S.pr["pairing-bg"]||{}).img;
   return `<div class="pg"><img class="pgbg" src="${bg||"img/course_bg.jpg"}" alt=""><div class="pgsh"></div><div class="hdr"><div class="t"><img src="img/logo_p1d1.png" alt="" style="height:86px"><span class="gd">GOLF DAY <b>2026</b></span></div><div class="lg2">${LOGOSTRIP}</div></div>${col(side.L,30)}${col(side.R,810)}</div>`;
 }
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(view==="pair")renderPair();});
 function renderPair(){
   const hasBg=!!(S.pr["pairing-bg"]||{}).img;
-  $("pairBgCtl").innerHTML=S.canWrite?`<button class="btn sm sec" id="pairBgUp">🏞️ ${hasBg?"เปลี่ยน":"อัปโหลด"}ภาพพื้นหลังสนาม</button>${hasBg?`<button class="btn sm sec" id="pairBgDel">ใช้ภาพวาดสนามแทน</button>`:""}<span class="meta">แนะนำภาพแนวนอนของสนามราชพฤกษ์</span>`:"";
+  $("pairBgCtl").innerHTML=(S.canWrite?`<label class="psl" style="margin-right:6px"><input type="checkbox" id="pairNoSur" ${S.config.pairNoSur?"checked":""}>ไม่แสดงนามสกุล</label>`:"")+(S.canWrite?`<button class="btn sm sec" id="pairBgUp">🏞️ ${hasBg?"เปลี่ยน":"อัปโหลด"}ภาพพื้นหลังสนาม</button>${hasBg?`<button class="btn sm sec" id="pairBgDel">ใช้ภาพวาดสนามแทน</button>`:""}<span class="meta">แนะนำภาพแนวนอนของสนามราชพฤกษ์</span>`:"");
   const w=$("pairSlide");w.innerHTML=pairingHTML();fitSlides(w.parentElement);
   const side=groupsBySide();
   $("pairList").innerHTML=[...side.L,...side.R].map(g=>`<div class="card"><h2>⛳ ${esc(grpLabel(g.t))} · Tee off ${esc(fmtTime(g.t.time))} <span class="meta">(ออกหลุม ${esc(g.t.start||"-")})</span></h2>${g.mem.map(p=>`<div class="who" style="padding:6px 0">${av(p)}<div><div class="nm">${esc(p.name)}</div><div class="meta">${lg(p)}${esc(p.title||"")}</div></div></div>`).join("")}</div>`).join("");
@@ -2075,6 +2077,7 @@ $("prPdf").onclick=e=>downloadPDF(e.target);
 $("pairPdf").onclick=e=>downloadPDF(e.target,{awards:false,file:"P1D1-Pairing.pdf"});
 $("prPptx").onclick=e=>downloadPPTX(e.target);
 $("pairBgCtl").addEventListener("click",e=>{
+  if(e.target.id==="pairNoSur"){S.config={...S.config,pairNoSur:e.target.checked};saveConfig();renderPair();toast(e.target.checked?"ซ่อนนามสกุลแล้ว":"แสดงนามสกุลแล้ว");return;}
   if(e.target.id==="pairBgUp"){prTarget="pairing-bg";$("prFile").value="";$("prFile").click();}
   if(e.target.id==="pairBgDel"){S.pr["pairing-bg"]={img:"",title:""};savePR("pairing-bg");renderPair();}
 });
