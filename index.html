@@ -1840,7 +1840,12 @@ function importRows(rows){const R={add:0,upd:0,no:0,pd:0,golf:0,miss:[]};
   return R;}
 // รายชื่อเพิ่มเติม 27 พ.ย. (รายชื่อที่วางมาในแชต): เพิ่มคุณจันทนา มณีรัตน์
 const DN_SEED2=[["คุณจันทนา มณีรัตน์","","Dinner","","Join","",""]];
-function maybeSeed(){const v=+S.config.dnSeed||0;if(v>=2)return;if(v<1)importRows(DN_SEED);importRows(DN_SEED2);S.config={...S.config,dnSeed:2};saveConfig();render();}
+// 27 พ.ย.: แขก Dinner (ไม่นับผู้เล่นกอล์ฟ) ให้เหลือเฉพาะ 26 คนนี้ คนอื่นจากไฟล์ v1 ตั้งเป็นไม่เข้าร่วม
+const DN_ONLY26=["คุณบุรณิน รัตนสมบัติ", "คุณจตุรงค์ วรวิทย์สุรวัฒนา", "คุณอัจฉริยา เจริญศักดิ์", "คุณมนตรี ศิลปอาชา", "คุณขจร รุ่งสฤษศักดิ์", "คุณกีรติ เลิศวศิน", "คุณธนนท์ กตัญญู", "คุณสิทธิเดช สิทธิประณีต", "คุณนันทพร ศุภกุล", "คุณดวงเดือน ธีรกุล", "คุณเจิมขวัญ ณ บางช้าง", "คุณเตชิน อรุณากูร", "คุณธิดารัตน์ ทุมมากรณ์", "คุณปิติพงศ์ เย็นจิตต์", "คุณศิริชัย จิระพงษ์พันธ์", "คุณคุณาธิป ภาสุวณิชยพงศ์", "คุณวโรภาส กิมชูวาณิช", "คุณพรชนินทร์ ออรุ่งโรจน์", "คุณสฤษดิ์ โชติชาครพันธุ์", "คุณพิมพ์ชนก สกลวารี", "คุณวนิดา อุทัยสมนภา", "คุณวันดี บรรยงคะรัติ", "คุณขวัญชัย เหลืองชัยชาญ", "คุณกิ่งกาญจน์ มานะชำนิ", "คุณสุธีร์ กีปทอง", "คุณจันทนา มณีรัตน์"];
+function applyOnly26(){const keep=new Set(DN_ONLY26.map(nkey));
+  DN_SEED.filter(r=>!/golf/i.test(r[2])).forEach(r=>{const k=nkey(r[0]),e=Object.entries(S.dg).find(([id,g])=>!g.pid&&nkey(g.n||"")===k);if(!e)return;
+    if(keep.has(k))dgSet(e[0],{no:false,pd:false});else if(!e[1].no||e[1].pd)dgSet(e[0],{no:true,pd:false,tb:""});});}
+function maybeSeed(){const v=+S.config.dnSeed||0;if(v>=3)return;if(v<1)importRows(DN_SEED);if(v<2)importRows(DN_SEED2);applyOnly26();S.config={...S.config,dnSeed:3};saveConfig();render();}
 async function importXlsx(file){
   if(!window.ExcelJS)await loadScript("vendor/exceljs.min.js");
   let buf=await file.arrayBuffer();
