@@ -211,11 +211,11 @@ table.tm tr.c td:first-child{border-left:3px solid var(--good)}
 .pg .pill{display:inline-flex;align-items:center;gap:14px;background:linear-gradient(90deg,#d9f0ff,#8fc2ff);border-radius:999px;padding:4px 34px;font-weight:800;font-size:38px;color:#0b1440;box-shadow:0 4px 12px #0003}
 .pg .pill .bd{display:inline-block;background:#1b2a6b;color:#fff;border-radius:999px;padding:2px 16px;font-size:30px;line-height:1.3;font-style:italic}
 .pg .mem{display:flex;gap:6px;margin-top:8px}
-.pg .m{display:flex;align-items:center;gap:7px;width:188px}
+.pg .m{display:flex;flex-direction:column;align-items:center;gap:4px;width:188px;text-align:center}
 .pg .m img,.pg .m .ph{width:82px;height:82px;border-radius:50%;border:4px solid #fff;object-fit:cover;flex:none;background:#dfe6f3;box-shadow:0 4px 10px #0004}
 .pg .m .ph{display:grid;place-items:center;font-size:34px;font-weight:700;color:#1b2a6b}
-.pg .m .tx{font-size:16px;word-break:keep-all;font-weight:700;color:#fff;text-shadow:0 1px 3px #000a;line-height:1.25}
-.pg .m .tx small{display:block;font-size:13px;font-weight:600;opacity:.95}
+.pg .m .tx{width:186px;font-weight:700;color:#fff;text-shadow:0 1px 3px #000a;line-height:1.25}.pg .m .tx b{display:block;white-space:nowrap;font-weight:700}
+.pg .m .tx small{display:block;white-space:nowrap;font-weight:600;opacity:.95}
 
 /* ===== PR themes ===== */
 .sl.th .stripe,.sl.th .stripe2{display:none}
@@ -1456,6 +1456,8 @@ function slideList(){
 }
 const ORGNAME={PTT:"PTT",PTTEP:"PTTEP",GC:"GC",TOP:"Thaioil",IRPC:"IRPC",OR:"OR"};
 // estimate font size so text fits on one line (Thai combining marks don't take width)
+function shortRank(n){return cleanName(n).replace(/^พลอากาศเอก\s*/,"พล.อ.อ. ").replace(/^พลเรือเอก\s*/,"พล.ร.อ. ").replace(/^พลตำรวจเอก\s*/,"พล.ต.อ. ").replace(/^พลเอก\s*/,"พล.อ. ").replace(/^ร้อยตำรวจเอก\s*/,"ร.ต.อ. ");}
+let _mctx=null;function fitPx(t,width,max,min,weight){try{_mctx=_mctx||document.createElement("canvas").getContext("2d");for(let f=max;f>=min;f-=.5){_mctx.font=`${weight||700} ${f}px Anuphan, sans-serif`;if(_mctx.measureText(String(t||"")).width<=width)return f;}return min;}catch(e){return fitFont(t,width,max,min);}}
 function fitFont(t,width,max,min){const n=String(t||"").replace(/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/g,"").length||1;return Math.max(min,Math.min(max,Math.floor(width/(n*0.56))));}
 function slidePrize(s){const k={p:"ind",t:"team",l:"ld",n:"ntp"}[s.kind];const p=prize(k);if(!p||(s.kind==="p"||s.kind==="t")&&s.rank>0&&k!=="ind")return "";
   return `<div class="prize">${PRIZEIMG[k]?`<img src="${PRIZEIMG[k]}" alt="">`:""}<div><b>🎁 ${esc(p.item||"")}</b><small>${p.by?`มอบโดย ${esc(p.by)}`:""}</small></div></div>`;}
@@ -2054,12 +2056,13 @@ async function downloadDinnerXls(btn){
 }
 function grpLabel(t){const m=String(t.name).match(/^\s*(\d+\/\d+)/);return m?m[1]:t.name;}
 function pairingHTML(){
-  const side=groupsBySide(), rows=Math.max(4,side.L.length,side.R.length), sc=Math.min(1,4/rows);
+  const side=groupsBySide(), rows=Math.max(1,side.L.length,side.R.length), sc=Math.min(1,755/(rows*200));
   const col=(arr,left)=>`<div class="col" style="left:${left}px;transform:scale(${sc});transform-origin:0 0">${arr.map(g=>`<div class="grp"><div class="pill">${esc(grpLabel(g.t))} TEE OFF ${esc(fmtTime(g.t.time))}</div>
-    <div class="mem">${g.mem.slice(0,4).map(p=>{const src=photoSrc(p);return `<div class="m">${src?`<img src="${src}" alt="">`:`<span class="ph">${esc(cleanName(p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ร้อยตำรวจเอก)\s*/,"").slice(0,1))}</span>`}<div class="tx">${esc(p.name)}${p.title?`<small>${esc(p.title)}</small>`:""}</div></div>`;}).join("")}</div></div>`).join("")}</div>`;
+    <div class="mem">${g.mem.slice(0,4).map(p=>{const src=photoSrc(p);return `<div class="m">${src?`<img src="${src}" alt="">`:`<span class="ph">${esc(cleanName(p.name).replace(/^(คุณ|พลเอก|พลอากาศเอก|ร\.ต\.อ\.|ร้อยตำรวจเอก)\s*/,"").slice(0,1))}</span>`}<div class="tx"><b style="font-size:${fitPx(shortRank(p.name),180,17,10)}px">${esc(shortRank(p.name))}</b>${p.title?`<small style="font-size:${fitPx(p.title,176,14,9,600)}px">${esc(p.title)}</small>`:""}</div></div>`;}).join("")}</div></div>`).join("")}</div>`;
   const bg=(S.pr["pairing-bg"]||{}).img;
   return `<div class="pg"><img class="pgbg" src="${bg||"img/course_bg.jpg"}" alt=""><div class="pgsh"></div><div class="hdr"><div class="t"><img src="img/logo_p1d1.png" alt="" style="height:86px"><span class="gd">GOLF DAY <b>2026</b></span></div><div class="lg2">${LOGOSTRIP}</div></div>${col(side.L,30)}${col(side.R,810)}</div>`;
 }
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(view==="pair")renderPair();});
 function renderPair(){
   const hasBg=!!(S.pr["pairing-bg"]||{}).img;
   $("pairBgCtl").innerHTML=S.canWrite?`<button class="btn sm sec" id="pairBgUp">🏞️ ${hasBg?"เปลี่ยน":"อัปโหลด"}ภาพพื้นหลังสนาม</button>${hasBg?`<button class="btn sm sec" id="pairBgDel">ใช้ภาพวาดสนามแทน</button>`:""}<span class="meta">แนะนำภาพแนวนอนของสนามราชพฤกษ์</span>`:"";
