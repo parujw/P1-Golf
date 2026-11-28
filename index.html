@@ -641,6 +641,7 @@ header .hd{position:relative}
 .lkseg button b{margin-left:4px;color:var(--mute);font-weight:600}.lkseg button.on{background:var(--navy);border-color:var(--navy);color:#fff}.lkseg button.on b{color:#f2c94c}
 .lkwarn{margin:-2px 0 10px;font-size:13px;color:#a2471a}.lkpeople .lkin{font-style:normal;color:var(--good);font-weight:700;margin-left:auto}
 .dmore.del{color:var(--red)}
+.stmiss b{color:var(--red);font-size:15px}.stmiss div{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.stmiss span{background:#fff4f4;border:1px solid #f3c7c7;border-radius:999px;padding:4px 10px;font-size:13.5px;font-weight:600}.stmiss small{color:var(--mute);font-weight:500}
 </style>
 </head>
 <body>
@@ -680,7 +681,9 @@ header .hd{position:relative}
   <!-- STATUS -->
   <section id="v-status" class="hidden">
     <div id="stSum" class="stsum"></div>
-    <div class="row" style="margin:-2px 0 12px;gap:8px">
+    <div class="sub" id="stArr" style="margin:-2px 0 8px"></div>
+    <div id="stMiss"></div>
+    <div class="row" style="margin:0 0 12px;gap:8px">
       <input type="search" id="stQ" class="grow" placeholder="ค้นหาชื่อ หรือบริษัท" style="min-width:0">
       <span class="meta" id="stNote"></span>
     </div>
@@ -745,6 +748,10 @@ header .hd{position:relative}
       <div class="row" style="margin-bottom:10px;gap:8px"><button class="btn" id="dgAdd">＋ เพิ่มแขก</button><input type="search" id="dsQ" class="grow" placeholder="ค้นหาชื่อ" style="min-width:0"></div>
       <div id="dgForm"></div>
       <div id="dsGuests"></div>
+    </div>
+    <div class="card">
+      <h2>สำรองข้อมูล</h2>
+      <div class="row" style="margin-bottom:6px"><button class="btn sec" id="bkJson2">💾 ดาวน์โหลดไฟล์สำรอง (กอล์ฟ + Dinner)</button><span class="meta">เก็บทุกอย่างรวมรูป ชื่อไฟล์มีวันที่และเวลา</span></div>
     </div>
     <div class="card">
       <h2>ข้อมูลทดสอบ</h2>
@@ -812,6 +819,10 @@ header .hd{position:relative}
 
   <!-- SETUP -->
   <section id="v-setup" class="hidden">
+    <div class="card">
+      <h2>💾 สำรองข้อมูล</h2>
+      <div class="row"><button class="btn sec" id="bkJson">💾 ดาวน์โหลดไฟล์สำรอง (กอล์ฟ + Dinner)</button><span class="meta">เก็บทุกอย่างรวมรูป ชื่อไฟล์มีวันที่และเวลา</span></div>
+    </div>
     <div class="card">
       <h2>✅ ความพร้อมก่อนวันงาน</h2>
       <div id="readyBox"></div>
@@ -1246,6 +1257,11 @@ function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.cl
 }
 
 // ---------- events ----------
+function stamp(){const d=new Date(),z=n=>String(n).padStart(2,"0");return `${d.getFullYear()}${z(d.getMonth()+1)}${z(d.getDate())}-${z(d.getHours())}${z(d.getMinutes())}`;}
+function downloadBackup(){const data={backupAt:new Date().toISOString(),by:whoStr(),config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,status:S.status,statusBy:S.stBy,statusLast:S.stLast,dinnerGuests:S.dg,dinnerTables:S.dt,luckyDraw:S.lk,photos:S.photos,pr:S.pr};
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:"application/json"}));a.download=`P1D1-backup-${stamp()}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("ดาวน์โหลดไฟล์สำรองแล้ว");}
+$("bkJson").onclick=downloadBackup;$("bkJson2").onclick=downloadBackup;
+$("stArr").onclick=e=>{const b=e.target.closest("[data-arr]");if(!b)return;arrFilter=b.dataset.arr;renderStatus();};
 $("stSum").onclick=e=>{const b=e.target.closest("[data-stf]");if(!b)return;stFilter=stFilter===b.dataset.stf?null:b.dataset.stf;renderStatus();};
 $("stQ").oninput=()=>renderStatus();
 $("stBody").onclick=e=>{const b=e.target.closest("button");if(!b||b.disabled||!S.canWrite)return;const k=b.dataset.k,l=STAGES.find(x=>x[0]===k)[1];
@@ -1780,19 +1796,23 @@ function lastHTML(L,lbl){if(!L||!L.t)return "";const st=(STAGES.find(x=>x[0]===L
   return `<div class="dlast">ล่าสุด: ${L.on?"":"ยกเลิก"}${esc(st)} ${esc(L.t)}${L.b?` · โดย ${esc(L.b)}`:""}</div>`;}
 // ---------- สถานะผู้บริหาร ----------
 const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปกลุ่ม"],["fin","ตีกอล์ฟเสร็จ"],["dinner","ร่วมดินเนอร์"]];
-let stFilter=null;
+let stFilter=null,arrFilter="all";
+const isReal=p=>!/^รอยืนยัน/.test(cleanName(p.name));
 function stOf(p,k){const m=S.status[p.id]||{};if(m[k]!=null)return m[k];if(k==="fin"&&calc(p).done)return "18 หลุม";return null;}
 function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
 function setStage(ids,k,on){const t=nowHM(),b=whoStr();ids.forEach(id=>{const m={...(S.status[id]||{})},by={...(S.stBy[id]||{})};
   if(on){if(!m[k]){m[k]=t;by[k]=b;}}else{delete m[k];delete by[k];}
   S.status[id]=m;S.stBy[id]=by;S.stLast[id]={k,on,t,b};saveStatus(id);if(k==="dinner"&&on)ensureDG(id);});}
 function renderStatus(){
-  const P=S.roster.players,n=P.length,q=($("stQ").value||"").trim().toLowerCase();
+  const P=S.roster.players.filter(isReal),n=P.length,q=($("stQ").value||"").trim().toLowerCase();
+  const arr=P.filter(p=>stOf(p,"arrive")!=null),notA=P.filter(p=>stOf(p,"arrive")==null);
+  $("stArr").innerHTML=[["all",`ทั้งหมด ${n}`],["in",`มาถึงแล้ว ${arr.length}`],["out",`ยังไม่มาถึง ${notA.length}`]].map(([k,l])=>`<button class="chip${arrFilter===k?" on":""}" data-arr="${k}">${l}</button>`).join("");
+  $("stMiss").innerHTML=arrFilter==="out"&&notA.length?`<div class="card stmiss"><b>ยังไม่มาถึง ${notA.length} ท่าน</b><div>${notA.map(p=>{const t=S.roster.teams.find(x=>String(x.id)===String(p.team));return `<span>${esc(cleanName(p.name))}${t?` <small>${esc(grpLabel(t))}${t.time?" · "+esc(t.time):""}</small>`:""}</span>`;}).join("")}</div></div>`:(arrFilter==="out"?`<div class="card meta">ทุกท่านมาถึงแล้ว 🎉</div>`:"");
   $("stSum").innerHTML=STAGES.map(([k,l])=>{const c=P.filter(p=>stOf(p,k)!=null).length,pc=n?Math.round(c*100/n):0;
     return `<button class="stt${stFilter===k?" on":""}${c===n&&n?" all":""}" data-stf="${k}"><span class="l">${l}</span><b>${c}<small>/${n}</small></b><i style="width:${pc}%"></i></button>`;}).join("");
   $("stNote").textContent=stFilter?`แสดงเฉพาะคนที่ยังไม่${STAGES.find(x=>x[0]===stFilter)[1]}`:"";
   const side=groupsBySide(),groups=[...side.L,...side.R];
-  const match=p=>(!q||(cleanName(p.name)+" "+(orgOf(p)||"")+" "+(p.title||"")).toLowerCase().includes(q))&&(!stFilter||stOf(p,stFilter)==null);
+  const match=p=>(!q||(cleanName(p.name)+" "+(orgOf(p)||"")+" "+(p.title||"")).toLowerCase().includes(q))&&(!stFilter||stOf(p,stFilter)==null)&&isReal(p)&&(arrFilter==="all"||(arrFilter==="in")===(stOf(p,"arrive")!=null));
   const html=groups.map(g=>{const mem=g.mem.filter(match);if(!mem.length)return "";
     const gbtn=STAGES.map(([k,l])=>{const c=g.mem.filter(p=>stOf(p,k)!=null).length;return `<button class="sgb${c===g.mem.length?" on":""}" data-sg="${g.t.id}" data-k="${k}">${l} <span>${c}/${g.mem.length}</span></button>`;}).join("");
     return `<div class="card stg"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
