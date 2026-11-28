@@ -532,7 +532,7 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
 .sgrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:0 14px 12px;border-bottom:1px solid var(--line)}
 .sgb{border:1px dashed #b9c2da;background:#f7f9fd;border-radius:999px;padding:9px 16px;font-size:14.5px;font-weight:600;cursor:pointer;color:var(--navy)}
 .sgb span{color:var(--mute);font-weight:500;margin-left:2px}.sgb.on{background:#e9f7ef;border:1px solid #9fd8b8;color:var(--good)}
-.spr{display:flex;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.spr:last-child{border-bottom:0}
+.spr{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.spr:last-child{border-bottom:0}
 .spn{display:flex;gap:10px;align-items:center;width:230px;flex:none;min-width:0}.spn b{font-size:15px}.spn .av{width:40px;height:40px;flex:none}
 .spn .meta{display:flex;align-items:center;gap:5px}.spn .lg{height:calc(13px*var(--k,1))}
 .sbs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:1}
@@ -642,6 +642,8 @@ header .hd{position:relative}
 .lkwarn{margin:-2px 0 10px;font-size:13px;color:#a2471a}.lkpeople .lkin{font-style:normal;color:var(--good);font-weight:700;margin-left:auto}
 .dmore.del{color:var(--red)}
 .stmiss b{color:var(--red);font-size:15px}.stmiss div{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.stmiss span{background:#fff4f4;border:1px solid #f3c7c7;border-radius:999px;padding:4px 10px;font-size:13.5px;font-weight:600}.stmiss small{color:var(--mute);font-weight:500}
+.snote{flex-basis:100%;display:flex;flex-direction:column;gap:2px}.snote input{width:100%;font-size:14px;padding:8px 10px;border:1px dashed #c9cfdf;border-radius:10px;background:#fffdf5}
+.snote input:not(:placeholder-shown){border-style:solid;border-color:#f2c94c;background:#fff8e1;font-weight:600}.snote small{font-size:11px;color:var(--mute)}
 </style>
 </head>
 <body>
@@ -947,7 +949,7 @@ function normRoster(R){
 function defaultRoster(){return JSON.parse(JSON.stringify(TEEOFF));}
 
 // ---------- state ----------
-const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, stBy:{}, stLast:{}, dg:{}, dt:[], lk:[], mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
+const S = { config:{...DEFAULT_CONFIG}, roster:defaultRoster(), scores:{}, ntp:{}, pr:{}, photos:{}, status:{}, stBy:{}, stLast:{}, stNote:{}, dg:{}, dt:[], lk:[], mode:"loading", canWrite:true, gotCfg:false, gotRoster:false };
 let db=null, view="results", resTab="W", curPid=null;
 
 // ---------- utils ----------
@@ -960,8 +962,8 @@ function setBanner(t,cls){const b=$("banner");if(!t){b.classList.add("hidden");r
 
 // ---------- storage ----------
 const LKEY="p1golf_v1";
-function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status,stBy:S.stBy,stLast:S.stLast,dg:S.dg,dt:S.dt,lk:S.lk}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
-function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};S.stBy=d.stBy||{};S.stLast=d.stLast||{};S.dg=d.dg||{};S.dt=d.dt||[];S.lk=d.lk||[];}}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,pr:S.pr,photos:S.photos,status:S.status,stBy:S.stBy,stLast:S.stLast,stNote:S.stNote,dg:S.dg,dt:S.dt,lk:S.lk}));}catch(e){toast("พื้นที่เก็บในเครื่องเต็ม — รูปอาจไม่ถูกบันทึก");}}
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");if(d){S.config={...DEFAULT_CONFIG,...d.config};migrateConfig(S.config);S.roster=d.roster?normRoster(d.roster):S.roster;S.scores=d.scores||{};S.ntp=d.ntp||{};S.pr=d.pr||{};S.photos=d.photos||{};S.status=d.status||{};S.stBy=d.stBy||{};S.stLast=d.stLast||{};S.stNote=d.stNote||{};S.dg=d.dg||{};S.dt=d.dt||[];S.lk=d.lk||[];}}catch(e){}}
 
 const queues={};
 function write(path,data){
@@ -984,7 +986,7 @@ const saveScore=pid=>write("scores/"+pid,{s:S.scores[pid]||[],t:Date.now()});
 const saveNtp=h=>write("ntp/h"+h,{entries:S.ntp[h]||[]});
 const saveComp=k=>String(k).startsWith("ld")?write("ntp/"+k,{entries:S.ntp[k]||[]}):saveNtp(k);
 // สถานะผู้บริหาร เก็บใน collection ntp เอกสาร st_<id> (ใช้ Rules เดิมได้ ไม่ต้องแก้)
-const saveStatus=pid=>write("ntp/st_"+pid,{entries:Object.entries(S.status[pid]||{}).map(([k,t])=>({k,t,b:(S.stBy[pid]||{})[k]||""})),last:S.stLast[pid]||null,u:Date.now()});
+const saveStatus=pid=>write("ntp/st_"+pid,{entries:Object.entries(S.status[pid]||{}).map(([k,t])=>({k,t,b:(S.stBy[pid]||{})[k]||""})),last:S.stLast[pid]||null,note:S.stNote[pid]||null,u:Date.now()});
 // Dinner: แขก 1 คน = เอกสาร dg_<id>, ผังโต๊ะ = dn_tables (อยู่ใน collection ntp เพื่อใช้ Rules เดิม)
 const saveDG=gid=>write("ntp/dg_"+gid,{entries:S.dg[gid]?[S.dg[gid]]:[],u:Date.now()});
 const saveLK=()=>write("ntp/dn_lucky",{entries:S.lk,u:Date.now()});
@@ -1013,7 +1015,7 @@ async function init(){
   db.collection("scores").onSnapshot(once(q=>{const o={};q.docs.forEach(d=>o[d.id]=[...(d.data().s||[])]);S.scores=o;render("remote");}),onErr);
   db.collection("photos").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();if(x.img)o[d.id]=x.img;});S.photos=o;render("remote");},onErr);
   db.collection("pr").onSnapshot(q=>{const o={};q.docs.forEach(d=>{const x=d.data();o[d.id]={img:x.img||"",title:x.title||""};});S.pr=o;render("remote");},onErr);
-  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};let dg={},dt=[],lk=[],stBy={},stLast={};q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={},by={},id=d.id.slice(3);e.forEach(x=>{if(x&&x.k){m[x.k]=x.t||"";if(x.b)by[x.k]=x.b;}});st[id]=m;stBy[id]=by;if(d.data().last)stLast[id]=d.data().last;}else if(d.id.startsWith("dg_")){if(e[0])dg[d.id.slice(3)]=e[0];}else if(d.id==="dn_tables"){dt=e;}else if(d.id==="dn_lucky"){lk=e;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;S.stBy=stBy;S.stLast=stLast;S.dg=dg;S.dt=dt;S.lk=lk;render("remote");}),onErr);
+  db.collection("ntp").onSnapshot(once(q=>{const o={},st={};let dg={},dt=[],lk=[],stBy={},stLast={},stNote={};q.docs.forEach(d=>{const e=JSON.parse(JSON.stringify(d.data().entries||[]));if(d.id.startsWith("st_")){const m={},by={},id=d.id.slice(3);e.forEach(x=>{if(x&&x.k){m[x.k]=x.t||"";if(x.b)by[x.k]=x.b;}});st[id]=m;stBy[id]=by;if(d.data().last)stLast[id]=d.data().last;if(d.data().note)stNote[id]=d.data().note;}else if(d.id.startsWith("dg_")){if(e[0])dg[d.id.slice(3)]=e[0];}else if(d.id==="dn_tables"){dt=e;}else if(d.id==="dn_lucky"){lk=e;}else o[d.id.replace(/^h/,"")]=e;});S.ntp=o;S.status=st;S.stBy=stBy;S.stLast=stLast;S.stNote=stNote;S.dg=dg;S.dt=dt;S.lk=lk;render("remote");}),onErr);
 }
 function goLocal(msg){S.mode="local";loadLocal();setBanner(msg);applyPerm();maybeSeed();render();}
 
@@ -1070,7 +1072,7 @@ function render(src){
   if(view==="score"){if(scMode==="g"){if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#scGroup")))renderGroup();}else renderScore(src==="remote");}
   if(view==="pr"&&!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#v-pr input"))) renderPR();
   if(view==="pair") renderPair();
-  if(view==="status") renderStatus();
+  if(view==="status"&&!(document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.note)) renderStatus();
   const typing=document.activeElement&&document.activeElement.matches&&document.activeElement.matches("#v-dsetup input[type=text],#v-dsetup input[type=number]");
   if(view==="dguests") renderDG();
   if(view==="dtables") renderDT();
@@ -1258,9 +1260,12 @@ function show(v){view=v;document.querySelectorAll("#nav button").forEach(b=>b.cl
 
 // ---------- events ----------
 function stamp(){const d=new Date(),z=n=>String(n).padStart(2,"0");return `${d.getFullYear()}${z(d.getMonth()+1)}${z(d.getDate())}-${z(d.getHours())}${z(d.getMinutes())}`;}
-function downloadBackup(){const data={backupAt:new Date().toISOString(),by:whoStr(),config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,status:S.status,statusBy:S.stBy,statusLast:S.stLast,dinnerGuests:S.dg,dinnerTables:S.dt,luckyDraw:S.lk,photos:S.photos,pr:S.pr};
+function downloadBackup(){const data={backupAt:new Date().toISOString(),by:whoStr(),config:S.config,roster:S.roster,scores:S.scores,ntp:S.ntp,status:S.status,statusBy:S.stBy,statusLast:S.stLast,statusNote:S.stNote,dinnerGuests:S.dg,dinnerTables:S.dt,luckyDraw:S.lk,photos:S.photos,pr:S.pr};
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:"application/json"}));a.download=`P1D1-backup-${stamp()}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("ดาวน์โหลดไฟล์สำรองแล้ว");}
 $("bkJson").onclick=downloadBackup;$("bkJson2").onclick=downloadBackup;
+$("stBody").addEventListener("change",e=>{const id=e.target.dataset&&e.target.dataset.note;if(!id)return;const n=e.target.value.trim();
+  S.stNote[id]=n?{n,b:whoStr(),t:nowHM()}:null;if(!n)delete S.stNote[id];saveStatus(id);toast(n?"บันทึก Note แล้ว":"ลบ Note แล้ว");renderStatus();});
+$("stBody").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.dataset&&e.target.dataset.note)e.target.blur();});
 $("stArr").onclick=e=>{const b=e.target.closest("[data-arr]");if(!b)return;arrFilter=b.dataset.arr;renderStatus();};
 $("stSum").onclick=e=>{const b=e.target.closest("[data-stf]");if(!b)return;stFilter=stFilter===b.dataset.stf?null:b.dataset.stf;renderStatus();};
 $("stQ").oninput=()=>renderStatus();
@@ -1795,7 +1800,7 @@ $("whoChip").onclick=()=>showWho(true);
 function lastHTML(L,lbl){if(!L||!L.t)return "";const st=(STAGES.find(x=>x[0]===L.k)||[0,L.k])[1];
   return `<div class="dlast">ล่าสุด: ${L.on?"":"ยกเลิก"}${esc(st)} ${esc(L.t)}${L.b?` · โดย ${esc(L.b)}`:""}</div>`;}
 // ---------- สถานะผู้บริหาร ----------
-const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปก๊วนหลุม 1"],["fin","ตีกอล์ฟเสร็จ"],["dinner","ร่วมดินเนอร์"]];
+const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","Lunch"],["tee","Tee off"],["photo","ถ่ายรูปก๊วนหลุม 1"],["fin","ตีกอล์ฟเสร็จ"],["dinner","Dinner"]];
 let stFilter=null,arrFilter="all";
 const GROUPK=["photo","tee","fin"];
 const isReal=p=>!/^รอยืนยัน/.test(cleanName(p.name));
@@ -1819,7 +1824,8 @@ function renderStatus(){
     return `<div class="card stg"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
       <div class="sgrow"><span class="meta">ทั้งก๊วน</span>${gbtn}</div>
       ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div>${lastHTML(S.stLast[p.id])}</div></div>
-        <div class="sbs">${STAGES.filter(([k])=>!GROUPK.includes(k)).map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;const by=(S.stBy[p.id]||{})[k];return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"} title="${by?"โดย "+esc(by):""}"><span>${l}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div></div>`).join("")}</div>`;}).join("");
+        <div class="sbs">${STAGES.filter(([k])=>!GROUPK.includes(k)).map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;const by=(S.stBy[p.id]||{})[k];return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"} title="${by?"โดย "+esc(by):""}"><span>${l}${v!=null&&(k==="food"||k==="dinner")?" แล้ว":""}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div>
+        <div class="snote"><input type="text" data-note="${p.id}" value="${esc((S.stNote[p.id]||{}).n||"")}" placeholder="Note: ความต้องการพิเศษ เช่น ขอน้ำอุ่น ขอร่ม ต้องรีบกลับ">${(S.stNote[p.id]||{}).n?`<small>บันทึกโดย ${esc(S.stNote[p.id].b||"")} ${esc(S.stNote[p.id].t||"")}</small>`:""}</div></div>`).join("")}</div>`;}).join("");
   $("stBody").innerHTML=html||`<div class="card meta">${stFilter?"ทุกคนผ่านขั้นนี้แล้ว":"ไม่พบชื่อที่ค้นหา"}</div>`;
 }
 // ---------- Dinner ----------
