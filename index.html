@@ -535,13 +535,13 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
 .spr{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.spr:last-child{border-bottom:0}
 .spn{display:flex;gap:10px;align-items:center;width:230px;flex:none;min-width:0}.spn b{font-size:15px}.spn .av{width:40px;height:40px;flex:none}
 .spn .meta{display:flex;align-items:center;gap:5px}.spn .lg{height:calc(13px*var(--k,1))}
-.sbs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:1}
+.sbs{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;flex:1}
 .sb6{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 4px;cursor:pointer;line-height:1.2;min-height:46px}
 .sb6 span{display:block;font-size:12.5px;font-weight:600;color:var(--ink)}.sb6 small{font-size:12px;color:#b3b9cc}
 .sb6.on{background:var(--good);border-color:var(--good)}.sb6.on span,.sb6.on small{color:#fff}
 .sb6:disabled{cursor:default}
 @media(max-width:700px){.stsum{grid-template-columns:repeat(4,1fr)}.stt b{font-size:20px}
- .spr{flex-direction:column;align-items:stretch;gap:8px}.spn{width:auto}.sbs{grid-template-columns:repeat(4,1fr)}}
+ .spr{flex-direction:column;align-items:stretch;gap:8px}.spn{width:auto}.sbs{grid-template-columns:repeat(3,1fr)}}
 body.dinner nav [data-g]{display:none!important}body:not(.dinner) nav [data-d]{display:none!important}
 .dsum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
 .dsum>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
@@ -1824,7 +1824,7 @@ function renderStatus(){
     return `<div class="card stg"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
       <div class="sgrow"><span class="meta">ทั้งก๊วน</span>${gbtn}</div>
       ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div>${lastHTML(S.stLast[p.id])}</div></div>
-        <div class="sbs">${STAGES.filter(([k])=>!GROUPK.includes(k)).map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;const by=(S.stBy[p.id]||{})[k];return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"} title="${by?"โดย "+esc(by):""}"><span>${l}${v!=null&&(k==="food"||k==="dinner")?" แล้ว":""}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div>
+        <div class="sbs">${["arrive","bag","food","photo","tee","dinner"].map(k=>STAGES.find(x=>x[0]===k)).map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;const by=(S.stBy[p.id]||{})[k];return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"} title="${by?"โดย "+esc(by):""}"><span>${l}${v!=null&&(k==="food"||k==="dinner")?" แล้ว":""}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div>
         <div class="snote"><input type="text" data-note="${p.id}" value="${esc((S.stNote[p.id]||{}).n||"")}" placeholder="Note: ความต้องการพิเศษ เช่น ขอน้ำอุ่น ขอร่ม ต้องรีบกลับ">${(S.stNote[p.id]||{}).n?`<small>บันทึกโดย ${esc(S.stNote[p.id].b||"")} ${esc(S.stNote[p.id].t||"")}</small>`:""}</div></div>`).join("")}</div>`;}).join("");
   $("stBody").innerHTML=html||`<div class="card meta">${stFilter?"ทุกคนผ่านขั้นนี้แล้ว":"ไม่พบชื่อที่ค้นหา"}</div>`;
 }
