@@ -644,6 +644,10 @@ header .hd{position:relative}
 .stmiss b{color:var(--red);font-size:15px}.stmiss div{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.stmiss span{background:#fff4f4;border:1px solid #f3c7c7;border-radius:999px;padding:4px 10px;font-size:13.5px;font-weight:600}.stmiss small{color:var(--mute);font-weight:500}
 .snote{flex-basis:100%;display:flex;flex-direction:column;gap:2px}.snote input{width:100%;font-size:14px;padding:8px 10px;border:1px dashed #c9cfdf;border-radius:10px;background:#fffdf5}
 .snote input:not(:placeholder-shown){border-style:solid;border-color:#f2c94c;background:#fff8e1;font-weight:600}.snote small{font-size:11px;color:var(--mute)}
+.stgrp{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;margin-bottom:10px}
+.sgc{border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 10px;text-align:left;cursor:pointer;border-left:5px solid #c9cfdf}
+.sgc b{display:block;font-size:14px;color:var(--navy)}.sgc b small{font-weight:500;color:var(--mute);font-size:12px}.sgc span{font-size:12px;color:var(--mute);font-weight:600}
+.sgc.ok{border-left-color:var(--good);background:#f3fbf6}.sgc.ok span{color:var(--good)}.sgc.part{border-left-color:#f2b705;background:#fffaeb}.sgc.part span{color:#9a6b00}.sgc.none span{color:var(--red)}
 </style>
 </head>
 <body>
@@ -683,6 +687,7 @@ header .hd{position:relative}
   <!-- STATUS -->
   <section id="v-status" class="hidden">
     <div id="stSum" class="stsum"></div>
+    <div class="stgrp" id="stGrp"></div>
     <div class="sub" id="stArr" style="margin:-2px 0 8px"></div>
     <div id="stMiss"></div>
     <div class="row" style="margin:0 0 12px;gap:8px">
@@ -1266,6 +1271,7 @@ $("bkJson").onclick=downloadBackup;$("bkJson2").onclick=downloadBackup;
 $("stBody").addEventListener("change",e=>{const id=e.target.dataset&&e.target.dataset.note;if(!id)return;const n=e.target.value.trim();
   S.stNote[id]=n?{n,b:whoStr(),t:nowHM()}:null;if(!n)delete S.stNote[id];saveStatus(id);toast(n?"บันทึก Note แล้ว":"ลบ Note แล้ว");renderStatus();});
 $("stBody").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.dataset&&e.target.dataset.note)e.target.blur();});
+$("stGrp").onclick=e=>{const b=e.target.closest("[data-goto]");if(!b)return;const el=$("sg-"+b.dataset.goto);if(!el){arrFilter="all";stFilter=null;$("stQ").value="";renderStatus();}const t=$("sg-"+b.dataset.goto);if(t)window.scrollTo({top:t.getBoundingClientRect().top+scrollY-80,behavior:"smooth"});};
 $("stArr").onclick=e=>{const b=e.target.closest("[data-arr]");if(!b)return;arrFilter=b.dataset.arr;renderStatus();};
 $("stSum").onclick=e=>{const b=e.target.closest("[data-stf]");if(!b)return;stFilter=stFilter===b.dataset.stf?null:b.dataset.stf;renderStatus();};
 $("stQ").oninput=()=>renderStatus();
@@ -1812,6 +1818,9 @@ function setStage(ids,k,on){const t=nowHM(),b=whoStr();ids.forEach(id=>{const m=
 function renderStatus(){
   const P=S.roster.players.filter(isReal),n=P.length,q=($("stQ").value||"").trim().toLowerCase();
   const arr=P.filter(p=>stOf(p,"arrive")!=null),notA=P.filter(p=>stOf(p,"arrive")==null);
+  {const sd=groupsBySide();$("stGrp").innerHTML=[...sd.L,...sd.R].map(g=>{const m=g.mem.filter(isReal);if(!m.length)return "";const a=m.filter(p=>stOf(p,"arrive")!=null).length,t=m.filter(p=>stOf(p,"tee")!=null).length,f=m.filter(p=>stOf(p,"fin")!=null).length;
+    const cls=a===m.length?"ok":a?"part":"none",sub=f===m.length?"ตีเสร็จแล้ว":t===m.length?"ออกรอบแล้ว":`มาถึง ${a}/${m.length}`;
+    return `<button class="sgc ${cls}" data-goto="${g.t.id}"><b>${esc(grpLabel(g.t))}${g.t.time?` <small>${esc(g.t.time)}</small>`:""}</b><span>${sub}</span></button>`;}).join("");}
   $("stArr").innerHTML=[["all",`ทั้งหมด ${n}`],["in",`มาถึงแล้ว ${arr.length}`],["out",`ยังไม่มาถึง ${notA.length}`]].map(([k,l])=>`<button class="chip${arrFilter===k?" on":""}" data-arr="${k}">${l}</button>`).join("");
   $("stMiss").innerHTML=arrFilter==="out"&&notA.length?`<div class="card stmiss"><b>ยังไม่มาถึง ${notA.length} ท่าน</b><div>${notA.map(p=>{const t=S.roster.teams.find(x=>String(x.id)===String(p.team));return `<span>${esc(cleanName(p.name))}${t?` <small>${esc(grpLabel(t))}${t.time?" · "+esc(t.time):""}</small>`:""}</span>`;}).join("")}</div></div>`:(arrFilter==="out"?`<div class="card meta">ทุกท่านมาถึงแล้ว 🎉</div>`:"");
   $("stSum").innerHTML=STAGES.map(([k,l])=>{const c=P.filter(p=>stOf(p,k)!=null).length,pc=n?Math.round(c*100/n):0;
@@ -1821,7 +1830,7 @@ function renderStatus(){
   const match=p=>(!q||(cleanName(p.name)+" "+(orgOf(p)||"")+" "+(p.title||"")).toLowerCase().includes(q))&&(!stFilter||stOf(p,stFilter)==null)&&isReal(p)&&(arrFilter==="all"||(arrFilter==="in")===(stOf(p,"arrive")!=null));
   const html=groups.map(g=>{const mem=g.mem.filter(match);if(!mem.length)return "";
     const gbtn=GROUPK.map(k=>STAGES.find(x=>x[0]===k)).map(([k,l])=>{const c=g.mem.filter(p=>stOf(p,k)!=null).length,all=c===g.mem.length&&c>0,tm=all?g.mem.map(p=>stOf(p,k)).filter(v=>/^\d/.test(v||"")).sort()[0]:"";return `<button class="sgb${all?" on":""}" data-sg="${g.t.id}" data-k="${k}">${l} <span>${all?(tm?"✓ "+esc(tm):"✓"):c+"/"+g.mem.length}</span></button>`;}).join("");
-    return `<div class="card stg"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
+    return `<div class="card stg" id="sg-${g.t.id}"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
       <div class="sgrow"><span class="meta">ทั้งก๊วน</span>${gbtn}</div>
       ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div>${lastHTML(S.stLast[p.id])}</div></div>
         <div class="sbs">${["arrive","bag","food","photo","tee","dinner"].map(k=>STAGES.find(x=>x[0]===k)).map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;const by=(S.stBy[p.id]||{})[k];return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"} title="${by?"โดย "+esc(by):""}"><span>${l}${v!=null&&(k==="food"||k==="dinner")?" แล้ว":""}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div>
