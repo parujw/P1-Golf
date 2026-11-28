@@ -530,12 +530,12 @@ img[alt=PTT]{--k:1}img[alt=PTTEP]{--k:1.5}img[alt=GC]{--k:.72}img[alt=TOP]{--k:1
 .stg{padding:0;overflow:hidden}
 .sgh{padding:12px 14px 6px}.sgh b{font-size:16px;color:var(--navy);margin-right:8px}
 .sgrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:0 14px 12px;border-bottom:1px solid var(--line)}
-.sgb{border:1px dashed #b9c2da;background:#f7f9fd;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:600;cursor:pointer;color:var(--navy)}
+.sgb{border:1px dashed #b9c2da;background:#f7f9fd;border-radius:999px;padding:9px 16px;font-size:14.5px;font-weight:600;cursor:pointer;color:var(--navy)}
 .sgb span{color:var(--mute);font-weight:500;margin-left:2px}.sgb.on{background:#e9f7ef;border:1px solid #9fd8b8;color:var(--good)}
 .spr{display:flex;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}.spr:last-child{border-bottom:0}
 .spn{display:flex;gap:10px;align-items:center;width:230px;flex:none;min-width:0}.spn b{font-size:15px}.spn .av{width:40px;height:40px;flex:none}
 .spn .meta{display:flex;align-items:center;gap:5px}.spn .lg{height:calc(13px*var(--k,1))}
-.sbs{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;flex:1}
+.sbs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:1}
 .sb6{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 4px;cursor:pointer;line-height:1.2;min-height:46px}
 .sb6 span{display:block;font-size:12.5px;font-weight:600;color:var(--ink)}.sb6 small{font-size:12px;color:#b3b9cc}
 .sb6.on{background:var(--good);border-color:var(--good)}.sb6.on span,.sb6.on small{color:#fff}
@@ -1797,6 +1797,7 @@ function lastHTML(L,lbl){if(!L||!L.t)return "";const st=(STAGES.find(x=>x[0]===L
 // ---------- สถานะผู้บริหาร ----------
 const STAGES=[["arrive","มาถึง"],["bag","ดรอปกระเป๋า"],["food","ทานอาหาร"],["tee","Tee off"],["photo","ถ่ายรูปก๊วนหลุม 1"],["fin","ตีกอล์ฟเสร็จ"],["dinner","ร่วมดินเนอร์"]];
 let stFilter=null,arrFilter="all";
+const GROUPK=["photo","tee","fin"];
 const isReal=p=>!/^รอยืนยัน/.test(cleanName(p.name));
 function stOf(p,k){const m=S.status[p.id]||{};if(m[k]!=null)return m[k];if(k==="fin"&&calc(p).done)return "18 หลุม";return null;}
 function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
@@ -1814,11 +1815,11 @@ function renderStatus(){
   const side=groupsBySide(),groups=[...side.L,...side.R];
   const match=p=>(!q||(cleanName(p.name)+" "+(orgOf(p)||"")+" "+(p.title||"")).toLowerCase().includes(q))&&(!stFilter||stOf(p,stFilter)==null)&&isReal(p)&&(arrFilter==="all"||(arrFilter==="in")===(stOf(p,"arrive")!=null));
   const html=groups.map(g=>{const mem=g.mem.filter(match);if(!mem.length)return "";
-    const gbtn=STAGES.filter(([k])=>k==="photo"||k==="tee"||k==="fin").map(([k,l])=>{const c=g.mem.filter(p=>stOf(p,k)!=null).length;return `<button class="sgb${c===g.mem.length?" on":""}" data-sg="${g.t.id}" data-k="${k}">${l} <span>${c}/${g.mem.length}</span></button>`;}).join("");
+    const gbtn=GROUPK.map(k=>STAGES.find(x=>x[0]===k)).map(([k,l])=>{const c=g.mem.filter(p=>stOf(p,k)!=null).length,all=c===g.mem.length&&c>0,tm=all?g.mem.map(p=>stOf(p,k)).filter(v=>/^\d/.test(v||"")).sort()[0]:"";return `<button class="sgb${all?" on":""}" data-sg="${g.t.id}" data-k="${k}">${l} <span>${all?(tm?"✓ "+esc(tm):"✓"):c+"/"+g.mem.length}</span></button>`;}).join("");
     return `<div class="card stg"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
       <div class="sgrow"><span class="meta">ทั้งก๊วน</span>${gbtn}</div>
       ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div>${lastHTML(S.stLast[p.id])}</div></div>
-        <div class="sbs">${STAGES.map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;const by=(S.stBy[p.id]||{})[k];return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"} title="${by?"โดย "+esc(by):""}"><span>${l}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div></div>`).join("")}</div>`;}).join("");
+        <div class="sbs">${STAGES.filter(([k])=>!GROUPK.includes(k)).map(([k,l])=>{const v=stOf(p,k),auto=v!=null&&(S.status[p.id]||{})[k]==null;const by=(S.stBy[p.id]||{})[k];return `<button class="sb6${v!=null?" on":""}" data-sp="${p.id}" data-k="${k}" ${S.canWrite&&!auto?"":"disabled"} title="${by?"โดย "+esc(by):""}"><span>${l}</span><small>${v!=null?esc(v):"—"}</small></button>`;}).join("")}</div></div>`).join("")}</div>`;}).join("");
   $("stBody").innerHTML=html||`<div class="card meta">${stFilter?"ทุกคนผ่านขั้นนี้แล้ว":"ไม่พบชื่อที่ค้นหา"}</div>`;
 }
 // ---------- Dinner ----------
