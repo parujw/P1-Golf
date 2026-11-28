@@ -21,6 +21,9 @@ module.exports=async(req,res)=>{
   const q=req.query||{},part=q.part||"data";
   try{
     res.setHeader("Cache-Control","no-store");
+    if(part==="full"){const out={backupAt:new Date().toISOString(),project:c.projectId};
+      for(const col of ["event","scores","ntp","photos","pr"])out[col]=await all(base,c.apiKey,col,false);
+      res.status(200).json(out);return;}
     if(part==="data"){const out={backupAt:new Date().toISOString(),project:c.projectId};
       for(const col of ["event","scores","ntp","photos","pr"])out[col]=await all(base,c.apiKey,col,col==="photos"||col==="pr");
       res.status(200).json(out);return;}
