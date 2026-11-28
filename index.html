@@ -1814,7 +1814,7 @@ function renderStatus(){
   const side=groupsBySide(),groups=[...side.L,...side.R];
   const match=p=>(!q||(cleanName(p.name)+" "+(orgOf(p)||"")+" "+(p.title||"")).toLowerCase().includes(q))&&(!stFilter||stOf(p,stFilter)==null)&&isReal(p)&&(arrFilter==="all"||(arrFilter==="in")===(stOf(p,"arrive")!=null));
   const html=groups.map(g=>{const mem=g.mem.filter(match);if(!mem.length)return "";
-    const gbtn=STAGES.map(([k,l])=>{const c=g.mem.filter(p=>stOf(p,k)!=null).length;return `<button class="sgb${c===g.mem.length?" on":""}" data-sg="${g.t.id}" data-k="${k}">${l} <span>${c}/${g.mem.length}</span></button>`;}).join("");
+    const gbtn=STAGES.filter(([k])=>k==="tee"||k==="fin").map(([k,l])=>{const c=g.mem.filter(p=>stOf(p,k)!=null).length;return `<button class="sgb${c===g.mem.length?" on":""}" data-sg="${g.t.id}" data-k="${k}">${l} <span>${c}/${g.mem.length}</span></button>`;}).join("");
     return `<div class="card stg"><div class="sgh"><div><b>${esc(g.t.name)}</b><span class="meta">ออกหลุม ${esc(g.t.start||"-")}${g.t.time&&!String(g.t.name).includes(g.t.time)?" · "+esc(g.t.time):""}</span></div></div>
       <div class="sgrow"><span class="meta">ทั้งก๊วน</span>${gbtn}</div>
       ${mem.map(p=>`<div class="spr"><div class="spn">${av(p)}<div><b>${esc(cleanName(p.name))}</b><div class="meta">${lg(p)}${esc(p.title&&p.title!==orgOf(p)?p.title:"")}</div>${lastHTML(S.stLast[p.id])}</div></div>
