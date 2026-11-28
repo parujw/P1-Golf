@@ -2,7 +2,9 @@
 // /api/backup?part=data            ข้อมูลทั้งหมด ไม่รวมรูป (รูปแสดงเป็นขนาดแทน)
 // /api/backup?part=photos&pageSize=8&pageToken=...   รูปทีละหน้า
 // /api/backup?part=pr&pageSize=4&pageToken=...       ภาพ PR ทีละหน้า
-function cfg(){try{return JSON.parse(process.env.FIREBASE_CONFIG||"{}");}catch(e){return {};}}
+function cfg(){let c={};try{c=JSON.parse(process.env.FIREBASE_CONFIG||"{}");}catch(e){try{c=Function("return ("+process.env.FIREBASE_CONFIG+")")()||{};}catch(_){}}
+  // ค่าสาธารณะของเว็บ (อยู่ใน config.js ที่เบราว์เซอร์โหลดอยู่แล้ว)
+  return {projectId:c.projectId||"p1-golf",apiKey:c.apiKey||"AIzaSyCLkrlyKOrIOvKM2Mwvnd5Yq5MvL3K67so"};}
 function val(v){if(!v||typeof v!=="object")return null;
   if("stringValue" in v)return v.stringValue;if("integerValue" in v)return Number(v.integerValue);if("doubleValue" in v)return v.doubleValue;
   if("booleanValue" in v)return v.booleanValue;if("nullValue" in v)return null;if("timestampValue" in v)return v.timestampValue;
